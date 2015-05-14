@@ -29,14 +29,26 @@ module.exports = yeoman.generators.Base.extend({
     var done = this.async();
 
     // TODO: dynamically build prompt object?
-    var appNamePrompt = {
+    var prompts = [{
       type    : 'input',
       name    : 'title',
       message : 'Your application title',
       default : this.appname // Default to current folder name
-    };
+    }, {
+      type    : 'checkbox',
+      name    : 'editors',
+      message : 'Your TypeSceipt editor support',
+      choices: ['WebStorm', 'Sublime', 'Atom', 'VS 2015'],
+      default : ['Sublime', 'Atom']
+    }, {
+      type    : 'list',
+      name    : 'style',
+      choices: ['None', 'Stylus', 'SCSS'],
+      default: 'Stylus'
+      message : 'Your CSS preprocessor',      
+    }];
 
-    this.prompt(appNamePrompt, function (answers) {
+    this.prompt(prompts, function (answers) {
       this.opts.title = answers.title;
       this.log(answers.title);
       done();
@@ -85,5 +97,10 @@ module.exports = yeoman.generators.Base.extend({
 
   install: function () {
     this.installDependencies();
+  }
+
+  end: function () {
+    this.composeWith('aurelia-ts:typescript');
+    this.composeWith('aurelia-ts:plugins');
   }
 });

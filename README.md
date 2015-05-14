@@ -27,8 +27,10 @@ yo aurelia-ts:typescript
 
 ## TODO
 
-- Add Stylus/SASS configuration
-- Add Editor selection/config
+- Configure typings correctly in generated Skeleton app
+- Stylus/SASS configuration
+- Editor selection/config (VS, Webstorm, Sublime, Atom)
+- Plugins
 
 ## License
 
