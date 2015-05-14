@@ -1,0 +1,32 @@
+{
+  "name": "generator-aurelia-ts",
+  "version": "0.0.1",
+  "description": "Aurelia TypeScript app generator",
+  "license": "MIT",
+  "main": "app/index.js",
+  "repository": "kristianmandrup/generator-aurelia-ts",
+  "author": {
+    "name": "Kristian Mandrup",
+    "email": "kmandrup@gmail.com",
+    "url": "https://github.com/kristianmandrup"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "generators"
+  ],
+  "keywords": [
+    "yeoman-generator",
+    "aurelia",
+    "typescript"
+  ],
+  "dependencies": {
+    "yeoman-generator": "^0.19.0",
+    "chalk": "^1.0.0",
+    "yosay": "^1.0.2"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  }
+}
