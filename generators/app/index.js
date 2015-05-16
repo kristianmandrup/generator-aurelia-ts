@@ -32,15 +32,14 @@ module.exports = yeoman.generators.Base.extend({
     var prompts = [{
       type    : 'input',
       name    : 'title',
+      message : 'Your application name',
+      default : this.appName // Name
+    }, {
+      type    : 'input',
+      name    : 'title',
       message : 'Your application title',
-      default : this.appname // Default to current folder name
-    }, {
-      type    : 'checkbox',
-      name    : 'editors',
-      message : 'Your TypeSceipt editor support',
-      choices: ['WebStorm', 'Sublime', 'Atom', 'VS 2015'],
-      default : ['Sublime', 'Atom']
-    }, {
+      default : this.appTitle // Title
+    }, , {
       type    : 'list',
       name    : 'style',
       choices: ['None', 'Stylus', 'SCSS'],
@@ -49,8 +48,7 @@ module.exports = yeoman.generators.Base.extend({
     }];
 
     this.prompt(prompts, function (answers) {
-      this.opts.title = answers.title;
-      this.log(answers.title);
+      this.props.title = answers.title;
       done();
     }.bind(this));
   },
@@ -88,6 +86,11 @@ module.exports = yeoman.generators.Base.extend({
     // TODO: improve by using templates ;)
     srcFiles: function () {
       this.bulkDirectory('src', 'src');
+    },
+
+    // TODO: improve by using templates ;)
+    viewFiles: function () {
+      this.bulkCopy('views', 'src');
     },
 
     buildFiles: function () {

@@ -15,8 +15,6 @@
         "./**/*.ts",
         "./typings/aurelia-amd/aurelia-amd.d.ts",
         "./typings/aurelia/aurelia.d.ts",
-        "./typings/core-js/core-js.d.ts",
-        "./typings/dojo/dojo.d.ts",
         "./typings/es6-promise/es6-promise.d.ts",
         "./src/app.ts",
         "./src/nav-bar.ts",
