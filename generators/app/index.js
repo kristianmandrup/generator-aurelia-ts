@@ -39,7 +39,7 @@ module.exports = yeoman.generators.Base.extend({
     // TODO: dynamically build prompt object
     var prompts = [{
       type    : 'input',
-      name    : 'title',
+      name    : 'appName',
       message : 'Your application name',
       default : this.appName // Name
     }, {
@@ -65,15 +65,19 @@ module.exports = yeoman.generators.Base.extend({
     }, {
       type    : 'list',
       name    : 'style',
-      choices: ['None', 'Stylus', 'SCSS'],
-      default: 'Stylus',
-      message : 'Your CSS preprocessor'
+      choices: ['Bootstrap', 'Foundation'],
+      default: 'Bootstrap',
+      message : 'Your CSS Framework'
     }];
 
     this.prompt(prompts, function (answers) {
       this.title = answers.title;
-      this.appName = answers.appName;
-      this.appDesc = answers.appDesc || answers.appName;
+      this.appName = answers.appName || this.appName;
+      this.appDesc = answers.title;
+      this.cssFramework = answers.style;
+      this.authorName = answers.authorName;
+      this.authorEmail = answers.authorEmail;
+      this.githubAccount = answers.githubAccount;
 
       this.config.save();
 
@@ -95,15 +99,16 @@ module.exports = yeoman.generators.Base.extend({
           appName: self.appName
         }
       );
+      console.log('*** appName: '+self.appName);
       this.fs.copyTpl(
         this.templatePath('_index.html'),
         this.destinationPath('index.html'),
-        { title: self.title }
+        { title: self.title, appName: self.appName }
       );
     },
 
     projectFiles: function () {
-      this.bulkCopy('root', '.');
+      this.bulkDirectory('root', '.');
     },
 
     testFiles: function () {
@@ -125,19 +130,20 @@ module.exports = yeoman.generators.Base.extend({
 
     // TODO: improve by using templates ;)
     viewFiles: function () {
-      this.bulkCopy('views', 'src');
+      this.bulkDirectory('views', 'src');
     },
 
     buildFiles: function () {
       this.bulkDirectory('build', 'build');
     }
-  },
-
+  }
+/*
   install: function () {
     this.installDependencies();
-  },
+  }
 
   end: function () {
     this.composeWith('aurelia-ts:typescript');
   }
+*/
 });
