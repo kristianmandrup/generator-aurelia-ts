@@ -1,0 +1,29 @@
+<template>
+  <nav class="top-bar" data-topbar role="navigation">
+
+    <ul class="title-area">
+      <!-- Icon and router title -->
+      <li class="name" style="margin: 0 0.5em">
+        <a href="#">
+          <i class="fa fa-home"></i>
+          <span>${router.title}</span>
+        </a>
+      </li>
+      <li class="toggle-topbar menu-icon"><a href="#"></a></li>
+    </ul>
+
+    <section class="top-bar-section">
+      <ul class="right">
+        <li class="loader" if.bind="router.isNavigating">
+          <i class="fa fa-spinner fa-spin fa-2x" style="color: white !important;"></i>
+        </li>
+      </ul>
+
+      <ul class="left">
+        <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
+          <a href.bind="row.href">${row.title}</a>
+        </li>
+      </ul>
+    </section>
+  </nav>
+</template>

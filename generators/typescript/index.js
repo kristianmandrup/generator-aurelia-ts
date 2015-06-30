@@ -23,19 +23,29 @@ module.exports = yeoman.generators.Base.extend({
       type    : 'confirm',
       name    : 'amd',
       message : 'Use Aurelia AMD?',
-      default : this.amd
+      default : this.amd,
+      when: function(answers) {
+        return answers.typescript;
+      }
     }, {
       type    : 'checkbox',
       name    : 'editors',
       message : 'Which editors do you widh to support',
       choices: ['WebStorm', 'Sublime', 'Atom', 'VS 2015'],
-      default : ['Sublime', 'Atom']
+      default : ['Sublime', 'Atom'],
+      when: function(answers) {
+        return answers.typescript;
+      }
     }];
 
-    this.prompt(prompts, function (props) {
-      this.props = props;
+    this.prompt(prompts, function (answers) {
+      this.props = answers;
       // To access props later use this.props.someOption;
-      if (answers.editors.includes('WebStorm')) {        
+      // generator returns in typescript was not selected
+      if (answers.typescript == false)
+        return;
+
+      if (answers.editors.indexOf('WebStorm') != -1) {
         this.props.maps = true;
       }
 
@@ -45,7 +55,7 @@ module.exports = yeoman.generators.Base.extend({
 
   writing: {
     typescript: function () {
-      this.bulkCopy('root', '.');
+      this.bulkDirectory('root', '.');
     },
 
     // See http://yeoman.github.io/generator/actions.html
@@ -61,7 +71,7 @@ module.exports = yeoman.generators.Base.extend({
     mapFiles: function () {
       if (this.props.maps) {
         this.bulkCopy('maps', 'src');
-      }      
+      }
     }
 
   }

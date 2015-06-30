@@ -96,19 +96,33 @@ module.exports = yeoman.generators.Base.extend({
           authorName: self.authorName,
           authorEmail: self.authorEmail,
           appDesc: self.appDesc,
-          appName: self.appName
+          appName: self.appName,
+          cssFramework: self.cssFramework
         }
       );
-      console.log('*** appName: '+self.appName);
       this.fs.copyTpl(
         this.templatePath('_index.html'),
         this.destinationPath('index.html'),
-        { title: self.title, appName: self.appName }
+        { title: self.appDesc, appName: self.appName }
+      );
+      this.fs.copyTpl(
+        this.templatePath('src/app.js'),
+        this.destinationPath('src/app.js'),
+        {cssFramework: self.cssFramework}
       );
     },
 
     projectFiles: function () {
-      this.bulkDirectory('root', '.');
+      this.copy('root/editorconfig', '.editorconfig');
+      this.copy('root/jshintrc', '.jshintrc');
+      this.copy('root/aurelia.protractor.js', 'aurelia.protractor.js');
+      this.copy('root/gulpfile.js', 'gulpfile.js');
+      this.copy('root/favicon.ico', 'favicon.ico');
+      this.copy('root/config.js', 'config.js');
+      this.copy('root/karma.conf.js', 'karma.conf.js');
+      this.copy('root/protractor.conf.js', 'protractor.conf.js');
+      this.copy('root/LICENSE', 'LICENSE');
+      // this.bulkDirectory('root', '.');
     },
 
     testFiles: function () {
@@ -123,14 +137,15 @@ module.exports = yeoman.generators.Base.extend({
       this.bulkDirectory('doc', 'doc');
     },
 
-    // TODO: improve by using templates ;)
     srcFiles: function () {
       this.bulkDirectory('src', 'src');
     },
 
-    // TODO: improve by using templates ;)
     viewFiles: function () {
-      this.bulkDirectory('views', 'src');
+      if (this.cssFramework == 'Bootstrap')
+        this.bulkDirectory('views/bootstrap', 'src');
+      if (this.cssFramework == 'Foundation')
+        this.bulkDirectory('views/foundation', 'src');
     },
 
     buildFiles: function () {
@@ -141,8 +156,9 @@ module.exports = yeoman.generators.Base.extend({
   install: function () {
     this.installDependencies();
   }
-
+*
   end: function () {
+    console.info('ComposingWith aurelia-ts:typescript');
     this.composeWith('aurelia-ts:typescript');
   }
 */
