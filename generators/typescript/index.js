@@ -6,14 +6,13 @@ var yosay = require('yosay');
 module.exports = yeoman.generators.Base.extend({
   prompting: function () {
     var done = this.async();
+    console.info('cssFramework: '+this.option('cssFramework')+ ' vs '+this.options.cssFramework);
 
-    // TODO: remove!
-    // Have Yeoman greet the user.
+    /* Have Yeoman greet the user.
     this.log(yosay(
       'Welcome to the awesome ' + chalk.red('Aurelia TypeScript') + ' generator!'
     ));
-
-    // TODO: remove!
+    */
     var prompts = [{
       type: 'confirm',
       name: 'typescript',
@@ -27,15 +26,6 @@ module.exports = yeoman.generators.Base.extend({
       when: function(answers) {
         return answers.typescript;
       }
-    }, {
-      type    : 'checkbox',
-      name    : 'editors',
-      message : 'Which editors do you widh to support',
-      choices: ['WebStorm', 'Sublime', 'Atom', 'VS 2015'],
-      default : ['Sublime', 'Atom'],
-      when: function(answers) {
-        return answers.typescript;
-      }
     }];
 
     this.prompt(prompts, function (answers) {
@@ -44,35 +34,68 @@ module.exports = yeoman.generators.Base.extend({
       // generator returns in typescript was not selected
       if (answers.typescript == false)
         return;
-
-      if (answers.editors.indexOf('WebStorm') != -1) {
-        this.props.maps = true;
+      else {
+        this.conflicter.force = true;
       }
 
+      this.amd = answers.amd;
       done();
     }.bind(this));
   },
 
   writing: {
+    // copy templates for package.json, build/tasks/build.js
     typescript: function () {
-      this.bulkDirectory('root', '.');
+      // this.bulkDirectory('root', '.');
+      this.fs.copyTpl(
+        this.templatePath('root/package.json'),
+        this.destinationPath('package.json'), {
+          githubAccount: this.options.githubAccount,
+          authorName: this.options.authorName,
+          authorEmail: this.options.authorEmail,
+          appDesc: this.options.appDesc,
+          appName: this.options.appName,
+          cssFramework: this.options.cssFramework
+        }
+      );
+      this.fs.copyTpl(
+        this.templatePath('root/tsconfig.json'),
+        this.destinationPath('tsconfig.json'), {
+          amd: this.amd
+        }
+      );
+      this.copy('root/build.js', 'build/tasks/build.js');
     },
 
     // See http://yeoman.github.io/generator/actions.html
     typings: function () {
       this.bulkDirectory('typings', 'typings');
+      this.fs.delete('typings/es6-promise');
+      this.fs.copyTpl(
+        this.templatePath('typings/tsd.d.ts'),
+        this.destinationPath('typings/tsd.d.ts'), {
+          amd: this.amd
+        }
+      );
     },
 
-    // TODO: improve by using templates ;)
+    // TODO remove src/tsconfig.json
     srcFiles: function () {
+      this.fs.delete('src/*.js');
       this.bulkDirectory('src', 'src');
-    },
-
+      this.fs.copyTpl(
+        this.templatePath('src/app.ts'),
+        this.destinationPath('src/app.ts'), {
+          cssFramework: this.options.cssFramework
+        }
+      );
+    }
+/*
     mapFiles: function () {
       if (this.props.maps) {
         this.bulkCopy('maps', 'src');
       }
     }
-
+*/
   }
 });
