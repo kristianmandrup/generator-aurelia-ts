@@ -1,0 +1,35 @@
+<template>
+  <section class="au-animate">
+    <h2>${heading}</h2>
+
+    <form role="forme" submit.delegate="welcome()">
+      <div class="row">
+        <div class="small-12">
+          <label for="fn"><b>First Name</b>
+            <input type="text" value.bind="firstName" id="fn" placeholder="first name">
+          </label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="small-12">
+          <label for="ln"><b>Last Name</b>
+            <input type="text" value.bind="lastName" id="fn" placeholder="last name">
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="small-12">
+          <label for="ln"><b>Full Name</b></label>
+          <p class="help-block">${fullName | upper}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="small-12">
+          <input type="submit" class="button small radius" value="Submit" />
+        </div>
+      </div>
+    </form>
+  </section>
+</template>

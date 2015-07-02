@@ -1,7 +1,7 @@
 import {computedFrom} from 'aurelia-framework';
 
 export class Welcome{
-  heading = 'Welcome to the Aurelia TypeScript Navigation App!';
+  heading = 'Welcome to the Aurelia ES6 App skeleton app!';
   firstName = 'John';
   lastName = 'Doe';
 

@@ -9,13 +9,16 @@ var generator;
 module.exports = yeoman.generators.Base.extend({
 
   // note: arguments and options should be defined in the constructor.
-  constructor: function () {
+  constructor: function() {
     yeoman.generators.Base.apply(this, arguments);
 
     generator = this;
     this.props = {};
     // This makes `appname` a required argument.
-    this.argument('appname', { type: String, required: false });
+    this.argument('appname', {
+      type: String,
+      required: false
+    });
     // And you can then access it later on this way; e.g. CamelCased
     this.props.appname = this.appname ? this.appname.camelize() : null;
 
@@ -33,47 +36,51 @@ module.exports = yeoman.generators.Base.extend({
 
   // TODO: Add prompt for style lang unless passed as argument
   // TODO: Add editor selection prompt
-  prompting: function () {
+  prompting: function() {
     var done = this.async();
 
     // TODO: dynamically build prompt object
     var prompts = [{
-      type    : 'input',
-      name    : 'title',
-      message : 'Your application name',
-      default : this.appName // Name
+      type: 'input',
+      name: 'appName',
+      message: 'Your application name',
+      default: this.appName // Name
     }, {
-      type    : 'input',
-      name    : 'title',
-      message : 'Your application title',
-      default : this.appTitle
+      type: 'input',
+      name: 'title',
+      message: 'Your application title',
+      default: this.appTitle
     }, {
-      type    : 'input',
-      name    : 'githubAccount',
-      message : 'Your github account',
-      default : this.props.githubAccount
+      type: 'input',
+      name: 'githubAccount',
+      message: 'Your github account',
+      default: this.props.githubAccount
     }, {
-      type    : 'input',
-      name    : 'authorEmail',
-      message : 'Your email',
-      default : this.props.authorEmail
+      type: 'input',
+      name: 'authorEmail',
+      message: 'Your email',
+      default: this.props.authorEmail
     }, {
-      type    : 'input',
-      name    : 'authorName',
-      message : 'Your name',
-      default : this.props.authorName
+      type: 'input',
+      name: 'authorName',
+      message: 'Your name',
+      default: this.props.authorName
     }, {
-      type    : 'list',
-      name    : 'style',
-      choices: ['None', 'Stylus', 'SCSS'],
-      default: 'Stylus',
-      message : 'Your CSS preprocessor'
+      type: 'list',
+      name: 'style',
+      choices: ['Bootstrap', 'Foundation'],
+      default: 'Bootstrap',
+      message: 'Your CSS Framework'
     }];
 
-    this.prompt(prompts, function (answers) {
+    this.prompt(prompts, function(answers) {
       this.title = answers.title;
-      this.appName = answers.appName;
-      this.appDesc = answers.appDesc || answers.appName;
+      this.appName = answers.appName || this.appName;
+      this.appDesc = answers.title;
+      this.cssFramework = answers.style;
+      this.authorName = answers.authorName;
+      this.authorEmail = answers.authorEmail;
+      this.githubAccount = answers.githubAccount;
 
       this.config.save();
 
@@ -82,62 +89,93 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   writing: {
-    app: function () {
+    app: function() {
       var self = this;
       this.fs.copyTpl(
         this.templatePath('_package.json'),
-        this.destinationPath('package.json'),
-        {
+        this.destinationPath('package.json'), {
           githubAccount: self.githubAccount,
           authorName: self.authorName,
           authorEmail: self.authorEmail,
           appDesc: self.appDesc,
-          appName: self.appName
+          appName: self.appName,
+          cssFramework: self.cssFramework
         }
       );
       this.fs.copyTpl(
         this.templatePath('_index.html'),
-        this.destinationPath('index.html'),
-        { title: self.title }
+        this.destinationPath('index.html'), {
+          title: self.appDesc,
+          appName: self.appName
+        }
+      );
+      this.fs.copyTpl(
+        this.templatePath('src/app.js'),
+        this.destinationPath('src/app.js'), {
+          cssFramework: self.cssFramework
+        }
       );
     },
 
-    projectFiles: function () {
-      this.bulkCopy('root', '.');
+    projectFiles: function() {
+      this.copy('root/editorconfig', '.editorconfig');
+      this.copy('root/jshintrc', '.jshintrc');
+      this.copy('root/aurelia.protractor.js', 'aurelia.protractor.js');
+      this.copy('root/gulpfile.js', 'gulpfile.js');
+      this.copy('root/favicon.ico', 'favicon.ico');
+      this.copy('root/config.js', 'config.js');
+      this.copy('root/karma.conf.js', 'karma.conf.js');
+      this.copy('root/protractor.conf.js', 'protractor.conf.js');
+      this.copy('root/LICENSE', 'LICENSE');
+      // this.bulkDirectory('root', '.');
     },
 
-    testFiles: function () {
+    testFiles: function() {
       this.bulkDirectory('test', 'test');
     },
 
-    styleFiles: function () {
+    styleFiles: function() {
       this.bulkDirectory('styles', 'styles');
     },
 
-    docFiles: function () {
+    docFiles: function() {
       this.bulkDirectory('doc', 'doc');
     },
 
-    // TODO: improve by using templates ;)
-    srcFiles: function () {
+    srcFiles: function() {
+      this.conflicter.force = true;
       this.bulkDirectory('src', 'src');
     },
 
-    // TODO: improve by using templates ;)
-    viewFiles: function () {
-      this.bulkCopy('views', 'src');
+    viewFiles: function() {
+      if (this.cssFramework == 'Bootstrap')
+        this.bulkDirectory('views/bootstrap', 'src');
+      if (this.cssFramework == 'Foundation')
+        this.bulkDirectory('views/foundation', 'src');
     },
 
-    buildFiles: function () {
+    buildFiles: function() {
       this.bulkDirectory('build', 'build');
     }
   },
+  /*
+    install: function () {
+      this.installDependencies();
+    }
+  */
+  end: function() {
+    console.info('ComposingWith aurelia-ts:typescript for: ' + this.cssFramework);
 
-  install: function () {
-    this.installDependencies();
-  },
-
-  end: function () {
-    this.composeWith('aurelia-ts:typescript');
+    this.composeWith('aurelia-ts:typescript', {
+      options: {
+        cssFramework: this.cssFramework,
+        githubAccount: this.githubAccount,
+        authorName: this.authorName,
+        authorEmail: this.authorEmail,
+        appDesc: this.appDesc,
+        appName: this.appName
+      }
+    });
   }
+
 });
