@@ -164,8 +164,7 @@ module.exports = yeoman.generators.Base.extend({
     }
   */
   end: function() {
-    console.info('ComposingWith aurelia-ts:typescript for: ' + this.cssFramework);
-
+    // console.info('ComposingWith aurelia-ts:typescript for: ' + this.cssFramework);
     this.composeWith('aurelia-ts:typescript', {
       options: {
         cssFramework: this.cssFramework,

@@ -1,3 +1,5 @@
+/// <reference path="../typings/tsd.d.ts" />
+
 import {Aurelia} from "aurelia-framework";
 
 export function configure(aurelia: Aurelia) {

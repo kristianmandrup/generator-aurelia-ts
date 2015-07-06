@@ -34,7 +34,9 @@
     "karma": "^0.12.28",
     "karma-babel-preprocessor": "^5.1.0",
     "karma-chrome-launcher": "^0.1.7",
+    "karma-phantomjs-launcher": "^0.1",
     "karma-jasmine": "^0.3.5",
+    "karma-nyan-reporter": "^0.1.0",
     "karma-jspm": "^1.1.5",
     "object.assign": "^1.0.3",
     "require-dir": "^0.1.0",
@@ -43,7 +45,8 @@
     "yargs": "^2.1.1",
     "merge2": "*",
     "typescript": "Microsoft/Typescript",
-    "gulp-typescript": "^2.7.6"
+    "gulp-typescript": "^2.7.6",
+    "karma-typescript-preprocessor": "^0.0.19"
   },
   "jspm": {
     "dependencies": {
