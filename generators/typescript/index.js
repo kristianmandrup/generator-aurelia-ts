@@ -87,6 +87,14 @@ module.exports = yeoman.generators.Base.extend({
             amd: this.amd
           }
         );
+        /*
+        this.fs.copyTpl(
+          this.templatePath('root/karma.conf.js'),
+          this.destinationPath('karma.conf.js'), {
+            amd: this.amd
+          }
+        );
+        */
         this.copy('root/build.js', 'build/tasks/build.js');
       }
     },
