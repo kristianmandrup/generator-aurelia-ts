@@ -1,4 +1,4 @@
-import {App} from '../../src/app';
+import {App} from '../../dist/app';
 
 class RouterStub {
   configure(handler) {
@@ -16,7 +16,7 @@ describe('the App module', () => {
   beforeEach(() => {
     mockedRouter = new RouterStub();
     sut = new App(mockedRouter);
-    sut.configureRouter(mockedRouter, mockedRouter);
+    // sut.configureRouter(mockedRouter, mockedRouter);
   });
 
   it('contains a router property', () => {
@@ -28,7 +28,12 @@ describe('the App module', () => {
   });
 
   it('should have a welcome route', () => {
-    expect(sut.router.routes).toContain({ route: ['','welcome'],  moduleId: './welcome', nav: true, title:'Welcome' });
+    expect(sut.router.routes).toContain({
+      route: ['','welcome'],
+      moduleId: 'welcome',
+      nav: true,
+      title:'Welcome'
+    });
   });
 
   /*
