@@ -45,7 +45,8 @@
     "yargs": "^2.1.1",
     "merge2": "*",
     "typescript": "Microsoft/Typescript",
-    "gulp-typescript": "^2.7.6"
+    "gulp-typescript": "^2.7.6",
+    "karma-typescript-preprocessor": "^0.0.19"
   },
   "jspm": {
     "dependencies": {

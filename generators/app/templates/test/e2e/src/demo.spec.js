@@ -35,10 +35,10 @@ describe('aurelia skeleton app', function() {
     expect(po_welcome.openAlertDialog()).toBe(true);
   });
 
-/*
+  /*
   it('should navigate to flickr page', () => {
     po_skeleton.navigateTo('#/flickr');
     expect(po_skeleton.getCurrentPageTitle()).toBe('Flickr | Aurelia');
   });
-*/
+  */
 });
