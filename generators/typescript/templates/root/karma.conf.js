@@ -13,7 +13,7 @@ module.exports = function(config) {
 
     jspm: {
       // Edit this to your needs
-      loadFiles: ['dist/**/*.ts', 'test/unit/**/*.js'],
+      loadFiles: ['dist/**/*.js', 'test/unit/**/*.js'],
       paths: {
         '*': '*.js',
       }
@@ -28,14 +28,14 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'test/**/*.js': ['babel'],
-      'dist/**/*.js': ['babel']
+      // 'dist/**/*.js': ['babel'],
+      'test/**/*.js': ['babel']
     },
 
     'babelPreprocessor': {
       options: {
         sourceMap: 'inline',
-        modules: 'system',
+        modules: "<%= (amd)? 'amd': 'common' %>", // 'system',
         moduleIds: false,
         optional: [
           "es7.decorators",

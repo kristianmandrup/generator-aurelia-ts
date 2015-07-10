@@ -35,7 +35,7 @@ describe('aurelia-ts:app', function () {
         style: 'Bootstrap'
       })
       .on('end', function() {
-        console.log('it finishes!!');
+        // console.log('it finishes!!');
         done();
       });
   });
