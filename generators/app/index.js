@@ -43,17 +43,17 @@ module.exports = yeoman.generators.Base.extend({
     var prompts = [{
       type: 'input',
       name: 'appName',
-      message: 'Your application name',
+      message: 'application name',
       default: this.appName // Name
     }, {
       type: 'input',
       name: 'title',
-      message: 'Your application title',
+      message: 'application title',
       default: this.appTitle
     }, {
       type: 'input',
       name: 'githubAccount',
-      message: 'Your github account',
+      message: 'github account',
       default: this.props.githubAccount
     }, {
       type: 'input',

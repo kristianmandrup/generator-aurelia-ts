@@ -27,7 +27,7 @@ module.exports = yeoman.generators.Base.extend({
     var prompts = [{
       type: 'confirm',
       name: 'typescript',
-      message: 'Would you like to enable TypeScript for Aurelia?',
+      message: 'Enable TypeScript for Aurelia?',
       default: true
     }, {
       type    : 'confirm',
@@ -40,7 +40,7 @@ module.exports = yeoman.generators.Base.extend({
     }, {
       type: 'confirm',
       name: 'installDeps',
-      message: 'Do you want to automatically install dependencies for npm and jspm?',
+      message: 'Install dependencies for npm and jspm?',
       default: false
     }];
 

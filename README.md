@@ -1,5 +1,6 @@
-# generator-aurelia-ts [![Build Status](https://secure.travis-ci.org/kristianmandrup/generator-aurelia-ts.png?branch=master)](https://travis-ci.org/kristianmandrup/generator-aurelia-ts)
+# generator-aurelia-ts 
 
+[![Build Status](https://secure.travis-ci.org/kristianmandrup/generator-aurelia-ts.png?branch=master)](https://travis-ci.org/kristianmandrup/generator-aurelia-ts)
 
 Based on [aurelia-typescript](https://github.com/kristianmandrup/aurelia-typescript) forked from [@cmichaelgraham](https://github.com/cmichaelgraham/aurelia-typescript)
 
@@ -17,20 +18,27 @@ Initiate the app generator (default):
 yo aurelia-ts
 ```
 
-TODO: Select your editor(s) of choice via the prompt
+- application name
+- application title
+- github account
+- email
+- name
+- CSS Framework (Bootstrap 3.3 or Foundation 5)
 
-Add TypeScript configuration using the typescript sub-generator...
+Calls `aurelia-ts:typescript` generator
+
+You can always add TypeScript later using the typescript sub-generator...
 
 ```bash
 yo aurelia-ts:typescript
 ```
 
+- Enable TypeScript for Aurelia?
+- Install dependencies for npm and jspm?
+
 ## TODO
 
-- Configure typings correctly in generated Skeleton app
-- Stylus/SASS configuration
-- Editor selection/config (VS, Webstorm, Sublime, Atom)
-- Plugins
+Ideas for improvement are welcome :)
 
 ## License
 
