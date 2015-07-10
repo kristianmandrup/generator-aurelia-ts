@@ -158,14 +158,9 @@ module.exports = yeoman.generators.Base.extend({
       this.bulkDirectory('build', 'build');
     }
   },
-  /*
-    install: function () {
-      this.installDependencies();
-    }
-  */
-  end: function() {
-    console.info('ComposingWith aurelia-ts:typescript for: ' + this.cssFramework);
 
+  end: function() {
+    // console.info('ComposingWith aurelia-ts:typescript for: ' + this.cssFramework);
     this.composeWith('aurelia-ts:typescript', {
       options: {
         cssFramework: this.cssFramework,

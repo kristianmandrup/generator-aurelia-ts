@@ -17,7 +17,7 @@ module.exports = yeoman.generators.Base.extend({
 
   prompting: function () {
     var done = this.async();
-    console.info('cssFramework: '+this.option('cssFramework')+ ' vs '+this.options.cssFramework);
+    // console.info('cssFramework: '+this.option('cssFramework')+ ' vs '+this.options.cssFramework);
 
     /* Have Yeoman greet the user.
     this.log(yosay(
@@ -105,7 +105,6 @@ module.exports = yeoman.generators.Base.extend({
       }
     },
 
-    // TODO remove src/tsconfig.json
     srcFiles: function () {
       if (this.props.typescript) {
         this.fs.delete('src/*.js');
@@ -116,6 +115,14 @@ module.exports = yeoman.generators.Base.extend({
             cssFramework: this.options.cssFramework
           }
         );
+      }
+    },
+
+    testFiles: function() {
+      if (this.props.typescript) {
+        this.copy('root/karma.conf.js', 'karma.conf.js');
+        this.copy('root/test.js', 'build/tasks/test.js');
+        this.copy('test/unit/app.spec.js', 'test/unit/app.spec.js');
       }
     }
 /*
@@ -129,9 +136,7 @@ module.exports = yeoman.generators.Base.extend({
 
   install: function() {
     if (this.props.installDeps) {
-      console.info('Installing deps...');
-      // this.npmInstall();
-      // this.spawnCommand
+      // console.info('Installing deps...');
       this.installDeps();
     }
   }
