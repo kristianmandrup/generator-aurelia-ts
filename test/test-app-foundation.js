@@ -1,3 +1,4 @@
+
 'use strict';
 
 var path = require('path');
@@ -8,14 +9,7 @@ var os = require('os');
 var sinon = require('sinon');
 var app;
 
-describe('aurelia-ts generator', function() {
-  it('can be imported', function() {
-    app = require('../generators/app');
-    assert(app !== undefined);
-  });
-});
-
-describe('aurelia-ts:app', function () {
+describe('aurelia-ts:app with Foundation', function () {
   this.spy = sinon.spy();
   var dummyGen = generator.Base.extend({
     exec: this.spy
@@ -32,10 +26,9 @@ describe('aurelia-ts:app', function () {
         githubAccount: 'telek',
         authorName: 'me',
         authorEmail: 'me@me.es',
-        style: 'Bootstrap'
+        style: 'Foundation'
       })
       .on('end', function() {
-        // console.log('it finishes!!');
         done();
       });
   });
@@ -49,28 +42,25 @@ describe('aurelia-ts:app', function () {
     ]);
   });
 
-  it('include bootstrap', function() {
+  it('include Foundation', function() {
     assert.fileContent([
-      ['package.json', /"bootstrap": ".*\/bootstrap.+"/]
+      ['package.json', /"foundation": ".*zurb\/bower\-foundation.+"/]
     ]);
     assert.noFileContent([
-      ['package.json', /"foundation":/]
+      ['package.json', /"bootstrap":/]
     ]);
     assert.fileContent([
-      ['src/nav-bar.html', /<nav class="navbar navbar\-default.*"/],
-      ['src/welcome.html', /<div class="form\-group">/]
+      ['src/nav-bar.html', /<nav class="top\-bar"/],
+      ['src/welcome.html', /<div class="row">\s*<div class="small\-\d+"/]
     ]);
   });
 
   it('include just ES6', function() {
+    assert.noFile(['tsconfig.json', 'typings']);
     assert.noFileContent([
       ['package.json', /typescript/],
       ['build/tasks/build.js', /typescript/]
     ]);
-    assert.fileContent([
-      ['build/tasks/build.js', /gulp\-babel/],
-      ['package.json', /gulp\-babel/]
-    ]);
-    assert.noFile(['src/app.ts', 'src/welcome.ts', 'src/nav-bar.ts']);
+
   });
 });
