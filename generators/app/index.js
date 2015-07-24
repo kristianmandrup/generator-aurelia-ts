@@ -106,7 +106,7 @@ module.exports = yeoman.generators.Base.extend({
         this.templatePath('_index.html'),
         this.destinationPath('index.html'), {
           title: self.appDesc,
-          appName: self.appName
+          appName: self.appName,
           cssFramework: self.cssFramework
         }
       );
