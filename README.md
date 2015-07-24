@@ -82,7 +82,7 @@ Then run `npm test`. If all tests pass, you can do your pull request :)
 
 *Troubleshooting*
 
-If while developing on the generator you get an error such as:
+If while developing the generator you get an error such as:
 
 `Uncaught SyntaxError: Unexpected token return`
 
@@ -94,7 +94,7 @@ Currently uses bindings from [Aurelia Typings](https://github.com/cmichaelgraham
 
 Please submit pull requests for further TypeScript Definition updates...
 
-### Install
+## Install
 
 To install generator-aurelia-ts from npm, run:
 
@@ -102,31 +102,56 @@ To install generator-aurelia-ts from npm, run:
 npm install -g generator-aurelia-ts
 ```
 
+## Run
+
 Initiate the app generator (default):
 
 ```bash
 yo aurelia-ts
 ```
 
-- application name
-- application title
-- github account
-- email
-- name
+The generator also supports SCSS and Stylus via options: `--scss` and `--stylus`
+
+```bash
+yo aurelia-ts --stylus
+```
+
+You will be prompted for the following:
+- Your application name
+- Yourapplication title
+- Your github account
+- Your email
+- Your name
 - CSS Framework:
   - Bootstrap 3.3.x
   - Foundation 5.5.x
   - Semantic UI 2.0.x
   - Framework7 1.2.x
+- Install Aurelia CLI (default: no)
 
-For Semantic-UI it will reference `/semantic/dist` your semantic build destination folder.
+TODO: enable passing css framework via option
 
-For Semantic UI, you can customize your layout from within the `/semantic` folder. See:
+```bash
+yo aurelia-ts --stylus --semantic
+```
+
+### Semantic-UI
+
+For *Semantic-UI* you should reference `/semantic/dist` in `app.js`
+
+```js
+// import '../semantic/dist'; // your themes and customizations
+```
+
+You can then customize your layout from within the `/semantic` folder. See:
 - [Build tools](http://semantic-ui.com/introduction/build-tools.html)
 - [Theming](http://semantic-ui.com/usage/theming.html)
 - [Recipes](http://semantic-ui.com/introduction/advanced-usage.html)
 
+## TypeScript
+
 After setting up the basic project structure, the main generator will ask you to call the `aurelia-ts:typescript` generator.
+
 If you skip TypeScript, know that you can always add TypeScript later using the `typescript` sub-generator.
 
 ```bash
@@ -136,6 +161,8 @@ yo aurelia-ts:typescript
 ## TODO
 
 Ideas for improvement are welcome :)
+
+- ESLint (stage 0)
 
 ## License
 

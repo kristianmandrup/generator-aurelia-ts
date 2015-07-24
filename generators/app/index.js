@@ -76,6 +76,11 @@ module.exports = yeoman.generators.Base.extend({
       ],
       default: 'Bootstrap',
       message: 'Your CSS Framework'
+    }, {
+      type: 'confirm',
+      name: 'installCLI',
+      message: 'Install Aurelia CLI',
+      default: false
     }];
 
     this.prompt(prompts, function(answers) {
@@ -86,6 +91,7 @@ module.exports = yeoman.generators.Base.extend({
       this.authorName = answers.authorName;
       this.authorEmail = answers.authorEmail;
       this.githubAccount = answers.githubAccount;
+      this.installCLI = answers.installCLI;
 
       this.config.save();
 
@@ -179,6 +185,10 @@ module.exports = yeoman.generators.Base.extend({
   end: function() {
     if (this.cssFramework == 'Semantic-UI') {
       this.npmInstall(['semantic-ui'], { 'save': true });
+    }
+
+    if (this.installCLI) {
+      this.npmInstall(['aurelia-cli'], { 'global': true });
     }
 
     this.composeWith('aurelia-ts:typescript', {
