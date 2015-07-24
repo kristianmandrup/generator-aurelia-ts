@@ -68,7 +68,7 @@ module.exports = yeoman.generators.Base.extend({
     }, {
       type: 'list',
       name: 'style',
-      choices: ['Bootstrap', 'Foundation'],
+      choices: ['Bootstrap', 'Foundation', 'Semantic-UI'],
       default: 'Bootstrap',
       message: 'Your CSS Framework'
     }];
@@ -107,6 +107,7 @@ module.exports = yeoman.generators.Base.extend({
         this.destinationPath('index.html'), {
           title: self.appDesc,
           appName: self.appName
+          cssFramework: self.cssFramework
         }
       );
       this.fs.copyTpl(
@@ -152,6 +153,8 @@ module.exports = yeoman.generators.Base.extend({
         this.bulkDirectory('views/bootstrap', 'src');
       if (this.cssFramework == 'Foundation')
         this.bulkDirectory('views/foundation', 'src');
+      if (this.cssFramework == 'Semantic-UI')
+        this.bulkDirectory('views/semantic-ui', 'src');
     },
 
     buildFiles: function() {
@@ -160,6 +163,10 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   end: function() {
+    if (this.cssFramework == 'Semantic-UI') {
+      this.npmInstall(['semantic-ui'], { 'save': true });
+    }
+
     // console.info('ComposingWith aurelia-ts:typescript for: ' + this.cssFramework);
     this.composeWith('aurelia-ts:typescript', {
       options: {
