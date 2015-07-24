@@ -66,13 +66,19 @@ import 'framework7/css/framework7.ios.colors.css!';
 <% } %>
 ```
 
-Finally customize the Application load spinner in `_index.html`
+For a finishing touch you can add/customize the Application load spinner in `_index.html`
 
 ```html
   <% if (cssFramework == 'Bootstrap') %>
   <i class="fa fa-spinner fa-spin"></i>
   <% } %>
 ```
+
+Finally test that it all works by adding a unit test, such as:
+
+`test/test-app-framework7.js`
+
+Then run `npm test`. If all tests pass, you can do your pull request :)
 
 *Troubleshooting*
 
