@@ -1,0 +1,22 @@
+<template>
+  <div class="ui fixed inverted main menu">
+    <a class="ui item" href="#">
+      <i class="fa fa-home"></i>
+      <span>${router.title}</span>
+    </a>
+
+    <a repeat.for="row of router.navigation" href.bind="row.href"
+       class="ui item ${row.isActive ? 'active' : ''}">
+       ${row.title}
+    </a>
+
+    <div class="right menu">
+      <a class="ui item">
+        Logout
+      </a>
+      <div class="ui item" if.bind="router.isNavigating">
+        <i class="fa fa-spinner fa-spin"></i>
+      </div>
+    </div>
+  </div>
+</template>

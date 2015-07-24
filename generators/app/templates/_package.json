@@ -54,6 +54,9 @@
       "aurelia-http-client": "github:aurelia/http-client@^0.8.0",
       "aurelia-router": "github:aurelia/router@^0.8.0",
       "font-awesome": "npm:font-awesome@^4.3.0",
+      <% if (cssFramework == 'Semantic-UI') { %>
+      "semantic-ui": "semantic-ui",
+      <% } %>
       <% if (cssFramework == 'Bootstrap') { %>
       "bootstrap": "github:twbs/bootstrap@^3.3.0",
       <% } %>
