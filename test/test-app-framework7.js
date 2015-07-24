@@ -9,7 +9,7 @@ var os = require('os');
 var sinon = require('sinon');
 var app;
 
-describe('aurelia-ts:app with Foundation', function () {
+describe('aurelia-ts:app with Framework7', function () {
   this.spy = sinon.spy();
   var dummyGen = generator.Base.extend({
     exec: this.spy
@@ -21,12 +21,12 @@ describe('aurelia-ts:app with Foundation', function () {
         [dummyGen, 'aurelia-ts:typescript']
       ])
       .withPrompts({
-        appName: 'foundation-app',
-        title: 'The Foundation APP',
-        githubAccount: 'telek',
+        appName: 'framework7-app',
+        title: 'The Framework7 APP',
+        githubAccount: 'kristianmandrup',
         authorName: 'me',
         authorEmail: 'me@me.es',
-        style: 'Foundation'
+        style: 'Framework7'
       })
       .on('end', function() {
         done();
@@ -42,16 +42,16 @@ describe('aurelia-ts:app with Foundation', function () {
     ]);
   });
 
-  it('include Foundation', function() {
+  it('include Framework7', function() {
     assert.fileContent([
-      ['package.json', /"foundation": ".*zurb\/bower\-foundation.+"/]
+      ['package.json', /"framework7": ".*Framework7.+"/]
     ]);
     assert.noFileContent([
       ['package.json', /"bootstrap":/]
     ]);
     assert.fileContent([
-      ['src/nav-bar.html', /<nav class="top\-bar"/],
-      ['src/welcome.html', /<div class="row">\s*<div class="small\-\d+"/]
+      ['src/nav-bar.html', /navbar\-inner/],
+      ['src/welcome.html', /active button/]
     ]);
   });
 

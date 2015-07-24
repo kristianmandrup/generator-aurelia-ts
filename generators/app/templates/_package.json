@@ -54,9 +54,6 @@
       "aurelia-http-client": "github:aurelia/http-client@^0.8.0",
       "aurelia-router": "github:aurelia/router@^0.8.0",
       "font-awesome": "npm:font-awesome@^4.3.0",
-      <% if (cssFramework == 'Semantic-UI') { %>
-      "semantic-ui": "semantic-ui",
-      <% } %>
       <% if (cssFramework == 'Bootstrap') { %>
       "bootstrap": "github:twbs/bootstrap@^3.3.0",
       <% } %>
@@ -64,6 +61,13 @@
       "fastclick": "npm:fastclick@^1.0.6",
       "foundation": "github:zurb/bower-foundation@^5.0.0",
       "modernizr": "github:Modernizr/Modernizr@^2.8.3",
+      "pace": "github:HubSpot/pace",
+      <% } %>
+      <% if (cssFramework == 'Semantic-UI') { %>
+      "semantic-ui": "semantic-ui",
+      <% } %>
+      <% if (cssFramework == 'Framework7') { %>
+      "framework7": "github:nolimits4web/Framework7@^1.2.0",
       <% } %>
       "css": "github:systemjs/plugin-css@^0.1.9"
     },

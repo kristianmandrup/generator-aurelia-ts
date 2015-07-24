@@ -68,7 +68,12 @@ module.exports = yeoman.generators.Base.extend({
     }, {
       type: 'list',
       name: 'style',
-      choices: ['Bootstrap', 'Foundation', 'Semantic-UI'],
+      choices: [
+        'Bootstrap',
+        'Foundation',
+        'Semantic-UI',
+        'Framework7'
+      ],
       default: 'Bootstrap',
       message: 'Your CSS Framework'
     }];
@@ -91,6 +96,7 @@ module.exports = yeoman.generators.Base.extend({
   writing: {
     app: function() {
       var self = this;
+
       this.fs.copyTpl(
         this.templatePath('_package.json'),
         this.destinationPath('package.json'), {
@@ -102,6 +108,7 @@ module.exports = yeoman.generators.Base.extend({
           cssFramework: self.cssFramework
         }
       );
+
       this.fs.copyTpl(
         this.templatePath('_index.html'),
         this.destinationPath('index.html'), {
@@ -110,6 +117,7 @@ module.exports = yeoman.generators.Base.extend({
           cssFramework: self.cssFramework
         }
       );
+
       this.fs.copyTpl(
         this.templatePath('src/app.js'),
         this.destinationPath('src/app.js'), {
@@ -149,12 +157,18 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     viewFiles: function() {
-      if (this.cssFramework == 'Bootstrap')
+      if (this.cssFramework == 'Bootstrap') {
         this.bulkDirectory('views/bootstrap', 'src');
-      if (this.cssFramework == 'Foundation')
+      }
+      if (this.cssFramework == 'Foundation') {
         this.bulkDirectory('views/foundation', 'src');
-      if (this.cssFramework == 'Semantic-UI')
+      }
+      if (this.cssFramework == 'Semantic-UI') {
         this.bulkDirectory('views/semantic-ui', 'src');
+      }
+      if (this.cssFramework == 'Framework7') {
+        this.bulkDirectory('views/framework7', 'src');
+      }
     },
 
     buildFiles: function() {
@@ -167,7 +181,6 @@ module.exports = yeoman.generators.Base.extend({
       this.npmInstall(['semantic-ui'], { 'save': true });
     }
 
-    // console.info('ComposingWith aurelia-ts:typescript for: ' + this.cssFramework);
     this.composeWith('aurelia-ts:typescript', {
       options: {
         cssFramework: this.cssFramework,
@@ -179,5 +192,4 @@ module.exports = yeoman.generators.Base.extend({
       }
     });
   }
-
 });
