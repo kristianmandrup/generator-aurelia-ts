@@ -9,7 +9,7 @@ var os = require('os');
 var sinon = require('sinon');
 var app;
 
-describe('aurelia-ts:app with Foundation', function () {
+describe('aurelia-ts:app with Semantic-UI', function () {
   this.spy = sinon.spy();
   var dummyGen = generator.Base.extend({
     exec: this.spy
@@ -21,12 +21,12 @@ describe('aurelia-ts:app with Foundation', function () {
         [dummyGen, 'aurelia-ts:typescript']
       ])
       .withPrompts({
-        appName: 'foundation-app',
-        title: 'The Foundation APP',
-        githubAccount: 'telek',
+        appName: 'semantic-ui-app',
+        title: 'The Semantic-UI App',
+        githubAccount: 'kristianmandrup',
         authorName: 'me',
         authorEmail: 'me@me.es',
-        style: 'Foundation'
+        style: 'Semantic-UI'
       })
       .on('end', function() {
         done();
@@ -42,16 +42,16 @@ describe('aurelia-ts:app with Foundation', function () {
     ]);
   });
 
-  it('include Foundation', function() {
+  it('include Semantic-UI', function() {
     assert.fileContent([
-      ['package.json', /"foundation": ".*zurb\/bower\-foundation.+"/]
+      ['package.json', /"semantic-ui": ".*semantic.+"/]
     ]);
     assert.noFileContent([
       ['package.json', /"bootstrap":/]
     ]);
     assert.fileContent([
-      ['src/nav-bar.html', /<nav class="top\-bar"/],
-      ['src/welcome.html', /<div class="row">\s*<div class="small\-\d+"/]
+      ['src/nav-bar.html', /ui item/],
+      ['src/welcome.html', /ui form/]
     ]);
   });
 
