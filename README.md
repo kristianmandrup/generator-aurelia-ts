@@ -12,6 +12,12 @@ Use [npm link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-
 
 Profit!
 
+### Contributors
+
+- [@telekosmos](https://github.com/telekosmos)
+- [@kristianmandrup](https://github.com/kristianmandrup)
+- You :)
+
 ### CSS Frameworks
 
 This generator currently supports:
