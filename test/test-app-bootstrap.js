@@ -44,6 +44,7 @@ describe('aurelia-ts:app', function () {
     assert.file([
       'gulpfile.js',
       'package.json',
+      'Aureliafile.js',
       '.editorconfig', // review
       '.jshintrc'
     ]);

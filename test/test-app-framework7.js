@@ -37,6 +37,7 @@ describe('aurelia-ts:app with Framework7', function () {
     assert.file([
       'gulpfile.js',
       'package.json',
+      'Aureliafile.js',
       '.editorconfig', // review
       '.jshintrc'
     ]);

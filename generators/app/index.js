@@ -6,6 +6,13 @@ require('sugar');
 
 var generator;
 
+var uiFrameworkMap = {
+  bs: 'Bootstrap',
+  zurb: 'Foundation',
+  sem: 'Semantic-UI',
+  f7: 'Framework7'
+};
+
 module.exports = yeoman.generators.Base.extend({
 
   // note: arguments and options should be defined in the constructor.
@@ -22,9 +29,13 @@ module.exports = yeoman.generators.Base.extend({
     // And you can then access it later on this way; e.g. CamelCased
     this.props.appname = this.appname ? this.appname.camelize() : null;
 
-    // This method adds support for a `--coffee` flag
     this.option('sass');
     this.option('stylus');
+
+    // ui framework options
+    this.option('ui', {type: 'string'});
+
+    this.props.uiFramework = uiFrameworkMap[this.options.ui];
 
     // TODO: use to configure css/scss or stylus
     this.props.styleLang = 'css';
@@ -38,6 +49,19 @@ module.exports = yeoman.generators.Base.extend({
   // TODO: Add editor selection prompt
   prompting: function() {
     var done = this.async();
+
+    var uiFrameWorkPrompt = {
+      type: 'list',
+      name: 'style',
+      choices: [
+        'Bootstrap',
+        'Foundation',
+        'Semantic-UI',
+        'Framework7'
+      ],
+      default: 'Bootstrap',
+      message: 'Your CSS Framework'
+    }
 
     // TODO: dynamically build prompt object
     var prompts = [{
@@ -66,28 +90,21 @@ module.exports = yeoman.generators.Base.extend({
       message: 'Your name',
       default: this.props.authorName
     }, {
-      type: 'list',
-      name: 'style',
-      choices: [
-        'Bootstrap',
-        'Foundation',
-        'Semantic-UI',
-        'Framework7'
-      ],
-      default: 'Bootstrap',
-      message: 'Your CSS Framework'
-    }, {
       type: 'confirm',
       name: 'installCLI',
       message: 'Install Aurelia CLI',
       default: false
     }];
 
+    if (!this.props.uiFramework) {
+      prompts.push(uiFrameWorkPrompt);
+    }
+
     this.prompt(prompts, function(answers) {
       this.title = answers.title;
       this.appName = answers.appName || this.appName;
       this.appDesc = answers.title;
-      this.cssFramework = answers.style;
+      this.cssFramework = answers.style || this.props.uiFramework;
       this.authorName = answers.authorName;
       this.authorEmail = answers.authorEmail;
       this.githubAccount = answers.githubAccount;
@@ -124,12 +141,18 @@ module.exports = yeoman.generators.Base.extend({
         }
       );
 
+      this.fs.copy(
+        this.templatePath('Aureliafile.js'),
+        this.destinationPath('Aureliafile.js')
+      );
+
       this.fs.copyTpl(
         this.templatePath('src/app.js'),
         this.destinationPath('src/app.js'), {
           cssFramework: self.cssFramework
         }
       );
+
     },
 
     projectFiles: function() {

@@ -2,21 +2,11 @@
 
 [![Build Status](https://secure.travis-ci.org/kristianmandrup/generator-aurelia-ts.png?branch=master)](https://travis-ci.org/kristianmandrup/generator-aurelia-ts)
 
-Based on [aurelia-typescript](https://github.com/kristianmandrup/aurelia-typescript) forked from [@cmichaelgraham](https://github.com/cmichaelgraham/aurelia-typescript)
-
-### Contributing
-
-As you add features, add [yeoman tests](http://yeoman.io/authoring/testing.html)
-
-Use [npm link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) to install it locally to test it as you develop ;)
-
-Profit!
-
-### Contributors
-
-- [@telekosmos](https://github.com/telekosmos)
-- [@kristianmandrup](https://github.com/kristianmandrup)
-- You :)
+Generate an [Aurelia](aurelia.io) project skeleton with:
+- [Aurelia CLI](http://www.programwitherik.com/what-is-aurelia-cli-how-does-it-work/)
+- SCSS or Stylus
+- TypeScript definitions (optional)
+- A popular UI framework of your choice
 
 ### CSS Frameworks
 
@@ -26,9 +16,103 @@ This generator currently supports:
 - [Semantic UI](semantic-ui.com) 2.0.x
 - [Framework7 - F7*](http://www.idangero.us/framework7)
 
-Make a pull request to make the generator support your favorite alternative UI framework.
+Make a pull request to make the generator support your favorite alternative UI framework (see *Contributing* below).
 
-* - "Experimental" support, please help improve!
+### TypeScript
+
+We currently use [Aurelia Typings](https://github.com/cmichaelgraham/aurelia-typescript-atom/tree/master/skel-nav-ts/typings/aurelia) as of *July 24th, 2015*.
+
+Note: We don't yet fully trust the automatic `d.ts` file generator :P
+
+Please submit pull requests for further TypeScript Definition updates or help integrate with auto generation (when mature).
+
+## Install
+
+To install generator-aurelia-ts from npm, run:
+
+```bash
+npm install -g generator-aurelia-ts
+```
+
+## Run
+
+Initiate the app generator (default):
+
+```bash
+yo aurelia-ts
+```
+
+The generator also supports SCSS and Stylus via options: `--scss` and `--stylus`
+
+```bash
+yo aurelia-ts --stylus
+```
+
+You will be prompted for the following:
+- Your application name
+- Yourapplication title
+- Your github account
+- Your email
+- Your name
+- UI Framework:
+  - Bootstrap 3.3.x
+  - Foundation 5.5.x
+  - Semantic UI 2.0.x
+  - Framework7 1.2.x
+- Install Aurelia CLI (default: no)
+
+You can also pass the UI framework as a `--ui` option
+
+```bash
+yo aurelia-ts --stylus --ui sem
+```
+
+The ui can take any of these shorthands:
+- `bs` Bootstrap
+- `zurb` Zurb Foundation
+- `sem` Semantic-UI
+- `f7` Framework7
+
+### Semantic-UI
+
+For *Semantic-UI* you should reference `/semantic/dist` in `app.js`
+
+```js
+// import '../semantic/dist'; // your themes and customizations
+```
+
+You can then customize your layout from within the `/semantic` folder. See:
+- [Build tools](http://semantic-ui.com/introduction/build-tools.html)
+- [Theming](http://semantic-ui.com/usage/theming.html)
+- [Recipes](http://semantic-ui.com/introduction/advanced-usage.html)
+
+## TypeScript
+
+After setting up the basic project structure, the main generator will ask you to call the `aurelia-ts:typescript` generator.
+
+If you skip TypeScript, know that you can always add TypeScript later using the `typescript` sub-generator.
+
+```bash
+yo aurelia-ts:typescript
+```
+
+### Contributing
+
+As you add features, add [yeoman tests](http://yeoman.io/authoring/testing.html)
+
+`npm test`
+
+Use [npm link](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) to install it locally to test it as you develop ;)
+
+Create a symbolic link to your local generator:
+
+`npm link generator-aurelia-ts`
+
+Now use the linked package and test it
+
+`yo aurelia-ts`
+
+Profit!
 
 ### Adding your Favorite Framework to the generator
 
@@ -86,77 +170,13 @@ If while developing the generator you get an error such as:
 
 `Uncaught SyntaxError: Unexpected token return`
 
-It is most likely due to an [EJS](http://ejs.co/) template error, and not to do with your javascript.
+Most likely due to an [EJS](http://ejs.co/) template error (typically a missing `{` in an `if` clause). Likely it has nothing to do with your generator javascript ;)
 
-### TypeScript
+### Contributors
 
-Currently uses bindings from [Aurelia Typings](https://github.com/cmichaelgraham/aurelia-typescript-atom/tree/master/skel-nav-ts/typings/aurelia) as of *July 24th, 2015*.
-
-Please submit pull requests for further TypeScript Definition updates...
-
-## Install
-
-To install generator-aurelia-ts from npm, run:
-
-```bash
-npm install -g generator-aurelia-ts
-```
-
-## Run
-
-Initiate the app generator (default):
-
-```bash
-yo aurelia-ts
-```
-
-The generator also supports SCSS and Stylus via options: `--scss` and `--stylus`
-
-```bash
-yo aurelia-ts --stylus
-```
-
-You will be prompted for the following:
-- Your application name
-- Yourapplication title
-- Your github account
-- Your email
-- Your name
-- CSS Framework:
-  - Bootstrap 3.3.x
-  - Foundation 5.5.x
-  - Semantic UI 2.0.x
-  - Framework7 1.2.x
-- Install Aurelia CLI (default: no)
-
-TODO: enable passing css framework via option
-
-```bash
-yo aurelia-ts --stylus --semantic
-```
-
-### Semantic-UI
-
-For *Semantic-UI* you should reference `/semantic/dist` in `app.js`
-
-```js
-// import '../semantic/dist'; // your themes and customizations
-```
-
-You can then customize your layout from within the `/semantic` folder. See:
-- [Build tools](http://semantic-ui.com/introduction/build-tools.html)
-- [Theming](http://semantic-ui.com/usage/theming.html)
-- [Recipes](http://semantic-ui.com/introduction/advanced-usage.html)
-
-## TypeScript
-
-After setting up the basic project structure, the main generator will ask you to call the `aurelia-ts:typescript` generator.
-
-If you skip TypeScript, know that you can always add TypeScript later using the `typescript` sub-generator.
-
-```bash
-yo aurelia-ts:typescript
-```
+- [@telekosmos](https://github.com/telekosmos)
+- [@kristianmandrup](https://github.com/kristianmandrup)
+- You :)
 
 ## TODO
 
