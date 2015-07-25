@@ -2,11 +2,12 @@
 
 [![Build Status](https://secure.travis-ci.org/kristianmandrup/generator-aurelia-ts.png?branch=master)](https://travis-ci.org/kristianmandrup/generator-aurelia-ts)
 
-Generate an [Aurelia](aurelia.io) project skeleton with:
+Generate an [Aurelia](aurelia.io) Quick Start project with:
 - [Aurelia CLI](http://www.programwitherik.com/what-is-aurelia-cli-how-does-it-work/)
-- SCSS or Stylus
-- TypeScript definitions (optional)
+- [SASS](http://sass-lang.com/) or [Stylus](https://learnboost.github.io/stylus/) CSS extenstion language
+- TypeScript definitions
 - A popular UI framework of your choice
+- Plugins of your choice installed
 
 ### CSS Frameworks
 
@@ -25,12 +26,6 @@ We currently use [Aurelia Typings](https://github.com/cmichaelgraham/aurelia-typ
 Note: We don't yet fully trust the automatic `d.ts` file generator :P
 
 Please submit pull requests for further TypeScript Definition updates or help integrate with auto generation (when mature).
-
-### Plugins
-
-Experimental support for installing various Aurelia plguins:
-
-`yo aurelia-ts:plugins`
 
 ## Install
 
@@ -101,6 +96,23 @@ If you skip TypeScript, know that you can always add TypeScript later using the 
 ```bash
 yo aurelia-ts:typescript
 ```
+
+### Plugins
+
+Experimental support for installing various Aurelia plguins:
+
+`yo aurelia-ts:plugins`
+
+Plugins list:
+- [Flux](https://github.com/tfrydrychewicz/aurelia-flux)
+- [Authentication](https://github.com/paulvanbladel/aureliauth)
+- [Validation](https://github.com/aurelia/validation)
+- [i18next](https://github.com/zewa666/aurelia-i18next)
+- [Computed properties](https://github.com/jdanyow/aurelia-computed/)
+- [Bootstrap Modal])https://github.com/PWKad/aurelia-bs-modal) (if Bootstrap)
+- [Rethink DB bindings](https://github.com/kristianmandrup/aurelia-rethink-bindtable)
+- [Breeze bindings](https://github.com/jdanyow/aurelia-breeze)
+- (TODO: Add YOUR favorite plugins...)
 
 ### Contributing
 
@@ -188,7 +200,7 @@ Most likely due to an [EJS](http://ejs.co/) template error (typically a missing 
 
 Ideas for improvement are welcome :)
 
-- ESLint (stage 0)
+- Install multiple UI/CSS frameworks in the same app...
 
 ## License
 
