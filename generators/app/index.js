@@ -63,7 +63,6 @@ module.exports = yeoman.generators.Base.extend({
       message: 'Your CSS Framework'
     }
 
-    // TODO: dynamically build prompt object
     var prompts = [{
       type: 'input',
       name: 'appName',
@@ -94,6 +93,11 @@ module.exports = yeoman.generators.Base.extend({
       name: 'installCLI',
       message: 'Install Aurelia CLI',
       default: false
+    }, {
+      type: 'confirm',
+      name: 'installPlugins',
+      message: 'Install Aurelia Plugins',
+      default: false
     }];
 
     if (!this.props.uiFramework) {
@@ -109,6 +113,7 @@ module.exports = yeoman.generators.Base.extend({
       this.authorEmail = answers.authorEmail;
       this.githubAccount = answers.githubAccount;
       this.installCLI = answers.installCLI;
+      this.installPlugins = answers.installPlugins;
 
       this.config.save();
 
@@ -243,5 +248,13 @@ module.exports = yeoman.generators.Base.extend({
         appName: this.appName
       }
     });
+
+    if (this.installPlugins) {
+      this.composeWith('aurelia-ts:plugins', {
+        options: {
+          cssFramework: this.cssFramework
+        }
+      });
+    }
   }
 });

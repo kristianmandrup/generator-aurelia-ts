@@ -26,6 +26,12 @@ Note: We don't yet fully trust the automatic `d.ts` file generator :P
 
 Please submit pull requests for further TypeScript Definition updates or help integrate with auto generation (when mature).
 
+### Plugins
+
+Experimental support for installing various Aurelia plguins:
+
+`yo aurelia-ts:plugins`
+
 ## Install
 
 To install generator-aurelia-ts from npm, run:
