@@ -187,15 +187,19 @@ module.exports = yeoman.generators.Base.extend({
 
     viewFiles: function() {
       if (this.cssFramework == 'Bootstrap') {
+        chalk.green('Installing: Bootstrap');
         this.bulkDirectory('views/bootstrap', 'src');
       }
       if (this.cssFramework == 'Foundation') {
+        chalk.green('Installing: Foundation');
         this.bulkDirectory('views/foundation', 'src');
       }
       if (this.cssFramework == 'Semantic-UI') {
+        chalk.green('Installing: Semantic-UI');
         this.bulkDirectory('views/semantic-ui', 'src');
       }
       if (this.cssFramework == 'Framework7') {
+        chalk.green('Installing: Framework7');
         this.bulkDirectory('views/framework7', 'src');
       }
     },
