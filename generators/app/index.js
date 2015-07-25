@@ -212,6 +212,21 @@ module.exports = yeoman.generators.Base.extend({
 
     if (this.installCLI) {
       this.npmInstall(['aurelia-cli'], { 'global': true });
+      this.npmInstall(['aurelia-cli'], { 'save-dev': true });
+      this.spawn('gulp', ['dist']);
+
+      chalk.blue('aurelia CLI commands:');
+      chalk.green('aurelia -h')
+      chalk.blue ('Create a ViewModel');
+      chalk.green('aurelia generate viewmodel -n NAME');
+      chalk.blue ('with a View (Template)');
+      chalk.green('aurelia generate viewmodel -n NAME -v');
+      chalk.blue ('with injections');
+      chalk.green('aurelia generate viewmodel -n NAME -v --inject Element,HttpClient');
+      chalk.white ('------------------------------------------------------------------')
+      chalk.blue ('Bundling:');
+      chalk.blue ("Configure bundle settings in: config.js");
+      chalk.green("aurelia bundle --force");
     }
 
     this.composeWith('aurelia-ts:typescript', {
