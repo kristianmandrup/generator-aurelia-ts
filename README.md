@@ -43,24 +43,23 @@ Initiate the app generator (default):
 yo aurelia-ts
 ```
 
-The generator also supports SCSS and Stylus via options: `--scss` and `--stylus`
+### Generator options
+
+Run with TypeScript `--ts` and Plugins `--plugins` generators auto enabled.
+
+```bash
+yo aurelia-ts --ts --plugins
+```
+
+### CSS language extension options
+
+The generator also supports *SCSS* and *Stylus* via `--scss` and `--stylus` options
 
 ```bash
 yo aurelia-ts --stylus
 ```
 
-You will be prompted for the following:
-- Your application name
-- Yourapplication title
-- Your github account
-- Your email
-- Your name
-- UI Framework:
-  - Bootstrap 3.3.x
-  - Foundation 5.5.x
-  - Semantic UI 2.0.x
-  - Framework7 1.2.x
-- Install Aurelia CLI (default: no)
+### UI framework option
 
 You can also pass the UI framework as a `--ui` option
 
@@ -74,18 +73,20 @@ The ui can take any of these shorthands:
 - `sem` Semantic-UI
 - `f7` Framework7
 
-### Semantic-UI
+### Prompts
 
-For *Semantic-UI* you should reference `/semantic/dist` in `app.js`
-
-```js
-// import '../semantic/dist'; // your themes and customizations
-```
-
-You can then customize your layout from within the `/semantic` folder. See:
-- [Build tools](http://semantic-ui.com/introduction/build-tools.html)
-- [Theming](http://semantic-ui.com/usage/theming.html)
-- [Recipes](http://semantic-ui.com/introduction/advanced-usage.html)
+You will be prompted for the following:
+- Your application name
+- Yourapplication title
+- Your github account
+- Your email
+- Your name
+- UI Framework:
+  - Bootstrap 3.3.x
+  - Foundation 5.5.x
+  - Semantic UI 2.0.x
+  - Framework7 1.2.x
+- Install Aurelia CLI (default: no)
 
 ## TypeScript
 
@@ -113,6 +114,21 @@ Plugins list:
 - [Rethink DB bindings](https://github.com/kristianmandrup/aurelia-rethink-bindtable)
 - [Breeze bindings](https://github.com/jdanyow/aurelia-breeze)
 - (TODO: Add YOUR favorite plugins...)
+
+## Frameworks
+
+### Semantic-UI
+
+For *Semantic-UI* you should reference `/semantic/dist` in `app.js`
+
+```js
+// import '../semantic/dist'; // your themes and customizations
+```
+
+You can then customize your layout from within the `/semantic` folder using:
+- [Build tools](http://semantic-ui.com/introduction/build-tools.html)
+- [Theming](http://semantic-ui.com/usage/theming.html)
+- [Recipes](http://semantic-ui.com/introduction/advanced-usage.html)
 
 ### Contributing
 

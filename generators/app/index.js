@@ -42,6 +42,9 @@ module.exports = yeoman.generators.Base.extend({
     this.props.styleLang = this.options.scss || this.styleLang;
     this.props.styleLang = this.options.stylus || this.styleLang;
 
+    this.props.ts = this.options.ts;
+    this.props.plugins = this.options.plugins;
+
     this.props.githubAccount = this.config.get('githubAccount');
   },
 
@@ -93,12 +96,31 @@ module.exports = yeoman.generators.Base.extend({
       name: 'installCLI',
       message: 'Install Aurelia CLI',
       default: false
-    }, {
+    }];
+
+    var pluginsPrompt ={
       type: 'confirm',
       name: 'installPlugins',
       message: 'Install Aurelia Plugins',
       default: false
-    }];
+    };
+
+    // should not prompt to install
+    // if options are passed to force install
+    var typeScriptPrompt = {
+      type: 'confirm',
+      name: 'installTypeScript',
+      message: 'Install TypeScript',
+      default: false
+    };
+
+    if (!this.props.plugins) {
+      prompts.push(pluginsPrompt);
+    }
+
+    if (!this.props.ts) {
+      prompts.push(typeScriptPrompt);
+    }
 
     if (!this.props.uiFramework) {
       prompts.push(uiFrameWorkPrompt);
@@ -114,6 +136,7 @@ module.exports = yeoman.generators.Base.extend({
       this.githubAccount = answers.githubAccount;
       this.installCLI = answers.installCLI;
       this.installPlugins = answers.installPlugins;
+      this.installTypeScript = answers.installTypeScript;
 
       this.config.save();
 
@@ -222,6 +245,9 @@ module.exports = yeoman.generators.Base.extend({
     if (this.installCLI) {
       this.npmInstall(['aurelia-cli'], { 'global': true });
       this.npmInstall(['aurelia-cli'], { 'save-dev': true });
+
+      // configure /dist folder for bundles
+      chalk.blue('Configure ditributions');
       this.spawn('gulp', ['dist']);
 
       chalk.blue('aurelia CLI commands:');
@@ -238,16 +264,18 @@ module.exports = yeoman.generators.Base.extend({
       chalk.green("aurelia bundle --force");
     }
 
-    this.composeWith('aurelia-ts:typescript', {
-      options: {
-        cssFramework: this.cssFramework,
-        githubAccount: this.githubAccount,
-        authorName: this.authorName,
-        authorEmail: this.authorEmail,
-        appDesc: this.appDesc,
-        appName: this.appName
-      }
-    });
+    if (this.installTypeScript) {
+      this.composeWith('aurelia-ts:typescript', {
+        options: {
+          cssFramework: this.cssFramework,
+          githubAccount: this.githubAccount,
+          authorName: this.authorName,
+          authorEmail: this.authorEmail,
+          appDesc: this.appDesc,
+          appName: this.appName
+        }
+      });
+    }
 
     if (this.installPlugins) {
       this.composeWith('aurelia-ts:plugins', {
