@@ -6,7 +6,7 @@ declare module 'aurelia-framework' {
   import { Loader }  from 'aurelia-loader';
   import { join, relativeToFile }  from 'aurelia-path';
   import { BindingLanguage, ViewEngine, ViewSlot, ResourceRegistry, CompositionEngine, Animator }  from 'aurelia-templating';
-  
+
   /**
    * Manages loading and configuring plugins.
    *
@@ -32,9 +32,9 @@ declare module 'aurelia-framework' {
        * @param {config} config The configuration for the specified module.
        * @return {Plugins} Returns the current Plugins instance.
      */
-    plugin(moduleId: string, config: any): Plugins;
+    plugin(moduleId: string, config?: any): Plugins;
   }
-  
+
   /**
    * The framework core that provides the main Aurelia object.
    *
@@ -50,7 +50,7 @@ declare module 'aurelia-framework' {
     resources: ResourceRegistry;
     use: Plugins;
     constructor(loader?: Loader, container?: Container, resources?: ResourceRegistry);
-    
+
     /**
        * Adds an existing object to the framework's dependency injection container.
        *
@@ -60,7 +60,7 @@ declare module 'aurelia-framework' {
        * @return {Aurelia} Returns the current Aurelia instance.
        */
     withInstance(type: any, instance: any): Aurelia;
-    
+
     /**
        * Adds a singleton to the framework's dependency injection container.
        *
@@ -70,7 +70,7 @@ declare module 'aurelia-framework' {
        * @return {Aurelia} Returns the current Aurelia instance.
        */
     withSingleton(type: any, implementation?: Function): Aurelia;
-    
+
     /**
        * Adds a transient to the framework's dependency injection container.
        *
@@ -80,7 +80,7 @@ declare module 'aurelia-framework' {
        * @return {Aurelia} Returns the current Aurelia instance.
        */
     withTransient(type: any, implementation?: Function): Aurelia;
-    
+
     /**
        * Adds globally available view resources to be imported into the Aurelia framework.
        *
@@ -89,7 +89,7 @@ declare module 'aurelia-framework' {
        * @return {Aurelia} Returns the current Aurelia instance.
        */
     globalizeResources(resources: string | string[]): Aurelia;
-    
+
     /**
        * Renames a global resource that was imported.
        *
@@ -99,7 +99,7 @@ declare module 'aurelia-framework' {
        * @return {Aurelia} Returns the current Aurelia instance.
        */
     renameGlobalResource(resourcePath: string, newName: string): Aurelia;
-    
+
     /**
        * Loads plugins, then resources, and then starts the Aurelia instance.
        *
@@ -107,7 +107,7 @@ declare module 'aurelia-framework' {
        * @return {Promise<Aurelia>} Returns the started Aurelia instance.
        */
     start(): Promise<Aurelia>;
-    
+
     /**
        * Instantiates the root view-model and view and add them to the DOM.
        *
@@ -118,7 +118,7 @@ declare module 'aurelia-framework' {
        */
     setRoot(root?: string, applicationHost?: any): Promise<Aurelia>;
   }
-  
+
   /**
    * The aurelia framework brings together all the required core aurelia libraries into a ready-to-go application-building platform.
    *

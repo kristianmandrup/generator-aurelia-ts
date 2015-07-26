@@ -305,7 +305,7 @@ declare module 'aurelia-binding' {
     subscribe(callback: any): any;
   }
   export class XLinkAttributeObserver {
-    
+
     //  xlink namespaced attributes require getAttributeNS/setAttributeNS
     //  (even though the NS version doesn't work for other namespaces
     //  in html5 documents)
@@ -420,7 +420,7 @@ declare module 'aurelia-binding' {
     register(registry: any, name: any): any;
     load(container: any, target: any): any;
   }
-  
+
   // ES7 Decorators
   export function valueConverter(nameOrTarget: any): any;
   export function computedFrom(...rest: any[]): any;
