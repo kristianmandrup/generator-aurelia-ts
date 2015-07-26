@@ -125,6 +125,7 @@ module.exports = yeoman.generators.Base.extend({
 
     testFiles: function() {
       if (this.props.typescript) {
+        this.copy('root/ts-gulpfile.js', 'ts-gulpfile.js');
         this.copy('root/karma.conf.js', 'karma.conf.js');
         this.copy('root/test.js', 'build/tasks/test.js');
         this.copy('test/unit/app.spec.js', 'test/unit/app.spec.js');

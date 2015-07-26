@@ -11,6 +11,14 @@
   "license": "MIT",
   "author": "<%= authorName %> <%= authorEmail %>",
   "main": "dist/commonjs/index.js",
+  "scripts": {
+    "test": "gulp test",
+    "build": "gulp build",
+    "serve": "gulp serve",
+    "watch": "gulp watch",
+    "ts-build": "gulp --gulpfile ts-gulpfile.js build",
+    "sem-build": "gulp --gulpfile semantic/gulpfile.js build"
+  },
   "repository": {
     "type": "git",
     "url": "http://github.com/<%= githubAccount %>/<%= authorName %>"
