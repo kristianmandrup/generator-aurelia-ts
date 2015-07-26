@@ -31,6 +31,10 @@ module.exports = yeoman.generators.Base.extend({
 
     this.option('sass');
     this.option('stylus');
+    this.option('ts');
+    this.option('fa');
+    this.option('cli');
+    this.option('plugins');
 
     // ui framework options
     this.option('ui', {type: 'string'});
@@ -43,6 +47,7 @@ module.exports = yeoman.generators.Base.extend({
     this.props.styleLang = this.options.stylus || this.styleLang;
 
     this.props.ts = this.options.ts;
+    this.props.fa = this.options.fa;
     this.props.plugins = this.options.plugins;
 
     this.props.githubAccount = this.config.get('githubAccount');
@@ -95,7 +100,7 @@ module.exports = yeoman.generators.Base.extend({
       type: 'confirm',
       name: 'installCLI',
       message: 'Install Aurelia CLI',
-      default: false
+      default: true
     }];
 
     var pluginsPrompt ={
@@ -114,6 +119,19 @@ module.exports = yeoman.generators.Base.extend({
       default: false
     };
 
+    // should not prompt to install
+    // if options are passed to force install
+    var faPrompt = {
+      type: 'confirm',
+      name: 'fontAwesome',
+      message: 'Font Awesome',
+      default: true
+    };
+
+    if (!this.props.fa) {
+      prompts.push(faPrompt);
+    }
+
     if (!this.props.plugins) {
       prompts.push(pluginsPrompt);
     }
@@ -130,13 +148,17 @@ module.exports = yeoman.generators.Base.extend({
       this.title = answers.title;
       this.appName = answers.appName || this.appName;
       this.appDesc = answers.title;
+
       this.cssFramework = answers.style || this.props.uiFramework;
+      this.fontAwesome = answers.fontAwesome || this.props.fa;
+
       this.authorName = answers.authorName;
       this.authorEmail = answers.authorEmail;
       this.githubAccount = answers.githubAccount;
-      this.installCLI = answers.installCLI;
-      this.installPlugins = answers.installPlugins;
-      this.installTypeScript = answers.installTypeScript;
+
+      this.installCLI = answers.installCLI || this.props.cli;
+      this.installPlugins = answers.installPlugins || this.props.plugins;
+      this.installTypeScript = answers.installTypeScript || this.props.ts;
 
       this.config.save();
 
@@ -156,7 +178,8 @@ module.exports = yeoman.generators.Base.extend({
           authorEmail: self.authorEmail,
           appDesc: self.appDesc,
           appName: self.appName,
-          cssFramework: self.cssFramework
+          cssFramework: self.cssFramework,
+          fontAwesome: self.fontAwesome
         }
       );
 
@@ -246,10 +269,6 @@ module.exports = yeoman.generators.Base.extend({
       this.npmInstall(['aurelia-cli'], { 'global': true });
       this.npmInstall(['aurelia-cli'], { 'save-dev': true });
 
-      // configure /dist folder for bundles
-      chalk.blue('Configure ditributions');
-      this.spawn('gulp', ['dist']);
-
       chalk.blue('aurelia CLI commands:');
       chalk.green('aurelia -h')
       chalk.blue ('Create a ViewModel');
@@ -283,6 +302,14 @@ module.exports = yeoman.generators.Base.extend({
           cssFramework: this.cssFramework
         }
       });
+    }
+
+    chalk.green('npm install');
+
+    if (this.installCLI) {
+      // configure /dist folder for bundles
+      chalk.blue('To configure ditributions:');
+      chalk.green('gulp dist');
     }
   }
 });

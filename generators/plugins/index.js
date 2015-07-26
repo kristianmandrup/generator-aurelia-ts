@@ -6,10 +6,6 @@ require('sugar');
 
 var generator;
 
-function jspmInstall(generator, pkg) {
-  generator.spawn('jspm', ['install', pack]);
-}
-
 var jspmInstalls = {
   flux: 'github:tfrydrychewicz/aurelia-flux',
   computed: 'aurelia-computed',
@@ -21,14 +17,23 @@ var jspmInstalls = {
   breeze: 'aurelia-breeze'
 };
 
+function jspmInstall(generator, name) {
+  var packageLocation = jspmInstalls[name];
+  if (packageLocation) {
+    generator.spawnCommand('jspm', ['install', packageLocation]);
+  } else {
+    chalk.red("Can't find package location for " + name + ' @', packageLocation);
+  }
+}
+
 module.exports = yeoman.generators.Base.extend({
 
   // note: arguments and options should be defined in the constructor.
   constructor: function() {
     yeoman.generators.Base.apply(this, arguments);
-
-    generator = this;
     this.props = {};
+    this.props.cssFramework = this.options.cssFramework;
+    generator = this;
   },
 
   // TODO: Add prompt for style lang unless passed as argument
@@ -80,14 +85,15 @@ module.exports = yeoman.generators.Base.extend({
       default: false,
     };
 
-    if (this.opts.cssFramework == 'Bootstrap') {
+    if (this.props.cssFramework == 'Bootstrap') {
       prompts.push(bsModalPrompt);
     }
 
     this.prompt(prompts, function(answers) {
       this.sel = {};
       // iterate all keys in answers!
-      for (key in answers.keys()) {
+      let keys = Object.keys(answers);
+      for (let key of keys) {
         this.sel[key] = answers[key];
       }
       this.config.save();
@@ -96,16 +102,14 @@ module.exports = yeoman.generators.Base.extend({
     }.bind(this));
   },
 
-  writing: {
-    plugins: function() {
-      // TODO: iterate selection map
-      // lookup how to install selection in jspm map
-      // This is terrible pattern duplication (quick hack!)
-      for (name in this.sel) {
-        jspmInstall(this, jspmInstalls[name]);
-      }
+  end: function() {
+    // TODO: iterate selection map
+    // lookup how to install selection in jspm map
+    // This is terrible pattern duplication (quick hack!)
+    chalk.blue("Installing Plugins...");
+    chalk.blue("=====================");
+    for (let key of Object.keys(this.sel)) {
+      jspmInstall(this, key);
     }
   }
-}
-
-
+});

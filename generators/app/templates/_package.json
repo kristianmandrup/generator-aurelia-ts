@@ -66,7 +66,9 @@
       "aurelia-templating-binding": "github:aurelia/templating-binding@^0.13.0",
       "aurelia-templating-resources": "github:aurelia/templating-resources@^0.13.0",
       "aurelia-templating-router": "github:aurelia/templating-router@^0.14.0",
+      <% if (fontAwesome) { %>
       "font-awesome": "npm:font-awesome@^4.3.0",
+      <% } %>
       <% if (cssFramework == 'Bootstrap') { %>
       "bootstrap": "github:twbs/bootstrap@^3.3.0",
       <% } %>

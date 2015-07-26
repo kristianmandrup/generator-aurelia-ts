@@ -9,6 +9,9 @@ module.exports = yeoman.generators.Base.extend({
     yeoman.generators.Base.apply(this, arguments);
     var self = this;
 
+    this.props = {};
+    this.props.cssFramework = this.options.cssFramework;
+
     this.installDeps = function() {
       self.npmInstall();
       self.spawnCommand('jspm', ['install']);

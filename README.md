@@ -9,6 +9,15 @@ Generate an [Aurelia](aurelia.io) Quick Start project with:
 - A popular UI framework of your choice
 - Plugins of your choice installed
 
+### Status
+
+All tests pass!
+Generator Tested on MacOSX via `npm link` and all generators now work as expected :)
+
+- aurelia-ts
+- aurelia-ts:plugins
+- aurelia-ts:typescript
+
 ### CSS Frameworks
 
 This generator currently supports:
