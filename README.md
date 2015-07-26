@@ -32,7 +32,9 @@ Make a pull request to make the generator support your favorite alternative UI f
 
 We currently use [Aurelia Typings](https://github.com/cmichaelgraham/aurelia-typescript-atom/tree/master/skel-nav-ts/typings/aurelia) as of *July 24th, 2015*.
 
-Note: We don't yet fully trust the automatic `d.ts` file generator :P
+We would like to soon integrate use of the [aurelia-amd-bundler](https://github.com/cmichaelgraham/aurelia-amd-bundler)
+
+Ideas ror how to best achieve TypeScript support are most welcome!
 
 Please submit pull requests for further TypeScript Definition updates or help integrate with auto generation (when mature).
 

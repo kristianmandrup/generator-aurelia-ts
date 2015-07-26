@@ -31,9 +31,10 @@ module.exports = yeoman.generators.Base.extend({
 
     this.option('sass');
     this.option('stylus');
-    this.option('ts');
-    this.option('fa');
-    this.option('cli');
+    this.option('ts'); // typescript
+    this.option('vs'); // visual studio
+    this.option('fa'); // font awesome
+    this.option('cli'); // aurelia CLI
     this.option('plugins');
 
     // ui framework options
@@ -46,6 +47,7 @@ module.exports = yeoman.generators.Base.extend({
     this.props.styleLang = this.options.scss || this.styleLang;
     this.props.styleLang = this.options.stylus || this.styleLang;
 
+    this.props.vs = this.options.vs;
     this.props.ts = this.options.ts;
     this.props.fa = this.options.fa;
     this.props.plugins = this.options.plugins;
@@ -128,6 +130,17 @@ module.exports = yeoman.generators.Base.extend({
       default: true
     };
 
+    var vsPrompt = {
+      type: 'confirm',
+      name: 'visualStudio',
+      message: 'Visual Studio',
+      default: false
+    };
+
+    if (!this.props.vs) {
+      prompts.push(vsPrompt);
+    }
+
     if (!this.props.fa) {
       prompts.push(faPrompt);
     }
@@ -159,6 +172,8 @@ module.exports = yeoman.generators.Base.extend({
       this.installCLI = answers.installCLI || this.props.cli;
       this.installPlugins = answers.installPlugins || this.props.plugins;
       this.installTypeScript = answers.installTypeScript || this.props.ts;
+
+      this.visualStudio = answers.visualStudio || this.props.vs;
 
       this.config.save();
 
@@ -193,8 +208,8 @@ module.exports = yeoman.generators.Base.extend({
       );
 
       this.fs.copy(
-        this.templatePath('Aureliafile.js'),
-        this.destinationPath('Aureliafile.js')
+        this.templatePath('aureliafile.js'),
+        this.destinationPath('aureliafile.js')
       );
 
       this.fs.copyTpl(
@@ -204,11 +219,19 @@ module.exports = yeoman.generators.Base.extend({
         }
       );
 
+      this.fs.copyTpl(
+        this.templatePath('root/_gitignore'),
+        this.destinationPath('.gitignore'), {
+          visualStudio: self.visualStudio,
+          cssFramework: self.cssFramework
+        }
+      );
     },
 
     projectFiles: function() {
       this.copy('root/editorconfig', '.editorconfig');
       this.copy('root/jshintrc', '.jshintrc');
+      this.copy('root/npmignore', '.npmignore');
       this.copy('root/aurelia.protractor.js', 'aurelia.protractor.js');
       this.copy('root/gulpfile.js', 'gulpfile.js');
       this.copy('root/favicon.ico', 'favicon.ico');

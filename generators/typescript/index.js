@@ -11,6 +11,7 @@ module.exports = yeoman.generators.Base.extend({
 
     this.props = {};
     this.props.cssFramework = this.options.cssFramework;
+    this.props.visualStudio = this.options.visualStudio;
 
     this.installDeps = function() {
       self.npmInstall();
@@ -97,8 +98,9 @@ module.exports = yeoman.generators.Base.extend({
     // See http://yeoman.github.io/generator/actions.html
     typings: function () {
       if (this.props.typescript) {
+        this.bulkDirectory('scripts', 'scripts');
         this.bulkDirectory('typings', 'typings');
-        this.fs.delete('typings/es6-promise');
+        // this.fs.delete('typings/es6-promise');
         this.fs.copyTpl(
           this.templatePath('typings/tsd.d.ts'),
           this.destinationPath('typings/tsd.d.ts'), {
