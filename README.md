@@ -48,11 +48,26 @@ npm install -g generator-aurelia-ts
 
 ## Run
 
+Create a folder for your app:
+
+```bash
+mkdir my-app
+cd my-app
+```
+
 Initiate the app generator (default):
 
 ```bash
 yo aurelia-ts
 ```
+
+Alternatively pass application name as first argument
+
+```bash
+yo aurelia-ts my-app
+```
+
+Answer the prompts in order for the generator to generate your Aurelia project to suit your preferences.
 
 ### Generator options
 
