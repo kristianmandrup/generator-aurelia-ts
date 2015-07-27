@@ -20,9 +20,43 @@ See the guide [Aurelia Typescript for Atom](https://github.com/cmichaelgraham/au
 
 - Make sure you are in the root of your generated project.
 - Start the Atom IDE: `atom .`
-- Build `.ts` files (`<F6>` on Windows)
+- Build `.ts` files (`<F6>`)
 - Run `gulp watch`
 - Open Chrome
 - Visit: `localhost:9000`
+
+## Build TypeScript files
+
+Uses `ts-gulpfile.js`
+
+`npm run ts-build`
+
+See also `scripts/aurelia/aurelia-bundle.js`
+
+## Tasks
+
+The following npm tasks are available:
+
+- `npm test` : Run Tests
+- `npm build` : Build
+- `npm start` : Start server
+- `npm watch` : Watch files and build on change
+- `npm run ts-build` : Build TypeScript files
+<% if (semanticUI) { %>
+- `npm run sem-build` : Build custom Semantic UI
+
+## Semantic UI
+
+`npm run sem-build`
+
+Make symbolic link from `dist`.
+
+`ls -s semantic/dist dist/semantic`
+
+Allows you to reference your customized semantic build from: `app.ts` or `app.js`:
+
+`import 'semantic/semantic';` // javascript
+`import 'semantic/semantic.css!';`
+<% } %>
 
 Enjoy :)

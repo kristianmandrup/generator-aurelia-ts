@@ -16,9 +16,11 @@ import 'foundation/js/foundation/foundation.reveal';
 
 <% } %>
 <% if (cssFramework == 'Semantic-UI') { %>
+// JSPM has built in support for semantic-ui via its registry config.
+// See https://github.com/jspm/registry/commit/83c98b674b0d9cdd81e8070ceb256e3f22d249b7
 import 'semantic-ui';
-import 'semantic-ui/css/semantic-ui.css!';
-// import '../semantic/dist'; // your themes and customizations
+// import 'semantic-ui/css/semantic-ui.css!';
+// import 'semantic/dist/semantic.css!'; // your themes and customizations
 <% } %>
 <% if (cssFramework == 'Framework7') { %>
 import 'framework7';

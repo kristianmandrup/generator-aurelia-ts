@@ -165,6 +165,11 @@ module.exports = yeoman.generators.Base.extend({
       this.cssFramework = answers.style || this.props.uiFramework;
       this.fontAwesome = answers.fontAwesome || this.props.fa;
 
+      this.semanticUI = this.cssFramework == 'Semantic-UI';
+      this.framework7 = this.cssFramework == 'Framework7';
+      this.foundation = this.cssFramework == 'Foundation';
+      this.bootstrap = this.cssFramework == 'Bootstrap';
+
       this.authorName = answers.authorName;
       this.authorEmail = answers.authorEmail;
       this.githubAccount = answers.githubAccount;
@@ -231,7 +236,8 @@ module.exports = yeoman.generators.Base.extend({
         this.templatePath('root/_README.md'),
         this.destinationPath('README.md'), {
           appTitle: self.appTitle,
-          appDesc: self.appDesc
+          appDesc: self.appDesc,
+          semanticUI: self.semanticUI
         }
       );
     },
@@ -244,6 +250,7 @@ module.exports = yeoman.generators.Base.extend({
       this.copy('root/gulpfile.js', 'gulpfile.js');
       this.copy('root/favicon.ico', 'favicon.ico');
       this.copy('root/config.js', 'config.js');
+      this.copy('root/jsconfig.json', 'jsconfig.json');
       this.copy('root/karma.conf.js', 'karma.conf.js');
       this.copy('root/protractor.conf.js', 'protractor.conf.js');
       this.copy('root/LICENSE', 'LICENSE');
@@ -268,19 +275,19 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     viewFiles: function() {
-      if (this.cssFramework == 'Bootstrap') {
+      if (this.bootstrap) {
         chalk.green('Installing: Bootstrap');
         this.bulkDirectory('views/bootstrap', 'src');
       }
-      if (this.cssFramework == 'Foundation') {
+      if (this.foundation) {
         chalk.green('Installing: Foundation');
         this.bulkDirectory('views/foundation', 'src');
       }
-      if (this.cssFramework == 'Semantic-UI') {
+      if (this.semanticUI) {
         chalk.green('Installing: Semantic-UI');
         this.bulkDirectory('views/semantic-ui', 'src');
       }
-      if (this.cssFramework == 'Framework7') {
+      if (this.framework7) {
         chalk.green('Installing: Framework7');
         this.bulkDirectory('views/framework7', 'src');
       }
@@ -292,7 +299,7 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   end: function() {
-    if (this.cssFramework == 'Semantic-UI') {
+    if (this.semanticUI) {
       this.npmInstall(['semantic-ui'], { 'save': true });
     }
 
