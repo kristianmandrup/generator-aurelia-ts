@@ -226,6 +226,14 @@ module.exports = yeoman.generators.Base.extend({
           cssFramework: self.cssFramework
         }
       );
+
+      this.fs.copyTpl(
+        this.templatePath('root/_README.md'),
+        this.destinationPath('README.md'), {
+          appTitle: self.appTitle,
+          appDesc: self.appDesc
+        }
+      );
     },
 
     projectFiles: function() {

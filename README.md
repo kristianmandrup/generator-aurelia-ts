@@ -228,6 +228,7 @@ Most likely due to an [EJS](http://ejs.co/) template error (typically a missing 
 Ideas for improvement are welcome :)
 
 - Install multiple UI/CSS frameworks in the same app...
+- Support for more editors/IDEs such as Visual Studio, WebStorm etc.
 
 ## License
 
