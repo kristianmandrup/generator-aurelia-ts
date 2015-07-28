@@ -27,7 +27,6 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   initializing: function() {
-    info('Install Aurelia CLI:')
   },
 
   // TODO: Add prompt for style lang unless passed as argument
@@ -42,7 +41,10 @@ module.exports = yeoman.generators.Base.extend({
       default: false,
     }];
 
+    // info('Install Aurelia CLI:');
+
     this.prompt(prompts, function(answers) {
+
       this.installGlobal = answers.installGlobal;
       // this.config.save();
 

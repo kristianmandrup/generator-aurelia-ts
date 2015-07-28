@@ -77,7 +77,6 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   initializing: function() {
-    info('Install UI/Layout Frameworks:')
   },
 
   // TODO: Add prompt for style lang unless passed as argument
@@ -119,6 +118,8 @@ module.exports = yeoman.generators.Base.extend({
     if (!this.props.uiFrameworks) {
       prompts.push(uiFrameWorksPrompt);
     }
+
+    // info('Install UI/Layout Frameworks:');
 
     this.prompt(prompts, function(answers) {
       this.cssFrameworks = answers.style;

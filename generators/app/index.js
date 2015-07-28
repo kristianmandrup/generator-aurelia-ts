@@ -6,6 +6,14 @@ require('sugar');
 
 var generator;
 
+function info(msg) {
+  console.log(msg);
+}
+
+function command(msg) {
+  console.log('  $ ' + msg);
+}
+
 var uiFrameworkMap = {
   bs: 'Bootstrap',
   zurb: 'Foundation',
@@ -80,7 +88,6 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   initializing: function() {
-    info('Create Aurelia Application:')
   },
 
   // TODO: Add prompt for style lang unless passed as argument
@@ -166,6 +173,7 @@ module.exports = yeoman.generators.Base.extend({
       prompts.push(layoutPrompt);
     }
 
+    // info('Create Aurelia Application:');
     this.prompt(prompts, function(answers) {
       this.title = answers.title;
       this.appName = answers.appName || this.appName;

@@ -85,15 +85,13 @@ module.exports = yeoman.generators.Base.extend({
     }
   },
 
+  initializing: function () {
+  },
+
   prompting: function () {
     var done = this.async();
 
     var prompts = [{
-      type: 'confirm',
-      name: 'typescript',
-      message: 'Enable TypeScript for Aurelia?',
-      default: true
-    }, {
       type    : 'confirm',
       name    : 'amd',
       message : 'Use Aurelia AMD?',
@@ -101,13 +99,16 @@ module.exports = yeoman.generators.Base.extend({
       when: function(answers) {
         return answers.typescript;
       }
-    }, {
-      type: 'confirm',
-      name: 'installDeps',
-      message: 'Install dependencies for npm and jspm?',
-      default: false
     }];
 
+    // {
+    //   type: 'confirm',
+    //   name: 'installDeps',
+    //   message: 'Install dependencies for npm and jspm?',
+    //   default: false
+    // }
+
+    // info('TypeScript configuration:');
     this.prompt(prompts, function (answers) {
       this.props = answers;
       this.conflicter.force = answers.typescript;
@@ -119,69 +120,57 @@ module.exports = yeoman.generators.Base.extend({
   writing: {
     // copy templates for package.json, build/tasks/build.js
     typescript: function () {
-      if (this.props.typescript) {
-
-        this.fs.copyTpl(
-          this.templatePath('root/tsconfig.json'),
-          this.destinationPath('tsconfig.json'), {
-            amd: this.amd
-          }
-        );
-        this.copy('root/build.js', 'build/tasks/build.js');
-      }
+      this.fs.copyTpl(
+        this.templatePath('root/tsconfig.json'),
+        this.destinationPath('tsconfig.json'), {
+          amd: this.amd
+        }
+      );
+      this.copy('root/build.js', 'build/tasks/build.js');
     },
 
     // See http://yeoman.github.io/generator/actions.html
     typings: function () {
-      if (this.props.typescript) {
-        this.bulkDirectory('scripts', 'scripts');
-        this.bulkDirectory('typings', 'typings');
-        // this.fs.delete('typings/es6-promise');
-        this.fs.copyTpl(
-          this.templatePath('typings/tsd.d.ts'),
-          this.destinationPath('typings/tsd.d.ts'), {
-            amd: this.amd
-          }
-        );
-      }
+      this.bulkDirectory('scripts', 'scripts');
+      this.bulkDirectory('typings', 'typings');
+      // this.fs.delete('typings/es6-promise');
+      this.fs.copyTpl(
+        this.templatePath('typings/tsd.d.ts'),
+        this.destinationPath('typings/tsd.d.ts'), {
+          amd: this.amd
+        }
+      );
     },
 
     srcFiles: function () {
       var self = this;
-      if (this.props.typescript) {
-        this.fs.delete('src/*.js');
-        this.bulkDirectory('src', 'src');
-        this.fs.copyTpl(
-          this.templatePath('src/app.ts'),
-          this.destinationPath('src/app.ts'), {
-            semanticUI: self.semanticUI,
-            bootstrap: self.bootstrap,
-            foundation: self.foundation,
-            framework7: self.framework7
-          }
-        );
-      }
+      this.fs.delete('src/*.js');
+      this.bulkDirectory('src', 'src');
+      this.fs.copyTpl(
+        this.templatePath('src/app.ts'),
+        this.destinationPath('src/app.ts'), {
+          semanticUI: self.semanticUI,
+          bootstrap: self.bootstrap,
+          foundation: self.foundation,
+          framework7: self.framework7
+        }
+      );
     },
 
     testFiles: function() {
-      if (this.props.typescript) {
-        this.copy('root/ts-gulpfile.js', 'ts-gulpfile.js');
-        this.copy('root/karma.conf.js', 'karma.conf.js');
-        this.copy('root/test.js', 'build/tasks/test.js');
-        this.copy('test/unit/app.spec.js', 'test/unit/app.spec.js');
-      }
+      this.copy('root/ts-gulpfile.js', 'ts-gulpfile.js');
+      this.copy('root/karma.conf.js', 'karma.conf.js');
+      this.copy('root/test.js', 'build/tasks/test.js');
+      this.copy('test/unit/app.spec.js', 'test/unit/app.spec.js');
     }
   },
 
   install: function() {
-    if (this.props.typescript) {
-      jspmInstall(['typescript', 'gulp-typescript', 'ts=github:frankwallis/plugin-typescript@^1.0.5']);
-      // jspmInstallDev(['ts=github:frankwallis/plugin-typescript@^1.0.5']);
-    }
+    jspmInstall(['typescript', 'npm:gulp-typescript', 'ts=github:frankwallis/plugin-typescript@^1.0.5']);
 
-    if (this.props.installDeps) {
-      this.installDeps();
-    }
+    // if (this.props.installDeps) {
+    //   this.installDeps();
+    // }
   },
   end: function() {
     info('TypeScript installation complete :)');

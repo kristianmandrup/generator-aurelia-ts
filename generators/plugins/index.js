@@ -70,14 +70,13 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   initializing: function() {
-    info('Install Aurelia Plugins:')
   },
 
   // TODO: Add prompt for style lang unless passed as argument
   // TODO: Add editor selection prompt
   prompting: function() {
     var done = this.async();
-
+    // info('Install Aurelia Plugins:');
     var prompts = [{
       type: 'checkbox',
       name: 'ui',
