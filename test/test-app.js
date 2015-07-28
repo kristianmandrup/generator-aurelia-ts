@@ -27,12 +27,11 @@ describe('aurelia-ts:app', function () {
         [dummyGen, 'aurelia-ts:typescript']
       ])
       .withPrompts({
-        appName: 'TheAPP',
-        title: 'The TheAPP',
+        appName: 'my-app',
+        title: 'The APP',
         githubAccount: 'telek',
         authorName: 'me',
-        authorEmail: 'me@me.es',
-        style: 'Bootstrap'
+        authorEmail: 'me@me.es'
       })
       .on('end', function() {
         // console.log('it finishes!!');
@@ -44,21 +43,9 @@ describe('aurelia-ts:app', function () {
     assert.file([
       'gulpfile.js',
       'package.json',
+      'aureliafile.js',
       '.editorconfig', // review
       '.jshintrc'
-    ]);
-  });
-
-  it('include bootstrap', function() {
-    assert.fileContent([
-      ['package.json', /"bootstrap": ".*\/bootstrap.+"/]
-    ]);
-    assert.noFileContent([
-      ['package.json', /"foundation":/]
-    ]);
-    assert.fileContent([
-      ['src/nav-bar.html', /<nav class="navbar navbar\-default.*"/],
-      ['src/welcome.html', /<div class="form\-group">/]
     ]);
   });
 
