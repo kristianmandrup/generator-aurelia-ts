@@ -52,7 +52,7 @@ function jsmpInstallsMap(names) {
   }
 }
 
-// Can be used to create jspm package install map 
+// Can be used to create jspm package install map
 // See plugins generator
 var jsmpInstallsMap = {};
 
