@@ -79,6 +79,10 @@ module.exports = yeoman.generators.Base.extend({
     this.props.githubAccount = this.config.get('githubAccount');
   },
 
+  initializing: function() {
+    info('Create Aurelia Application:')
+  },
+
   // TODO: Add prompt for style lang unless passed as argument
   // TODO: Add editor selection prompt
   prompting: function() {
@@ -139,6 +143,13 @@ module.exports = yeoman.generators.Base.extend({
       default: false
     };
 
+    var layoutPrompt = {
+      type: 'confirm',
+      name: 'installLayout',
+      message: 'Install UI Frameworks',
+      default: true
+    };
+
     if (!this.props.vs) {
       prompts.push(vsPrompt);
     }
@@ -151,6 +162,10 @@ module.exports = yeoman.generators.Base.extend({
       prompts.push(typeScriptPrompt);
     }
 
+    if (!this.props.uiFramework) {
+      prompts.push(layoutPrompt);
+    }
+
     this.prompt(prompts, function(answers) {
       this.title = answers.title;
       this.appName = answers.appName || this.appName;
@@ -160,6 +175,7 @@ module.exports = yeoman.generators.Base.extend({
       this.authorEmail = answers.authorEmail;
       this.githubAccount = answers.githubAccount;
 
+      this.installLayout = answers.installLayout || this.props.uiFramework;
       this.installCLI = answers.installCLI || this.props.cli;
       this.installPlugins = answers.installPlugins || this.props.plugins;
       this.installTypeScript = answers.installTypeScript || this.props.ts;

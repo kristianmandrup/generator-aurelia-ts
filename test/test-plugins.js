@@ -24,6 +24,7 @@ var app;
   breeze: 'aurelia-breeze'
 */
 
+/*
 describe('aurelia-ts:plugins', function () {
   this.spy = sinon.spy();
   var dummyGen = generator.Base.extend({
@@ -154,3 +155,4 @@ describe('aurelia-ts:plugins', function () {
     });
   });
 });
+*/

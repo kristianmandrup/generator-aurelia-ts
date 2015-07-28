@@ -8,25 +8,37 @@ Generate an [Aurelia](aurelia.io) Quick Start project with:
 - TypeScript definitions
 - A popular UI framework of your choice
 - Plugins of your choice installed
+- Aurelia CLI for rapid development...
 
 ### Status
 
 All tests pass!
-Generator Tested on MacOSX via `npm link` and all generators now work as expected :)
 
-- aurelia-ts
-- aurelia-ts:plugins
-- aurelia-ts:typescript
+Generator Tested on MacOSX via `npm link` and all generators work as expected :)
 
-### CSS Frameworks
+- `aurelia-ts`
+- `aurelia-ts:plugins`
+- `aurelia-ts:cli`
+- `aurelia-ts:layout`
+- `aurelia-ts:typescript`
 
-This generator currently supports:
-- [Bootstrap](http://getbootstrap.com) 3.3.x
-- [Zurb Foundation](http://foundation.zurb.com/) 5.5.x
-- [Semantic UI](semantic-ui.com) 2.0.x
-- [Framework7 - F7*](http://www.idangero.us/framework7)
+### Layout Frameworks
 
-Make a pull request to make the generator support your favorite alternative UI framework (see *Contributing* below).
+Run: `yo aurelia-ts:layout`
+
+The layout generator currently supports:
+
+Fonts:
+- [Font Awesome](http://fortawesome.github.io/Font-Awesome/)
+
+CSS:
+- [Bootstrap](http://getbootstrap.com)
+- [Bootstrap Material](https://fezvrasta.github.io/bootstrap-material-design/)
+- [Zurb Foundation](http://foundation.zurb.com/)
+- [Semantic UI](semantic-ui.com)
+- [Framework7](http://www.idangero.us/framework7)
+
+Make a pull request to make the generator support your favorite alternative UI/Layout framework (see *Contributing* below).
 
 ### TypeScript
 
@@ -102,17 +114,14 @@ The ui can take any of these shorthands:
 ### Prompts
 
 You will be prompted for the following:
-- Your application name
-- Yourapplication title
-- Your github account
-- Your email
-- Your name
-- UI Framework:
-  - Bootstrap 3.3.x
-  - Foundation 5.5.x
-  - Semantic UI 2.0.x
-  - Framework7 1.2.x
-- Install Aurelia CLI (default: no)
+- application name?
+- application title?
+- github account?
+- email?
+- name?
+- Install Aurelia CLI?
+- Install TypeScript?
+- Visual Studio?
 
 ## TypeScript
 
@@ -139,6 +148,7 @@ Plugins list:
 - [Bootstrap Modal])https://github.com/PWKad/aurelia-bs-modal) (if Bootstrap)
 - [Rethink DB bindings](https://github.com/kristianmandrup/aurelia-rethink-bindtable)
 - [Breeze bindings](https://github.com/jdanyow/aurelia-breeze)
+- ...
 - (TODO: Add YOUR favorite plugins...)
 
 See [jspm registry](https://github.com/jspm/registry/blob/master/registry.json) for predefined entries setup to be installed by name,such as: `jspm install semantic-ui`
@@ -180,23 +190,19 @@ Profit!
 
 Example [F7](http://www.idangero.us/framework7):
 
-For the `app` generator:
+For the `layout` generator:
 
-In `_package.json` insert the `"framework7"` as a jspm dependency. Note that it includes the [systemjs/plugin-css](https://github.com/systemjs/plugin-css) at the end, which is the [SystemJS](https://github.com/systemjs/systemjs) CSS loader.
+Add a new entry to the `repoKeyMap` at the top, such as:
 
-```json
-  "jspm": {
-    "dependencies": {
-      ...
-    <% if (framework7) { %>
-    "framework7": "github:nolimits4web/Framework7@^1.2.0",
-    <% } %>
-    "css": "github:systemjs/plugin-css@^0.1.9"
-  },
+```js
+var repoKeyMap = {
+  ...,
+  'Framework7': 'github:nolimits4web/Framework7@master'
+}
 ```
 
 Add the [JSPM](jspm.io) imports to `templates/src/app.js`.
-JSPM can load css via the [JSPM css loader](https://github.com/geelen/jspm-loader-css)
+JSPM can load css via the [JSPM CSS loader](https://github.com/geelen/jspm-loader-css)
 
 See the [framework7 distribution folder](https://github.com/nolimits4web/Framework7/tree/master/dist) and use it to guide your ES2015 module imports.
 
@@ -216,21 +222,13 @@ import 'framework7/css/framework7.ios.colors.css!';
 <% } %>
 ```
 
-For the `typescript` generator insert the same imports in `src/app.ts`.
-
-For a finishing touch you can add/customize the Application load spinner in `_index.html`
-
-```html
-  <% if (framework7) %>
-    // framework 7 spinner here...
-  <% } %>
-```
+Insert the same imports in `src/app.ts`.
 
 Finally test that it all works by adding a unit test, such as:
 
-`test/test-app-framework7.js`
+`test/test-layout-framework7.js`
 
-Then run `npm test`. If all tests pass, you can do your pull request :)
+Then run `npm test`. If all tests pass, you can make a PR :)
 
 *Troubleshooting*
 
@@ -238,7 +236,7 @@ If while developing the generator you get an error such as:
 
 `Uncaught SyntaxError: Unexpected token return`
 
-Most likely due to an [EJS](http://ejs.co/) template error (typically a missing `{` in an `if` clause). Likely it has nothing to do with your generator javascript ;)
+Most likely due to an [EJS](http://ejs.co/) template error (typically a missing `}` in an `if` clause).
 
 ### Contributors
 
@@ -252,6 +250,7 @@ Ideas for improvement are welcome :)
 
 - Install multiple UI/CSS frameworks in the same app...
 - Support for more editors/IDEs such as Visual Studio, WebStorm etc.
+- Stylus and SCSS support (did we loose them?)
 
 ## License
 
