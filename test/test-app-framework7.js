@@ -37,24 +37,12 @@ describe('aurelia-ts:app with Framework7', function () {
     assert.file([
       'gulpfile.js',
       'package.json',
-      'Aureliafile.js',
+      'aureliafile.js',
       '.editorconfig', // review
       '.jshintrc'
     ]);
   });
 
-  it('include Framework7', function() {
-    assert.fileContent([
-      ['package.json', /"framework7": ".*Framework7.+"/]
-    ]);
-    assert.noFileContent([
-      ['package.json', /"bootstrap":/]
-    ]);
-    assert.fileContent([
-      ['src/nav-bar.html', /navbar\-inner/],
-      ['src/welcome.html', /active button/]
-    ]);
-  });
 
   it('include just ES6', function() {
     assert.noFile(['tsconfig.json', 'typings']);

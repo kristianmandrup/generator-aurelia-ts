@@ -141,6 +141,8 @@ Plugins list:
 - [Breeze bindings](https://github.com/jdanyow/aurelia-breeze)
 - (TODO: Add YOUR favorite plugins...)
 
+See [jspm registry](https://github.com/jspm/registry/blob/master/registry.json) for predefined entries setup to be installed by name,such as: `jspm install semantic-ui`
+
 ## Frameworks
 
 ### Semantic-UI
@@ -178,13 +180,15 @@ Profit!
 
 Example [F7](http://www.idangero.us/framework7):
 
-In `package.json` insert the `"framework7"` as a jspm dependency. Note that it includes the [systemjs/plugin-css](https://github.com/systemjs/plugin-css) at the end, which is the [SystemJS](https://github.com/systemjs/systemjs) CSS loader.
+For the `app` generator:
+
+In `_package.json` insert the `"framework7"` as a jspm dependency. Note that it includes the [systemjs/plugin-css](https://github.com/systemjs/plugin-css) at the end, which is the [SystemJS](https://github.com/systemjs/systemjs) CSS loader.
 
 ```json
   "jspm": {
     "dependencies": {
       ...
-    <% if (cssFramework == 'Framework7') { %>
+    <% if (framework7) { %>
     "framework7": "github:nolimits4web/Framework7@^1.2.0",
     <% } %>
     "css": "github:systemjs/plugin-css@^0.1.9"
@@ -202,19 +206,23 @@ We can see, it has a `main` entry pointing to `dist/js/framework7.js` so we can 
 
 The `css` imports needs to reference the `dist` folder structure directly.
 
+We add the following to `src/app.js`
+
 ```js
-<% if (cssFramework == 'Framework7') { %>
+<% if (framework7) { %>
 import 'framework7';
 import 'framework7/css/framework7.ios.css!';
 import 'framework7/css/framework7.ios.colors.css!';
 <% } %>
 ```
 
+For the `typescript` generator insert the same imports in `src/app.ts`.
+
 For a finishing touch you can add/customize the Application load spinner in `_index.html`
 
 ```html
-  <% if (cssFramework == 'Bootstrap') %>
-  <i class="fa fa-spinner fa-spin"></i>
+  <% if (framework7) %>
+    // framework 7 spinner here...
   <% } %>
 ```
 

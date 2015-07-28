@@ -37,24 +37,12 @@ describe('aurelia-ts:app with Semantic-UI', function () {
     assert.file([
       'gulpfile.js',
       'package.json',
-      'Aureliafile.js',
+      'aureliafile.js',
       '.editorconfig', // review
       '.jshintrc'
     ]);
   });
 
-  it('include Semantic-UI', function() {
-    assert.fileContent([
-      ['package.json', /"semantic-ui": ".*semantic.+"/]
-    ]);
-    assert.noFileContent([
-      ['package.json', /"bootstrap":/]
-    ]);
-    assert.fileContent([
-      ['src/nav-bar.html', /ui item/],
-      ['src/welcome.html', /ui form/]
-    ]);
-  });
 
   it('include just ES6', function() {
     assert.noFile(['tsconfig.json', 'typings']);

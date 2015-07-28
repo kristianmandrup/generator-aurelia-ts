@@ -56,12 +56,8 @@
       "aurelia-http-client": "github:aurelia/http-client@^0.8.0",
       "aurelia-router": "github:aurelia/router@^0.8.0",
       "font-awesome": "npm:font-awesome@^4.3.0",
-      <% if (cssFramework == 'Bootstrap') { %>
-      "bootstrap": "github:twbs/bootstrap@^3.3.0",
-      <% } %>
-      <% if (cssFramework == 'Foundation') { %>
+      <% if (foundation) { %>
       "fastclick": "npm:fastclick@^1.0.6",
-      "foundation": "github:zurb/bower-foundation@^5.0.0",
       "modernizr": "github:Modernizr/Modernizr@^2.8.3",
       <% } %>
       "css": "github:systemjs/plugin-css@^0.1.9"

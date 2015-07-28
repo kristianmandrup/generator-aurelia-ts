@@ -37,24 +37,12 @@ describe('aurelia-ts:app with Foundation', function () {
     assert.file([
       'gulpfile.js',
       'package.json',
-      'Aureliafile.js',
+      'aureliafile.js',
       '.editorconfig', // review
       '.jshintrc'
     ]);
   });
 
-  it('include Foundation', function() {
-    assert.fileContent([
-      ['package.json', /"foundation": ".*zurb\/bower\-foundation.+"/]
-    ]);
-    assert.noFileContent([
-      ['package.json', /"bootstrap":/]
-    ]);
-    assert.fileContent([
-      ['src/nav-bar.html', /<nav class="top\-bar"/],
-      ['src/welcome.html', /<div class="row">\s*<div class="small\-\d+"/]
-    ]);
-  });
 
   it('include just ES6', function() {
     assert.noFile(['tsconfig.json', 'typings']);

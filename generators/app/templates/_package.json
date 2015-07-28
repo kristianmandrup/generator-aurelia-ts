@@ -58,7 +58,7 @@
       "aurelia-bootstrapper": "github:aurelia/bootstrapper@^0.14.0",
       "aurelia-dependency-injection": "github:aurelia/dependency-injection@^0.9.0",
       "aurelia-event-aggregator": "github:aurelia/event-aggregator@^0.6.1",
-      "aurelia-framework": "github:aurelia/framework@^0.13.2",
+      "aurelia-framework": "github:aurelia/framework@^0.13.3",
       "aurelia-history": "github:aurelia/history@^0.6.0",
       "aurelia-history-browser": "github:aurelia/history-browser@^0.6.1",
       "aurelia-http-client": "github:aurelia/http-client@^0.10.0",
@@ -74,23 +74,10 @@
       "aurelia-templating-binding": "github:aurelia/templating-binding@^0.13.0",
       "aurelia-templating-resources": "github:aurelia/templating-resources@^0.13.0",
       "aurelia-templating-router": "github:aurelia/templating-router@^0.14.0",
-      <% if (fontAwesome) { %>
-      "font-awesome": "npm:font-awesome@^4.3.0",
-      <% } %>
-      <% if (cssFramework == 'Bootstrap') { %>
-      "bootstrap": "github:twbs/bootstrap@^3.3.0",
-      <% } %>
-      <% if (cssFramework == 'Foundation') { %>
+      <% if (foundation) { %>
       "fastclick": "npm:fastclick@^1.0.6",
-      "foundation": "github:zurb/bower-foundation@^5.0.0",
       "modernizr": "github:Modernizr/Modernizr@^2.8.3",
       "pace": "github:HubSpot/pace",
-      <% } %>
-      <% if (cssFramework == 'Semantic-UI') { %>
-      "semantic-ui": "semantic-ui",
-      <% } %>
-      <% if (cssFramework == 'Framework7') { %>
-      "framework7": "github:nolimits4web/Framework7@^1.2.0",
       <% } %>
       "core-js": "npm:core-js@^0.9.4",
       "css": "github:systemjs/plugin-css@^0.1.9"

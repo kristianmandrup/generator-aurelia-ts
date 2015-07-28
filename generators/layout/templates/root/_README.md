@@ -34,7 +34,9 @@ The following npm tasks are available:
 - `npm start` : Start server
 - `npm run watch` : Watch files and build on change
 - `npm run ts-build` : Build TypeScript files
-
+<% if (semanticUI) { %>
+- `npm run sem-build` : Build custom Semantic UI
+<% } %>
 ## Build TypeScript files
 
 Uses `ts-gulpfile.js`
@@ -42,6 +44,20 @@ Uses `ts-gulpfile.js`
 `npm run ts-build`
 
 See also `scripts/aurelia/aurelia-bundle.js`
+<% if (semanticUI) { %>
+## Semantic UI
+
+`npm run sem-build`
+
+Make symbolic link from `dist`.
+
+`ls -s semantic/dist dist/semantic`
+
+Allows you to reference your customized semantic build from: `app.ts` or `app.js`:
+
+`import 'semantic/semantic';` // javascript
+`import 'semantic/semantic.css!';`
+<% } %>
 
 Enjoy :)
 
@@ -56,7 +72,25 @@ If for any reason your app is not served correctly, Make sure:
   "jspm": {
     "dependencies": {
       "aurelia-animator-css": "github:aurelia/animator-css@^0.13.0",
-      ...
+      "aurelia-binding": "github:aurelia/binding@^0.8.1",
+      "aurelia-bootstrapper": "github:aurelia/bootstrapper@^0.14.0",
+      "aurelia-dependency-injection": "github:aurelia/dependency-injection@^0.9.0",
+      "aurelia-event-aggregator": "github:aurelia/event-aggregator@^0.6.1",
+      "aurelia-framework": "github:aurelia/framework@^0.13.2",
+      "aurelia-history": "github:aurelia/history@^0.6.0",
+      "aurelia-history-browser": "github:aurelia/history-browser@^0.6.1",
+      "aurelia-http-client": "github:aurelia/http-client@^0.10.0",
+      "aurelia-loader": "github:aurelia/loader@^0.8.0",
+      "aurelia-loader-default": "github:aurelia/loader-default@^0.9.0",
+      "aurelia-logging": "github:aurelia/logging@^0.6.0",
+      "aurelia-metadata": "github:aurelia/metadata@^0.7.0",
+      "aurelia-path": "github:aurelia/path@^0.8.0",
+      "aurelia-route-recognizer": "github:aurelia/route-recognizer@^0.6.0",
+      "aurelia-router": "github:aurelia/router@^0.10.1",
+      "aurelia-task-queue": "github:aurelia/task-queue@^0.6.0",
+      "aurelia-templating": "github:aurelia/templating@^0.13.2",
+      "aurelia-templating-binding": "github:aurelia/templating-binding@^0.13.0",
+      "aurelia-templating-resources": "github:aurelia/templating-resources@^0.13.0",
       "aurelia-templating-router": "github:aurelia/templating-router@^0.14.0",
       "css": "github:systemjs/plugin-css@^0.1.9",
       "font-awesome": "npm:font-awesome@^4.3.0",

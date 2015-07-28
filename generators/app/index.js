@@ -13,6 +13,30 @@ var uiFrameworkMap = {
   f7: 'Framework7'
 };
 
+function spawn(params) {
+  generator.spawnCommand('jspm', params);
+}
+
+function jspmInstall(names) {
+  var params = names.map(function(name) {
+    var resolved = jspmInstalls[name];
+    if (!resolved) {
+      resolved = name;
+    }
+    return resolved;
+  });
+  for (let name of params) {
+    chalk.blue(name);
+  }
+
+  params.unshift('install');
+  if (params) {
+    // var done = generator.async();
+    spawn(params);
+    // done();
+  }
+}
+
 module.exports = yeoman.generators.Base.extend({
 
   // note: arguments and options should be defined in the constructor.
@@ -60,23 +84,10 @@ module.exports = yeoman.generators.Base.extend({
   prompting: function() {
     var done = this.async();
 
-    var uiFrameWorkPrompt = {
-      type: 'list',
-      name: 'style',
-      choices: [
-        'Bootstrap',
-        'Foundation',
-        'Semantic-UI',
-        'Framework7'
-      ],
-      default: 'Bootstrap',
-      message: 'Your CSS Framework'
-    }
-
     var prompts = [{
       type: 'input',
       name: 'appName',
-      message: 'application name',
+      message: 'application (module) name',
       default: this.appName // Name
     }, {
       type: 'input',
@@ -121,15 +132,6 @@ module.exports = yeoman.generators.Base.extend({
       default: false
     };
 
-    // should not prompt to install
-    // if options are passed to force install
-    var faPrompt = {
-      type: 'confirm',
-      name: 'fontAwesome',
-      message: 'Font Awesome',
-      default: true
-    };
-
     var vsPrompt = {
       type: 'confirm',
       name: 'visualStudio',
@@ -141,10 +143,6 @@ module.exports = yeoman.generators.Base.extend({
       prompts.push(vsPrompt);
     }
 
-    if (!this.props.fa) {
-      prompts.push(faPrompt);
-    }
-
     if (!this.props.plugins) {
       prompts.push(pluginsPrompt);
     }
@@ -153,22 +151,10 @@ module.exports = yeoman.generators.Base.extend({
       prompts.push(typeScriptPrompt);
     }
 
-    if (!this.props.uiFramework) {
-      prompts.push(uiFrameWorkPrompt);
-    }
-
     this.prompt(prompts, function(answers) {
       this.title = answers.title;
       this.appName = answers.appName || this.appName;
       this.appDesc = answers.title;
-
-      this.cssFramework = answers.style || this.props.uiFramework;
-      this.fontAwesome = answers.fontAwesome || this.props.fa;
-
-      this.semanticUI = this.cssFramework == 'Semantic-UI';
-      this.framework7 = this.cssFramework == 'Framework7';
-      this.foundation = this.cssFramework == 'Foundation';
-      this.bootstrap = this.cssFramework == 'Bootstrap';
 
       this.authorName = answers.authorName;
       this.authorEmail = answers.authorEmail;
@@ -198,8 +184,7 @@ module.exports = yeoman.generators.Base.extend({
           authorEmail: self.authorEmail,
           appDesc: self.appDesc,
           appName: self.appName,
-          cssFramework: self.cssFramework,
-          fontAwesome: self.fontAwesome
+          foundation: self.foundation
         }
       );
 
@@ -207,8 +192,7 @@ module.exports = yeoman.generators.Base.extend({
         this.templatePath('_index.html'),
         this.destinationPath('index.html'), {
           title: self.appDesc,
-          appName: self.appName,
-          cssFramework: self.cssFramework
+          appName: self.appName
         }
       );
 
@@ -220,15 +204,13 @@ module.exports = yeoman.generators.Base.extend({
       this.fs.copyTpl(
         this.templatePath('src/app.js'),
         this.destinationPath('src/app.js'), {
-          cssFramework: self.cssFramework
         }
       );
 
       this.fs.copyTpl(
         this.templatePath('root/_gitignore'),
         this.destinationPath('.gitignore'), {
-          visualStudio: self.visualStudio,
-          cssFramework: self.cssFramework
+          visualStudio: self.visualStudio
         }
       );
 
@@ -236,8 +218,7 @@ module.exports = yeoman.generators.Base.extend({
         this.templatePath('root/_README.md'),
         this.destinationPath('README.md'), {
           appTitle: self.appTitle,
-          appDesc: self.appDesc,
-          semanticUI: self.semanticUI
+          appDesc: self.appDesc
         }
       );
     },
@@ -274,57 +255,16 @@ module.exports = yeoman.generators.Base.extend({
       this.bulkDirectory('src', 'src');
     },
 
-    viewFiles: function() {
-      if (this.bootstrap) {
-        chalk.green('Installing: Bootstrap');
-        this.bulkDirectory('views/bootstrap', 'src');
-      }
-      if (this.foundation) {
-        chalk.green('Installing: Foundation');
-        this.bulkDirectory('views/foundation', 'src');
-      }
-      if (this.semanticUI) {
-        chalk.green('Installing: Semantic-UI');
-        this.bulkDirectory('views/semantic-ui', 'src');
-      }
-      if (this.framework7) {
-        chalk.green('Installing: Framework7');
-        this.bulkDirectory('views/framework7', 'src');
-      }
-    },
-
     buildFiles: function() {
       this.bulkDirectory('build', 'build');
     }
   },
 
   end: function() {
-    if (this.semanticUI) {
-      this.npmInstall(['semantic-ui'], { 'save': true });
-    }
-
-    if (this.installCLI) {
-      this.npmInstall(['aurelia-cli'], { 'global': true });
-      this.npmInstall(['aurelia-cli'], { 'save-dev': true });
-
-      chalk.blue('aurelia CLI commands:');
-      chalk.green('aurelia -h')
-      chalk.blue ('Create a ViewModel');
-      chalk.green('aurelia generate viewmodel -n NAME');
-      chalk.blue ('with a View (Template)');
-      chalk.green('aurelia generate viewmodel -n NAME -v');
-      chalk.blue ('with injections');
-      chalk.green('aurelia generate viewmodel -n NAME -v --inject Element,HttpClient');
-      chalk.white ('------------------------------------------------------------------')
-      chalk.blue ('Bundling:');
-      chalk.blue ("Configure bundle settings in: config.js");
-      chalk.green("aurelia bundle --force");
-    }
-
     if (this.installTypeScript) {
       this.composeWith('aurelia-ts:typescript', {
         options: {
-          cssFramework: this.cssFramework,
+          cssFrameworks: this.cssFrameworks,
           githubAccount: this.githubAccount,
           authorName: this.authorName,
           authorEmail: this.authorEmail,
@@ -334,20 +274,27 @@ module.exports = yeoman.generators.Base.extend({
       });
     }
 
-    if (this.installPlugins) {
-      this.composeWith('aurelia-ts:plugins', {
+    if (this.installLayout) {
+      this.composeWith('aurelia-ts:layout', {
         options: {
-          cssFramework: this.cssFramework
+          ui: this.options.ui,
+          fa: this.options.fa
         }
       });
     }
 
-    chalk.green('npm install');
+    if (this.installPlugins) {
+      this.composeWith('aurelia-ts:plugins', {
+        options: {
+          bootstrap: this.bootstrap
+        }
+      });
+    }
 
     if (this.installCLI) {
-      // configure /dist folder for bundles
-      chalk.blue('To configure ditributions:');
-      chalk.green('gulp dist');
+      this.composeWith('aurelia-ts:cli', {
+        options: {}
+      });
     }
   }
 });
