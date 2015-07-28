@@ -14,7 +14,7 @@
   "scripts": {
     "test": "gulp test",
     "build": "gulp build",
-    "serve": "gulp serve",
+    "start": "gulp serve",
     "watch": "gulp watch",
     "ts-build": "gulp --gulpfile ts-gulpfile.js build",
     "sem-build": "gulp --gulpfile semantic/gulpfile.js build"
