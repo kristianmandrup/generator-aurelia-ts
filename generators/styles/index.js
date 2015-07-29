@@ -5,8 +5,6 @@ var yosay = require('yosay');
 require('sugar');
 var fs = require('node-fs-extra');
 
-var defaultUI;
-
 var generator;
 
 function prepare4Tpl(list) {
@@ -123,7 +121,8 @@ module.exports = yeoman.generators.Base.extend({
       choices: [
         'Nib',
         'Axis',
-        'Fluidity'
+        'Fluidity',
+        'Jeet'
       ],
       default: ['Nib'],
       message: 'Stylus plugins'
@@ -137,6 +136,7 @@ module.exports = yeoman.generators.Base.extend({
       this.nib = contains('Nib');
       this.axis = contains('Axis');
       this.fluidity = contains('Fluidity');
+      this.jeet = contains('Jeet');
 
       done();
     }.bind(this));
@@ -185,7 +185,8 @@ module.exports = yeoman.generators.Base.extend({
           this.destinationPath('styles/stylus/stylus.js'), {
             nib: this.nib, // @import 'nib'
             axis: this.axis,
-            fluidity: this.fluidity
+            fluidity: this.fluidity,
+            jeet: this.jeet
           }
         );
       }
@@ -250,6 +251,10 @@ module.exports = yeoman.generators.Base.extend({
 
       if (this.fluidity) {
         generator.npmInstall('fluidity', {save: true});
+      }
+
+      if (this.jeet) {
+        generator.npmInstall('jeet', {save: true});
       }
     }
   },
