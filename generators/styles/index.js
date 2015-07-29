@@ -112,6 +112,32 @@ module.exports = yeoman.generators.Base.extend({
     }.bind(this));
   },
 
+  default: function (argument) {
+    var done = this.async();
+
+    var prompts = [{
+      type: 'checkbox',
+      name: 'stylusPlugins',
+      choices: [
+        'Nib',
+        'Axis'
+      ],
+      default: [],
+      message: 'Stylus plugins'
+    }];
+
+
+    this.prompt(prompts, function(answers) {
+      this.stylusPlugins = answers.stylusPlugins;
+
+      var contains = containsFor(this.stylusPlugins);
+      this.nib = contains('Nib');
+      this.axis = contains('Axis');
+
+      done();
+    }.bind(this));
+  },
+
   // See File API: https://github.com/sboudrias/mem-fs-editor
   writing: {
     clearOld: function() {
@@ -136,10 +162,27 @@ module.exports = yeoman.generators.Base.extend({
 
     styleFiles: function() {
       var self = this;
-      for (let lang of this.styleLangs) {
+
+      var stylusIdx = this.styleLangs.indexOf('stylus');
+      if (stylusIdx >= 0) {
+        var bulkStyles = this.styleLangs.slice(0);
+        bulkStyles.splice(stylusIdx, 1);
+      }
+
+      for (let lang of bulkStyles) {
         var folder = stylesFolder(lang);
         var path = stylesPath(folder);
         this.bulkDirectory(path, path);
+      }
+
+      if (this.stylus) {
+        this.fs.copyTpl(
+          this.templatePath('styles/stylus/_stylus.js'),
+          this.destinationPath('styles/stylus/stylus.js'), {
+            nib: this.nib, // @import 'nib'
+            axis: this.axis
+          }
+        );
       }
     },
 
@@ -173,9 +216,12 @@ module.exports = yeoman.generators.Base.extend({
       }
 
       if (this.stylus) {
-        this.fs.copy(
-          this.templatePath('styles/tasks/stylus.js'),
-          this.destinationPath('build/tasks/stylus.js')
+        this.fs.copyTpl(
+          this.templatePath('styles/tasks/_stylus.js'),
+          this.destinationPath('build/tasks/stylus.js'), {
+            nib: this.nib,
+            axis: this.axis
+          }
         );
       }
     }
@@ -187,6 +233,15 @@ module.exports = yeoman.generators.Base.extend({
     }
     if (this.stylus) {
       generator.npmInstall('gulp-stylus', {saveDev: true});
+
+      if (this.nib) {
+        generator.npmInstall('nib', {save: true});
+        generator.npmInstall('canvas', {save: true});
+      }
+
+      if (this.axis) {
+        generator.npmInstall('axis', {save: true});
+      }
     }
   },
 
