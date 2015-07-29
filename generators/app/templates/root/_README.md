@@ -35,6 +35,12 @@ The following npm tasks are available:
 - `npm run watch` : Watch files and build on change
 - `npm run ts-build` : Build TypeScript files
 
+## CSS Preprocessing tasks
+
+- `gulp css:build`
+- `gulp sass:watch`
+- `gulp stylus:watch`
+
 ## Build TypeScript files
 
 Uses `ts-gulpfile.js`

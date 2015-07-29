@@ -61,8 +61,6 @@ module.exports = yeoman.generators.Base.extend({
     // And you can then access it later on this way; e.g. CamelCased
     this.props.appname = this.appname ? this.appname.camelize() : null;
 
-    this.option('sass');
-    this.option('stylus');
     this.option('ts'); // typescript
     this.option('vs'); // visual studio
     this.option('fa'); // font awesome
@@ -74,10 +72,9 @@ module.exports = yeoman.generators.Base.extend({
 
     this.props.uiFramework = uiFrameworkMap[this.options.ui];
 
-    // TODO: use to configure css/scss or stylus
-    this.props.styleLang = 'css';
-    this.props.styleLang = this.options.scss || this.styleLang;
-    this.props.styleLang = this.options.stylus || this.styleLang;
+    this.option('sass');
+    this.option('stylus');
+    this.props.styleLang = this.options.stylus || this.options.sass || 'css';
 
     this.props.vs = this.options.vs;
     this.props.ts = this.options.ts;
@@ -120,6 +117,11 @@ module.exports = yeoman.generators.Base.extend({
       name: 'authorName',
       message: 'Your name',
       default: this.props.authorName
+    }, {
+      type: 'confirm',
+      name: 'installStyles',
+      message: 'Install Styles',
+      default: true
     }, {
       type: 'confirm',
       name: 'installCLI',
@@ -183,6 +185,7 @@ module.exports = yeoman.generators.Base.extend({
       this.authorEmail = answers.authorEmail;
       this.githubAccount = answers.githubAccount;
 
+      this.installStyles = answers.installStyles;
       this.installLayout = answers.installLayout || this.props.uiFramework;
       this.installCLI = answers.installCLI || this.props.cli;
       this.installPlugins = answers.installPlugins || this.props.plugins;
@@ -262,12 +265,12 @@ module.exports = yeoman.generators.Base.extend({
       // this.bulkDirectory('root', '.');
     },
 
-    testFiles: function() {
-      this.bulkDirectory('test', 'test');
-    },
-
     styleFiles: function() {
       this.bulkDirectory('styles', 'styles');
+    },
+
+    testFiles: function() {
+      this.bulkDirectory('test', 'test');
     },
 
     docFiles: function() {
@@ -285,6 +288,16 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   end: function() {
+    if (this.installStyles) {
+      this.composeWith('aurelia-ts:styles', {
+        options: {
+          styleLang: this.props.styleLang,
+          sass: this.options.sass,
+          stylus: this.options.stylus
+        }
+      });
+    }
+
     if (this.installTypeScript) {
       this.composeWith('aurelia-ts:typescript', {
         options: {
