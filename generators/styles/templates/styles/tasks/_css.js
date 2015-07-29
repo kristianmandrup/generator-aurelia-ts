@@ -1,3 +1,5 @@
+var gulp = require('gulp');
+
 gulp.task('css:build', function(callback) {
   return runSequence(
     [<%= preProcessors %>],
