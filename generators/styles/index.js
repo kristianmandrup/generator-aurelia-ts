@@ -154,6 +154,22 @@ module.exports = yeoman.generators.Base.extend({
         }
       );
     },
+
+    cssPreProcessorTasks: function() {
+      if (this.sass) {
+        this.fs.copy(
+          this.templatePath('styles/tasks/sass.js'),
+          this.destinationPath('build/tasks/sass.js')
+        );
+      }
+
+      if (this.stylus) {
+        this.fs.copy(
+          this.templatePath('styles/tasks/stylus.js'),
+          this.destinationPath('build/tasks/stylus.js')
+        );
+      }
+    }
   },
 
   install: function() {
