@@ -1,3 +1,4 @@
+var gulp = require('gulp');
 var paths = require('../paths');
 var stylus = require('gulp-stylus');
 var sourcemaps = require('gulp-sourcemaps');

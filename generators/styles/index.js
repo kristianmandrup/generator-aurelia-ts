@@ -3,7 +3,7 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
-var fs = require('node-fs-extra')
+var fs = require('node-fs-extra');
 
 var defaultUI;
 
@@ -29,6 +29,12 @@ function stylesPath(folder) {
 
 function stylesFolder(lang) {
   return lang.toLowerCase();
+}
+
+function containsFor(list) {
+  return function contains(value) {
+    return list.indexOf(value) >= 0;
+  }
 }
 
 module.exports = yeoman.generators.Base.extend({
@@ -79,9 +85,12 @@ module.exports = yeoman.generators.Base.extend({
 
     this.prompt(prompts, function(answers) {
       this.styles = answers.styles;
-      this.css = this.styles.indexOf('None (CSS)') >= 0;
-      this.sass = this.styles.indexOf('SASS') >= 0;
-      this.stylus = this.styles.indexOf('Stylus') >= 0;
+
+      var contains = containsFor(this.styles);
+
+      this.css = contains('None (CSS)');
+      this.sass = contains('SASS');
+      this.stylus = contains('Stylus');
       this.removeOld = answers.removeOld;
 
       this.preProcessors = [];
