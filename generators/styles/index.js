@@ -112,7 +112,9 @@ module.exports = yeoman.generators.Base.extend({
     }.bind(this));
   },
 
-  default: function (argument) {
+  default: function () {
+    if (!this.stylus) return;
+
     var done = this.async();
 
     var prompts = [{
@@ -120,9 +122,10 @@ module.exports = yeoman.generators.Base.extend({
       name: 'stylusPlugins',
       choices: [
         'Nib',
-        'Axis'
+        'Axis',
+        'Fluidity'
       ],
-      default: [],
+      default: ['Nib'],
       message: 'Stylus plugins'
     }];
 
@@ -133,6 +136,7 @@ module.exports = yeoman.generators.Base.extend({
       var contains = containsFor(this.stylusPlugins);
       this.nib = contains('Nib');
       this.axis = contains('Axis');
+      this.fluidity = contains('Fluidity');
 
       done();
     }.bind(this));
@@ -180,7 +184,8 @@ module.exports = yeoman.generators.Base.extend({
           this.templatePath('styles/stylus/_stylus.js'),
           this.destinationPath('styles/stylus/stylus.js'), {
             nib: this.nib, // @import 'nib'
-            axis: this.axis
+            axis: this.axis,
+            fluidity: this.fluidity
           }
         );
       }
@@ -241,6 +246,10 @@ module.exports = yeoman.generators.Base.extend({
 
       if (this.axis) {
         generator.npmInstall('axis', {save: true});
+      }
+
+      if (this.fluidity) {
+        generator.npmInstall('fluidity', {save: true});
       }
     }
   },
