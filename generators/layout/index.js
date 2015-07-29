@@ -3,8 +3,9 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
-
 var fs = require('fs');
+
+var defaultUI;
 
 var generator;
 
@@ -86,7 +87,7 @@ module.exports = yeoman.generators.Base.extend({
 
     var prompts = [];
 
-    var defaultUI = this.props.uiFramework || 'Bootstrap';
+    defaultUI = this.props.uiFramework || 'Bootstrap';
 
     var uiFrameWorksPrompt = {
       type: 'checkbox',
@@ -130,6 +131,25 @@ module.exports = yeoman.generators.Base.extend({
       this.foundation = this.cssFrameworks.indexOf('Foundation');
       this.bootstrap = this.cssFrameworks.indexOf('Bootstrap');
       this.bootstrapMaterial = this.cssFrameworks.indexOf('Bootstrap Material');
+
+      // this.config.save();
+
+      done();
+    }.bind(this));
+  },
+
+  default: function() {
+    var done = this.async();
+    var morePrompts = [{
+      type: 'list',
+      name: 'primary',
+      message: 'Primary layout framework',
+      choices: this.cssFrameworks,
+      default: [defaultUI]
+    }];
+
+    this.prompt(morePrompts, function(answers) {
+      this.primary = answers.primary;
 
       // this.config.save();
 
@@ -191,20 +211,29 @@ module.exports = yeoman.generators.Base.extend({
 
     // For now only use one Framework as the baseline!
     viewFiles: function() {
-      if (this.bootstrap) {
-        chalk.green('Installing: Bootstrap');
+      if (!this.primary) {
+        this.primary = 'Bootstrap';
+      }
+
+      info('Using primary UI framework: ' + this.primary);
+
+      // default if no primary chosen
+      if (this.primary.match(/Bootstrap/)) {
         this.bulkDirectory('views/bootstrap', 'src');
-      } else if (this.foundation) {
-        chalk.green('Installing: Foundation');
-        this.bulkDirectory('views/foundation', 'src');
-      } else if (this.semanticUI) {
-        chalk.green('Installing: Semantic-UI');
-        this.bulkDirectory('views/semantic-ui', 'src');
-      } else if (this.framework7) {
-        chalk.green('Installing: Framework7');
-        this.bulkDirectory('views/framework7', 'src');
       }
       // TODO Bootstrap Material?
+
+      if (this.primary == 'Foundation') {
+        this.bulkDirectory('views/foundation', 'src');
+      }
+
+      if (this.primary == 'Semantic-UI') {
+        this.bulkDirectory('views/semantic-ui', 'src');
+      }
+
+      if (this.primary == 'Framework7') {
+        this.bulkDirectory('views/framework7', 'src');
+      }
     }
   },
 

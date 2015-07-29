@@ -1,7 +1,7 @@
 {
   "name": "generator-aurelia-ts",
-  "version": "0.5.0",
-  "description": "Aurelia App generator with: TypeScript, Styling and UI framework support",
+  "version": "0.5.3",
+  "description": "Aurelia App generator with: TypeScript, CLI, UI frameworks and more ;)",
   "license": "MIT",
   "main": "app/index.js",
   "repository": "kristianmandrup/generator-aurelia-ts",
@@ -9,6 +9,11 @@
     "name": "Kristian Mandrup",
     "email": "kmandrup@gmail.com",
     "url": "https://github.com/kristianmandrup"
+  },
+  "contributors": {
+    "name": "Guillermo C. Martinez",
+    "email": "telekosmos@ymail.com",
+    "url": "https://github.com/telekosmos"
   },
   "scripts": {
     "test": "mocha"
@@ -23,6 +28,7 @@
   ],
   "dependencies": {
     "chalk": "^1.0.0",
+    "node-fs-extra": "^0.8.1",
     "rimraf": "^2.4.0",
     "sinon": "^1.15.4",
     "sugar": "^1.4",

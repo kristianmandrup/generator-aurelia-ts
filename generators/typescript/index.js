@@ -71,10 +71,11 @@ module.exports = yeoman.generators.Base.extend({
     this.props.cssFrameworks = this.options.cssFrameworks;
     this.cssFrameworks = this.props.cssFrameworks;
     if (this.cssFrameworks) {
-      this.semanticUI = this.cssFrameworks.indexOf('Semantic-UI');
-      this.framework7 = this.cssFrameworks.indexOf('Framework7');
-      this.foundation = this.cssFrameworks.indexOf('Foundation');
-      this.bootstrap = this.cssFrameworks.indexOf('Bootstrap');
+      // TODO: use helper function
+      this.semanticUI = this.cssFrameworks.indexOf('Semantic-UI') >= 0;
+      this.framework7 = this.cssFrameworks.indexOf('Framework7') >= 0;
+      this.foundation = this.cssFrameworks.indexOf('Foundation') >= 0;
+      this.bootstrap = this.cssFrameworks.indexOf('Bootstrap') >= 0;
     }
 
     this.props.visualStudio = this.options.visualStudio;

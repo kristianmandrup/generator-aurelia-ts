@@ -19,6 +19,7 @@ Generator Tested on MacOSX via `npm link` and all generators work as expected :)
 - `aurelia-ts`
 - `aurelia-ts:plugins`
 - `aurelia-ts:cli`
+- `aurelia-ts:styles`
 - `aurelia-ts:layout`
 - `aurelia-ts:typescript`
 
@@ -248,9 +249,8 @@ Most likely due to an [EJS](http://ejs.co/) template error (typically a missing 
 
 Ideas for improvement are welcome :)
 
-- Install multiple UI/CSS frameworks in the same app...
-- Support for more editors/IDEs such as Visual Studio, WebStorm etc.
-- Stylus and SCSS support (did we loose them?)
+- More UI frameworks such as [Gumby](http://www.gumbyframework.com/)
+- Support for more editors/IDEs: Visual Studio, WebStorm etc.
 
 ## License
 
