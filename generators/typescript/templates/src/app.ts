@@ -1,5 +1,7 @@
 /// <reference path="../typings/tsd.d.ts" />
 
+import {Router} from 'aurelia-router';
+
 export class App {
   static inject = [Router];
 
