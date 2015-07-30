@@ -18,21 +18,18 @@ function info(msg) {
   console.log(msg);
 }
 
-function jspmInstall(names) {
+function jspmInstallAmp(names) {
   var params = names.map(function(name) {
-    return ['github:ampersandjs', name].join('/');
+    var fullName = []'ampersand', name].join('-');
+    return ['github:ampersandjs', fullName].join('/');
   });
-
-  params.unshift('install');
-  if (params) {
-    // var done = generator.async();
-    spawn(params);
-    // done();
-  }
+  runJspmInstall(params);
 }
 
-function spawn(params) {
-  generator.spawnCommand('jspm', params);
+function runJspmInstall(list) {
+  if (!list || list.length ==0) return;
+  var args = list.unshift('install');
+  generator.spawnCommand('jspm', args);
 }
 
 // Ampersand
@@ -59,16 +56,23 @@ module.exports = yeoman.generators.Base.extend({
       type: 'checkbox',
       name: 'modules',
       message: 'Ampersand state modulas',
-      choices: ['app', 'collection', 'rest-collection', 'model'],
+      choices: ['app', 'registry', 'state', 'collection', 'rest-collection', 'model'],
       default: ['app', 'collection', 'model']
+    }, {
+      type: 'confirm',
+      name: 'humanModel',
+      message: 'Human model',
+      default: false
+
     }];
 
     this.prompt(prompts, function(answers) {
       this.modules = [];
-      for (let key of Object.keys(answers)) {
+      for (let key of Object.keys(answers.modules)) {
         this[key] = answers[key];
         this.modules.push(key);
       }
+      this.humanModel = answers.humanModel;
       // this.config.save();
 
       done();
@@ -76,7 +80,10 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   install: function() {
-    jspmInstall(this.modules);
+    jspmInstallAmp(this.modules);
+    if (this.humanModel) {
+      runJspmInstall(['github:HenrikJoreteg/human-model']);
+    }
   },
   end: function() {
   }
