@@ -119,13 +119,14 @@ module.exports = yeoman.generators.Base.extend({
       type: 'checkbox',
       name: 'stylusPlugins',
       choices: [
+        'Autoprefixer',
         'Nib',
-        'Axis',
+        'Axis', // extends nib
         'Rupture',
         'Fluidity',
-        'Jeet'
+        'Jeet' // extends nib
       ],
-      default: ['Nib'],
+      default: ['Nib', 'Autoprefixer'],
       message: 'Stylus plugins'
     }];
 
@@ -139,6 +140,7 @@ module.exports = yeoman.generators.Base.extend({
       this.fluidity = contains('Fluidity');
       this.jeet = contains('Jeet');
       this.rupture = contains('Rupture');
+      this.autoprefixer = contains('Autoprefixer');
 
       done();
     }.bind(this));
@@ -183,8 +185,8 @@ module.exports = yeoman.generators.Base.extend({
 
       if (this.stylus) {
         this.fs.copyTpl(
-          this.templatePath('styles/stylus/_stylus.js'),
-          this.destinationPath('styles/stylus/stylus.js'), {
+          this.templatePath('styles/stylus/_styles.styl'),
+          this.destinationPath('styles/stylus/styles.styl'), {
             nib: this.nib, // @import 'nib'
             axis: this.axis,
             fluidity: this.fluidity,
@@ -224,12 +226,29 @@ module.exports = yeoman.generators.Base.extend({
         );
       }
 
+      //
+
+      var list = [];
+      for (let plugin of ['rupture', 'axis', 'autoprefixer', 'jeet']) {
+        if (this[plugin]) {
+          list.push(plugin);
+        }
+      }
+      var useList = list.map(function(plugin) {
+        return plugin + '()';
+      }).join(',');
+
       if (this.stylus) {
         this.fs.copyTpl(
           this.templatePath('styles/tasks/_stylus.js'),
           this.destinationPath('build/tasks/stylus.js'), {
             nib: this.nib,
-            axis: this.axis
+            axis: this.axis,
+            fluidity: this.fluidity,
+            rupture: this.rupture,
+            jeet: this.jeet,
+            autoprefixer: this.autoprefixer,
+            useList: useList
           }
         );
       }

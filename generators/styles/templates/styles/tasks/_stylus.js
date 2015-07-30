@@ -11,15 +11,14 @@ var rupture = require('rupture');
 <% if (jeet) { %>
 var jeet = require('jeet');
 <% } %>
+<% if (autoprefixer) { %>
+var autoprefixer = require('autoprefixer');
+<% } %>
 
 gulp.task('stylus', function () {
   gulp.src(paths.stylus)
     .pipe(sourcemaps.init())
-    .pipe(stylus({'include css': true
-    <% if (axis) { %>, use: axis()<% } %>
-    <% if (jeet) { %>, use: jeet()<% } %>
-    <% if (rupture) { %>, use: rupture()<% } %>
-    }))
+    .pipe(stylus({'include css': true}).use([<% useList %>])
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(paths.styleDest));
 });
