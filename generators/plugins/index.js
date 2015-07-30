@@ -79,6 +79,8 @@ module.exports = yeoman.generators.Base.extend({
   prompting: function() {
     var done = this.async();
     // info('Install Aurelia Plugins:');
+
+    // TODO: add Bootstrap Modal to UI checkbox list
     var prompts = [{
       type: 'checkbox',
       name: 'ui',
