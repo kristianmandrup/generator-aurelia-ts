@@ -126,7 +126,7 @@ module.exports = yeoman.generators.Base.extend({
         'Fluidity',
         'Jeet' // extends nib
       ],
-      default: ['Nib', 'Autoprefixer'],
+      default: ['Autoprefixer', 'Nib'],
       message: 'Stylus plugins'
     }];
 
@@ -229,7 +229,8 @@ module.exports = yeoman.generators.Base.extend({
       //
 
       var list = [];
-      for (let plugin of ['rupture', 'axis', 'autoprefixer', 'jeet']) {
+      // autoprefixer should be last
+      for (let plugin of ['axis', 'rupture', 'jeet', 'autoprefixer']) {
         if (this[plugin]) {
           list.push(plugin);
         }
@@ -261,6 +262,10 @@ module.exports = yeoman.generators.Base.extend({
     }
     if (this.stylus) {
       generator.npmInstall('gulp-stylus', {saveDev: true});
+
+      if (this.autoprefixer) {
+        generator.npmInstall('autoprefixer-stylus', {save: true});
+      }
 
       if (this.nib) {
         generator.npmInstall('nib', {save: true});
