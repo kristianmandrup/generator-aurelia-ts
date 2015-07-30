@@ -7,9 +7,7 @@ Generate an [Aurelia](aurelia.io) Quick Start project with: - [Aurelia CLI](http
 
 ### Status
 
-All tests pass!
-
-Generator Tested on MacOSX via `npm link` and all generators work as expected :)
+Generator tested on MacOSX via `npm link`
 
 -	`aurelia-ts`
 -	`aurelia-ts:plugins`
@@ -17,6 +15,10 @@ Generator Tested on MacOSX via `npm link` and all generators work as expected :)
 -	`aurelia-ts:styles`
 -	`aurelia-ts:layout`
 -	`aurelia-ts:typescript`
+-	`aurelia-ts:state`
+-	`aurelia-ts:amp` - Ampersand models
+
+Now includes IE9 support via polyfill for mutationobservers ;)
 
 ### Layout Frameworks
 

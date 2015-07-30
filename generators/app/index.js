@@ -21,8 +21,10 @@ var uiFrameworkMap = {
   f7: 'Framework7'
 };
 
-function spawn(params) {
-  generator.spawnCommand('jspm', params);
+function runJspmInstall(list) {
+  if (!list || list.length ==0) return;
+  var args = list.unshift('install');
+  generator.spawnCommand('jspm', args);
 }
 
 function jspmInstall(names) {
@@ -33,16 +35,7 @@ function jspmInstall(names) {
     }
     return resolved;
   });
-  for (let name of params) {
-    chalk.blue(name);
-  }
-
-  params.unshift('install');
-  if (params) {
-    // var done = generator.async();
-    spawn(params);
-    // done();
-  }
+  runJspmInstall(params);
 }
 
 module.exports = yeoman.generators.Base.extend({
@@ -127,6 +120,11 @@ module.exports = yeoman.generators.Base.extend({
       name: 'installCLI',
       message: 'Install Aurelia CLI',
       default: true
+    }, {
+      type: 'confirm',
+      name: 'ie9Support',
+      message: 'Support IE9',
+      default: true
     }];
 
     var pluginsPrompt ={
@@ -192,6 +190,7 @@ module.exports = yeoman.generators.Base.extend({
       this.installTypeScript = answers.installTypeScript || this.props.ts;
 
       this.visualStudio = answers.visualStudio || this.props.vs;
+      this.ie9Support = answers.ie9Support;
 
       this.config.save();
 
@@ -219,7 +218,8 @@ module.exports = yeoman.generators.Base.extend({
         this.templatePath('_index.html'),
         this.destinationPath('index.html'), {
           title: self.appDesc,
-          appName: self.appName
+          appName: self.appName,
+          ie9: this.ie9Support
         }
       );
 
@@ -284,6 +284,12 @@ module.exports = yeoman.generators.Base.extend({
 
     buildFiles: function() {
       this.bulkDirectory('build', 'build');
+    }
+  },
+
+  install: function() {
+    if (this.ie9Support) {
+      runJspmInstall(['github:polymer/mutationobservers']);
     }
   },
 
