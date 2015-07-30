@@ -47,9 +47,13 @@ CSS Preprocessing tasks
 -	`gulp stylus:watch`
 
 Extra goodies for Stylus
+------------------------
 
--	[Nib screencast](http://www.screenr.com/M6a)
+-	[Nib](https://github.com/tj/nib) and [screencast](http://www.screenr.com/M6a)
 -	[Axis](http://axis.netlify.com/)
+-	[Rupture](http://jenius.github.io/rupture/) nice "break points" ;)
+-	[Fluidity](www.fluiditycss.com)
+-	[Jeet](http://jeet.gs/) super awesome framework!
 
 Build TypeScript files
 ----------------------

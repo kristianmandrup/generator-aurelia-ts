@@ -121,6 +121,7 @@ module.exports = yeoman.generators.Base.extend({
       choices: [
         'Nib',
         'Axis',
+        'Rupture',
         'Fluidity',
         'Jeet'
       ],
@@ -137,6 +138,7 @@ module.exports = yeoman.generators.Base.extend({
       this.axis = contains('Axis');
       this.fluidity = contains('Fluidity');
       this.jeet = contains('Jeet');
+      this.rupture = contains('Rupture');
 
       done();
     }.bind(this));
@@ -186,6 +188,7 @@ module.exports = yeoman.generators.Base.extend({
             nib: this.nib, // @import 'nib'
             axis: this.axis,
             fluidity: this.fluidity,
+            rupture: this.rupture,
             jeet: this.jeet
           }
         );

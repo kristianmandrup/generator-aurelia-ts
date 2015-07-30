@@ -89,6 +89,14 @@ The generator also supports *SCSS* and *Stylus* via `--scss` and `--stylus` opti
 yo aurelia-ts --stylus
 ```
 
+### Stylus plugins
+
+-	[Nib](https://github.com/tj/nib)
+-	[Axis](http://axis.netlify.com/)
+-	[Rupture](http://jenius.github.io/rupture/)
+-	[Fluidity](www.fluiditycss.com)
+-	[Jeet](http://jeet.gs/)
+
 ### UI framework option
 
 You can also pass the UI framework as a `--ui` option
@@ -220,8 +228,6 @@ Ideas for improvement are welcome :)
 -	[bootstrap3-stylus](https://github.com/MContagious/bootstrap3-stylus)
 -	More UI frameworks such as [Gumby](http://www.gumbyframework.com/)
 -	Support for more editors/IDEs: Visual Studio, WebStorm etc.
--	[Nib](https://github.com/tj/nib)
--	[Axis](http://axis.netlify.com/)
 
 License
 -------
