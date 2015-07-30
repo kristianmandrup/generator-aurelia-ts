@@ -79,6 +79,11 @@ module.exports = yeoman.generators.Base.extend({
       name: 'removeOld',
       default: false,
       message: 'Remove old styles'
+    }, {
+      type: 'prompt',
+      name: 'useJade',
+      default: false,
+      message: 'Use Jade Templates'
     }];
 
     this.prompt(prompts, function(answers) {
@@ -90,6 +95,7 @@ module.exports = yeoman.generators.Base.extend({
       this.sass = contains('SASS');
       this.stylus = contains('Stylus');
       this.removeOld = answers.removeOld;
+      this.useJade = answers.useJade;
 
       this.preProcessors = [];
       if (this.sass) {
@@ -253,6 +259,15 @@ module.exports = yeoman.generators.Base.extend({
           }
         );
       }
+    },
+
+    templateTasks: function() {
+      if (this.useJade) {
+        this.fs.copy(
+          this.templatePath('styles/tasks/jade.js'),
+          this.destinationPath('build/tasks/jade.js')
+        );
+      }
     }
   },
 
@@ -283,6 +298,10 @@ module.exports = yeoman.generators.Base.extend({
       if (this.jeet) {
         generator.npmInstall('jeet', {save: true});
       }
+    }
+
+    if (this.useJade) {
+      generator.npmInstall('gulp-jade', {saveDev: true});
     }
   },
 
