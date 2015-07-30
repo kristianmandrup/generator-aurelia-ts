@@ -279,24 +279,28 @@ module.exports = yeoman.generators.Base.extend({
       generator.npmInstall('gulp-stylus', {saveDev: true});
 
       if (this.autoprefixer) {
-        generator.npmInstall('autoprefixer-stylus', {save: true});
+        generator.npmInstall('autoprefixer-stylus', {saveDev: true});
       }
 
       if (this.nib) {
-        generator.npmInstall('nib', {save: true});
-        generator.npmInstall('canvas', {save: true});
+        generator.npmInstall('nib', {saveDev: true});
+        generator.npmInstall('canvas', {saveDev: true});
       }
 
       if (this.axis) {
-        generator.npmInstall('axis', {save: true});
+        generator.npmInstall('axis', {saveDev: true});
       }
 
       if (this.fluidity) {
-        generator.npmInstall('fluidity', {save: true});
+        generator.npmInstall('fluidity', {saveDev: true});
+      }
+
+      if (this.rupture) {
+        generator.npmInstall('rupture', {saveDev: true});
       }
 
       if (this.jeet) {
-        generator.npmInstall('jeet', {save: true});
+        generator.npmInstall('jeet', {saveDev: true});
       }
     }
 
