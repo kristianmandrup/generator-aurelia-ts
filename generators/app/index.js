@@ -333,5 +333,9 @@ module.exports = yeoman.generators.Base.extend({
         options: {}
       });
     }
+
+    this.composeWith('aurelia-ts:state', {
+      options: {}
+    });
   }
 });

@@ -3,9 +3,7 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
-var fs = require('node-fs-extra')
-
-var defaultUI;
+var fs = require('node-fs-extra');
 
 var generator;
 
@@ -29,6 +27,12 @@ function stylesPath(folder) {
 
 function stylesFolder(lang) {
   return lang.toLowerCase();
+}
+
+function containsFor(list) {
+  return function contains(value) {
+    return list.indexOf(value) >= 0;
+  }
 }
 
 module.exports = yeoman.generators.Base.extend({
@@ -75,14 +79,23 @@ module.exports = yeoman.generators.Base.extend({
       name: 'removeOld',
       default: false,
       message: 'Remove old styles'
+    }, {
+      type: 'prompt',
+      name: 'useJade',
+      default: false,
+      message: 'Use Jade Templates'
     }];
 
     this.prompt(prompts, function(answers) {
       this.styles = answers.styles;
-      this.css = this.styles.indexOf('None (CSS)') >= 0;
-      this.sass = this.styles.indexOf('SASS') >= 0;
-      this.stylus = this.styles.indexOf('Stylus') >= 0;
+
+      var contains = containsFor(this.styles);
+
+      this.css = contains('None (CSS)');
+      this.sass = contains('SASS');
+      this.stylus = contains('Stylus');
       this.removeOld = answers.removeOld;
+      this.useJade = answers.useJade;
 
       this.preProcessors = [];
       if (this.sass) {
@@ -98,6 +111,42 @@ module.exports = yeoman.generators.Base.extend({
         this.styleLangs.push('css');
       }
       // this.config.save();
+
+      done();
+    }.bind(this));
+  },
+
+  default: function () {
+    if (!this.stylus) return;
+
+    var done = this.async();
+
+    var prompts = [{
+      type: 'checkbox',
+      name: 'stylusPlugins',
+      choices: [
+        'Autoprefixer',
+        'Nib',
+        'Axis', // extends nib
+        'Rupture',
+        'Fluidity',
+        'Jeet' // extends nib
+      ],
+      default: ['Autoprefixer', 'Nib'],
+      message: 'Stylus plugins'
+    }];
+
+
+    this.prompt(prompts, function(answers) {
+      this.stylusPlugins = answers.stylusPlugins;
+
+      var contains = containsFor(this.stylusPlugins);
+      this.nib = contains('Nib');
+      this.axis = contains('Axis');
+      this.fluidity = contains('Fluidity');
+      this.jeet = contains('Jeet');
+      this.rupture = contains('Rupture');
+      this.autoprefixer = contains('Autoprefixer');
 
       done();
     }.bind(this));
@@ -127,10 +176,30 @@ module.exports = yeoman.generators.Base.extend({
 
     styleFiles: function() {
       var self = this;
-      for (let lang of this.styleLangs) {
+
+      var stylusIdx = this.styleLangs.indexOf('stylus');
+      if (stylusIdx >= 0) {
+        var bulkStyles = this.styleLangs.slice(0);
+        bulkStyles.splice(stylusIdx, 1);
+      }
+
+      for (let lang of bulkStyles) {
         var folder = stylesFolder(lang);
         var path = stylesPath(folder);
         this.bulkDirectory(path, path);
+      }
+
+      if (this.stylus) {
+        this.fs.copyTpl(
+          this.templatePath('styles/stylus/_styles.styl'),
+          this.destinationPath('styles/stylus/styles.styl'), {
+            nib: this.nib, // @import 'nib'
+            axis: this.axis,
+            fluidity: this.fluidity,
+            rupture: this.rupture,
+            jeet: this.jeet
+          }
+        );
       }
     },
 
@@ -163,10 +232,40 @@ module.exports = yeoman.generators.Base.extend({
         );
       }
 
+      //
+
+      var list = [];
+      // autoprefixer should be last
+      for (let plugin of ['axis', 'rupture', 'jeet', 'autoprefixer']) {
+        if (this[plugin]) {
+          list.push(plugin);
+        }
+      }
+      var useList = list.map(function(plugin) {
+        return plugin + '()';
+      }).join(',');
+
       if (this.stylus) {
+        this.fs.copyTpl(
+          this.templatePath('styles/tasks/_stylus.js'),
+          this.destinationPath('build/tasks/stylus.js'), {
+            nib: this.nib,
+            axis: this.axis,
+            fluidity: this.fluidity,
+            rupture: this.rupture,
+            jeet: this.jeet,
+            autoprefixer: this.autoprefixer,
+            useList: useList
+          }
+        );
+      }
+    },
+
+    templateTasks: function() {
+      if (this.useJade) {
         this.fs.copy(
-          this.templatePath('styles/tasks/stylus.js'),
-          this.destinationPath('build/tasks/stylus.js')
+          this.templatePath('styles/tasks/jade.js'),
+          this.destinationPath('build/tasks/jade.js')
         );
       }
     }
@@ -178,6 +277,31 @@ module.exports = yeoman.generators.Base.extend({
     }
     if (this.stylus) {
       generator.npmInstall('gulp-stylus', {saveDev: true});
+
+      if (this.autoprefixer) {
+        generator.npmInstall('autoprefixer-stylus', {save: true});
+      }
+
+      if (this.nib) {
+        generator.npmInstall('nib', {save: true});
+        generator.npmInstall('canvas', {save: true});
+      }
+
+      if (this.axis) {
+        generator.npmInstall('axis', {save: true});
+      }
+
+      if (this.fluidity) {
+        generator.npmInstall('fluidity', {save: true});
+      }
+
+      if (this.jeet) {
+        generator.npmInstall('jeet', {save: true});
+      }
+    }
+
+    if (this.useJade) {
+      generator.npmInstall('gulp-jade', {saveDev: true});
     }
   },
 

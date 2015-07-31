@@ -44,6 +44,7 @@ var jsmpInstallsMap = {
   bsModal: 'aurelia-bs-modal',
   auth: 'github:paulvanbladel/aureliauth',
   validation: 'aurelia-validation',
+  jadeViews: 'github:Craga89/aurelia-jade-viewstrategy',
   materialize: 'github:manuel-guilbault/aurelia-materialize',
   rethinkDB: 'github:kristianmandrup/aurelia-rethink-bindtable',
   breeze: 'aurelia-breeze'
@@ -55,7 +56,8 @@ var mapped = {
   'Async': 'async',
   'Materialize': 'materialize',
   'Breeze bindings': 'breeze',
-  'RethinkDB bindings': 'rethinkDB'
+  'RethinkDB bindings': 'rethinkDB',
+  'Jade Views': 'jadeViews'
 }
 
 module.exports = yeoman.generators.Base.extend({
@@ -77,12 +79,19 @@ module.exports = yeoman.generators.Base.extend({
   prompting: function() {
     var done = this.async();
     // info('Install Aurelia Plugins:');
+
+    // TODO: add Bootstrap Modal to UI checkbox list
     var prompts = [{
       type: 'checkbox',
       name: 'ui',
       choices: ['Virtual List', 'Dialog', 'Materialize'],
-      message: 'Dialog',
+      message: 'UI',
       default: [],
+    }, {
+      type: 'confirm',
+      name: 'jadeViews',
+      message: 'Jade Views',
+      default: false,
     }, {
       type: 'confirm',
       name: 'fetch',

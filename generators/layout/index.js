@@ -59,6 +59,12 @@ function jspmInstall(names) {
 
 var jsmpInstallsMap = {};
 
+function containsFor(list) {
+  return function contains(value) {
+    return list.indexOf(value) >= 0;
+  }
+}
+
 module.exports = yeoman.generators.Base.extend({
 
   // note: arguments and options should be defined in the constructor.
@@ -125,15 +131,15 @@ module.exports = yeoman.generators.Base.extend({
     this.prompt(prompts, function(answers) {
       this.cssFrameworks = answers.style;
       this.fontAwesome = answers.fontAwesome || this.props.fa;
+      var contains = containsFor(this.cssFrameworks);
 
-      this.semanticUI = this.cssFrameworks.indexOf('Semantic-UI');
-      this.framework7 = this.cssFrameworks.indexOf('Framework7');
-      this.foundation = this.cssFrameworks.indexOf('Foundation');
-      this.bootstrap = this.cssFrameworks.indexOf('Bootstrap');
-      this.bootstrapMaterial = this.cssFrameworks.indexOf('Bootstrap Material');
+      this.semanticUI = contains('Semantic-UI');
+      this.framework7 = contains('Framework7');
+      this.foundation = contains('Foundation');
+      this.bootstrap = contains('Bootstrap');
+      this.bootstrapMaterial = contains('Bootstrap Material');
 
       // this.config.save();
-
       done();
     }.bind(this));
   },
@@ -152,7 +158,6 @@ module.exports = yeoman.generators.Base.extend({
       this.primary = answers.primary;
 
       // this.config.save();
-
       done();
     }.bind(this));
   },
@@ -161,35 +166,31 @@ module.exports = yeoman.generators.Base.extend({
     app: function() {
       var self = this;
 
-      fs.exists('src/app.js', function(exists) {
-        if (exists) {
-          self.fs.copyTpl(
-            self.templatePath('src/app.js'),
-            self.destinationPath('src/app.js'), {
-              semanticUI: self.semanticUI,
-              bootstrap: self.bootstrap,
-              foundation: self.foundation,
-              framework7: self.framework7,
-              bootstrapMaterial: self.bootstrapMaterial
-            }
-          );
-        }
-      });
+      if (fs.existsSync('src/app.js')) {
+        self.fs.copyTpl(
+          self.templatePath('src/app.js'),
+          self.destinationPath('src/app.js'), {
+            semanticUI: self.semanticUI,
+            bootstrap: self.bootstrap,
+            foundation: self.foundation,
+            framework7: self.framework7,
+            bootstrapMaterial: self.bootstrapMaterial
+          }
+        );
+      }
 
-      fs.exists('src/app.ts', function(exists) {
-        if (exists) {
-          self.fs.copyTpl(
-            self.templatePath('src/app.ts'),
-            self.destinationPath('src/app.ts'), {
-              semanticUI: self.semanticUI,
-              bootstrap: self.bootstrap,
-              foundation: self.foundation,
-              framework7: self.framework7,
-              bootstrapMaterial: self.bootstrapMaterial
-            }
-          );
-        }
-      });
+      if (fs.existsSync('src/app.ts')) {
+        self.fs.copyTpl(
+          self.templatePath('src/app.ts'),
+          self.destinationPath('src/app.ts'), {
+            semanticUI: self.semanticUI,
+            bootstrap: self.bootstrap,
+            foundation: self.foundation,
+            framework7: self.framework7,
+            bootstrapMaterial: self.bootstrapMaterial
+          }
+        );
+      }
 
       this.fs.copyTpl(
         this.templatePath('root/_gitignore'),
