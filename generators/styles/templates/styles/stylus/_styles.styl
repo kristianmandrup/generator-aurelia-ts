@@ -1,19 +1,13 @@
-<% if (nib) { %>
-@import 'nib'
-<% } %>
-<% if (fluidity) { %>
-// global fluidity variables
+<% if (nib) { %>@import 'nib'<% } %>
+<% if (fluidity) { %>// global fluidity variables
 // grid-width = 100%
 // grid-min-width = 320px
 // base-font-size = 1em
 // base-line-height = 1.25em
 // base-color = #000000
 // vendors = webkit moz o official
-@import "fluidity"
-<% } %>
-<% if (jeet) { %>
-@import 'jeet'
-<% } %>
+@import "fluidity"<% } %>
+<% if (jeet) { %>@import 'jeet'<% } %>
 
 body
   margin 0

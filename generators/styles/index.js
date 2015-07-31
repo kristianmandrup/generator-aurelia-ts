@@ -215,8 +215,8 @@ module.exports = yeoman.generators.Base.extend({
       watchTasks = prepare4Tpl(watchTasks);
 
       this.fs.copyTpl(
-        this.templatePath('styles/tasks/_css.js'),
-        this.destinationPath('build/tasks/css.js'), {
+        this.templatePath('styles/tasks/_styles.js'),
+        this.destinationPath('build/tasks/styles.js'), {
           preProcessors: preProcessors,
           watchTasks: watchTasks,
           styles: this.styleLangs.join(' and '),
