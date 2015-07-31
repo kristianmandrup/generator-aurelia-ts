@@ -6,6 +6,10 @@ require('sugar');
 
 var generator;
 
+function normalizeName(name) {
+  return name.replace(/ /,'-').toLowerCase();
+}
+
 function info(msg) {
   console.log(msg);
 }
@@ -22,9 +26,9 @@ var uiFrameworkMap = {
 };
 
 function runJspmInstall(list) {
-  if (!list || list.length ==0) return;
-  var args = list.unshift('install');
-  generator.spawnCommand('jspm', args);
+  if (!list || list.length == 0) return;
+  list.unshift('install');
+  generator.spawnCommand('jspm', list);
 }
 
 function jspmInstall(names) {
@@ -176,7 +180,9 @@ module.exports = yeoman.generators.Base.extend({
     // info('Create Aurelia Application:');
     this.prompt(prompts, function(answers) {
       this.title = answers.title;
-      this.appName = answers.appName || this.appName;
+      this.appName = normalizeName(answers.appName || this.appName);
+      console.log(this.appName);
+
       this.appDesc = answers.title;
 
       this.authorName = answers.authorName;

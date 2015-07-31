@@ -24,8 +24,8 @@ function jspmInstall(names) {
 
 function runJspmInstall(list) {
   if (!list || list.length ==0) return;
-  var args = list.unshift('install');
-  generator.spawnCommand('jspm', args);
+  list.unshift('install');
+  generator.spawnCommand('jspm', list);
 }
 
 Array.prototype.hasEntry(obj) {
