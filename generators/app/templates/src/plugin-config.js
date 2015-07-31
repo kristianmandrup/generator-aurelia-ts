@@ -1,9 +1,6 @@
-import {Aurelia} from 'aurelia-framework';
-
-@inject(Aurelia);
 export default class PluginConfig {
   plugins = [];
-  config = {
+  configs = {
     i18next: {}
   };
 

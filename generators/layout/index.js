@@ -33,10 +33,6 @@ var uiFrameworkMap = {
   f7: 'Framework7'
 };
 
-function spawn(params) {
-  generator.spawnCommand('jspm', params);
-}
-
 function jspmInstall(names) {
   var params = names.map(function(name) {
     var resolved = jsmpInstallsMap[name];
@@ -45,16 +41,13 @@ function jspmInstall(names) {
     }
     return resolved;
   });
-  for (let name of params) {
-    chalk.blue(name);
-  }
+  runJspmInstall(params);
+}
 
-  params.unshift('install');
-  if (params) {
-    // var done = generator.async();
-    spawn(params);
-    // done();
-  }
+function runJspmInstall(list) {
+  if (!list || list.length ==0) return;
+  var args = list.unshift('install');
+  generator.spawnCommand('jspm', args);
 }
 
 var jsmpInstallsMap = {};

@@ -279,7 +279,7 @@ module.exports = yeoman.generators.Base.extend({
 
     srcFiles: function() {
       this.conflicter.force = true;
-      this.bulkDirectory('src', 'src');
+      this.bulkDirectory('src/bone', 'src');
     },
 
     buildFiles: function() {

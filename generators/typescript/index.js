@@ -167,7 +167,8 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   install: function() {
-    jspmInstall(['typescript', 'npm:gulp-typescript', 'ts=github:frankwallis/plugin-typescript@^1.0.5']);
+    jspmInstall(['typescript', 'ts=github:frankwallis/plugin-typescript@^1.0.5']);
+    generator.npmInstall('gulp-typescript', {saveDev: true});
 
     // if (this.props.installDeps) {
     //   this.installDeps();
