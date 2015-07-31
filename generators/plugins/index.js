@@ -219,6 +219,14 @@ module.exports = yeoman.generators.Base.extend({
           validation: this.validation
         }
       );
+    },
+    specialFiles: function() {
+      if (this.validation) {
+        this.fs.copy(
+          this.templatePath('src/welcome.js'),
+          this.destinationPath('src/welcome.js')
+        );
+      }
     }
   }
 
