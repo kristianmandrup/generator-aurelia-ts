@@ -105,7 +105,6 @@ module.exports = yeoman.generators.Base.extend({
         type: 'checkbox',
         name: 'cssFrameworks',
         choices: [
-          'None',
           'Bootstrap',
           'Bootstrap Material',
           'Foundation',
@@ -114,6 +113,10 @@ module.exports = yeoman.generators.Base.extend({
         ],
         default: [defaultUI],
         message: 'Layout frameworks'
+        // if no answers return ['None'];
+        when: function(answers) {
+          return (!answers || answers.length == 0) ? ['None'] : answers;
+        }
       }
 
       // should not prompt to install
@@ -136,7 +139,7 @@ module.exports = yeoman.generators.Base.extend({
       // info('Install UI/Layout Frameworks:');
 
       this.prompt(prompts, function(answers) {
-        this.cssFrameworks = answers.cssFrameworks.length > 0 ? answers.cssFrameworks : ['None'];
+        this.cssFrameworks = answers.cssFrameworks || [];
 
         this.fontAwesome = answers.fontAwesome || this.props.fa;
         var contains = containsFor(this.cssFrameworks);

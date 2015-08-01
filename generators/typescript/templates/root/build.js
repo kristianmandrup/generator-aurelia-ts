@@ -20,6 +20,7 @@ gulp.task('build-system', function() {
     })
     .pipe(ts({
       typescript: require('typescript'),
+      emitDecoratorMetadata: true, // allow for @autoinject :)
       declarationFiles: false,
       noExternalResolve: true,
       target: "es5",

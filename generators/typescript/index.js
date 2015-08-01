@@ -81,6 +81,12 @@ module.exports = yeoman.generators.Base.extend({
       when: function(answers) {
         return answers.typescript;
       }
+    }, {
+      type    : 'confirm',
+      name    : 'editor',
+      message : 'Choose Editor',
+      choices: ['Atom', 'VS', 'WebStorm', 'Sublime', 'Other'],
+      default : 'Atom'
     }];
 
     // {
@@ -93,6 +99,7 @@ module.exports = yeoman.generators.Base.extend({
     // info('TypeScript configuration:');
     this.prompt(prompts, function (answers) {
       this.props = answers;
+      this.editor = answers.editor;
       this.conflicter.force = answers.typescript;
       this.amd = answers.amd;
       done();
@@ -100,6 +107,13 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   writing: {
+    docs: function () {
+      this.fs.copy('docs/tsd-generation.md', 'docs/typescript/tsd-generation.md');
+
+      let editorFile = `Aurelia-TypeScript-IDE-${this.editor}.md`;
+      this.fs.copy(`docs/editors/${editorFile}`, `docs/typescript/editors/${editorFile}`);
+    },
+
     // copy templates for package.json, build/tasks/build.js
     typescript: function () {
       this.fs.copyTpl(
@@ -138,6 +152,14 @@ module.exports = yeoman.generators.Base.extend({
         }
       );
     },
+
+    readme: function () {
+      this.copyTpl(
+        this.templatePath('root/_TypeScript.md'),
+        this.destinationPath('TypeScript.md'), {
+        };
+      );
+    }
 
     testFiles: function() {
       this.copy('root/ts-gulpfile.js', 'ts-gulpfile.js');

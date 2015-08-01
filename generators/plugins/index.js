@@ -205,15 +205,26 @@ module.exports = yeoman.generators.Base.extend({
     }.bind(this));
   },
 
-  writing: function (argument) {
-    srcFiles: function() {
-      var realPlugins = filterReal(selected);
-
+  writing: function () {
+    prepare: function() {
+      this.realPlugins = filterReal(selected);
       this.conflicter.force = true;
+    },
+    docs: function() {
+      // TODO: copy all such docs to /docs folder
+      this.fs.copyTpl(
+        this.templatePath('root/_Plugins.md'),
+        this.destinationPath('Plugins.md'), {
+          selected: prepare4Tpl(realPlugins)
+        }
+      );
+    },
+
+    srcFiles: function() {
       this.fs.copyTpl(
         this.templatePath('src/_plugin_config.js'),
         this.destinationPath('src/plugin_config.js'), {
-          selected: prepare4Tpl(realPlugins),
+          selected: prepare4Tpl(this.realPlugins),
           i18next: this.i18next,
           materialize: this.materialize,
           validation: this.validation

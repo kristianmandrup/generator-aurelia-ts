@@ -64,103 +64,114 @@ module.exports = yeoman.generators.Base.extend({
   initializing: function() {
   },
 
-  prompting: function() {
-    var done = this.async();
+  prompting: {
+    phase1: function() {
+      var done = this.async();
 
-    var prompts = [{
-      type: 'checkbox',
-      name: 'styles',
-      choices: [
-        'None (CSS)',
-        'Stylus',
-        'SASS'
-      ],
-      default: this.defaultStyles,
-      message: 'CSS Preprocessors'
-    }, {
-      type: 'prompt',
-      name: 'removeOld',
-      default: false,
-      message: 'Remove old styles'
-    }, {
-      type: 'prompt',
-      name: 'useJade',
-      default: false,
-      message: 'Use Jade Templates'
-    }];
+      var prompts = [{
+        type: 'checkbox',
+        name: 'styles',
+        choices: [
+          'None (CSS)',
+          'Stylus',
+          'SASS'
+        ],
+        default: this.defaultStyles,
+        message: 'CSS Preprocessors'
+      }, {
+        type: 'prompt',
+        name: 'removeOld',
+        default: false,
+        message: 'Remove old styles'
+      }, {
+        type: 'prompt',
+        name: 'useJade',
+        default: false,
+        message: 'Use Jade Templates'
+      }];
 
-    this.prompt(prompts, function(answers) {
-      this.styles = answers.styles;
+      this.prompt(prompts, function(answers) {
+        this.styles = answers.styles;
 
-      var contains = containsFor(this.styles);
+        var contains = containsFor(this.styles);
 
-      this.css = contains('None (CSS)');
-      this.sass = contains('SASS');
-      this.stylus = contains('Stylus');
-      this.removeOld = answers.removeOld;
-      this.useJade = answers.useJade;
+        this.css = contains('None (CSS)');
+        this.sass = contains('SASS');
+        this.stylus = contains('Stylus');
+        this.removeOld = answers.removeOld;
+        this.useJade = answers.useJade;
 
-      this.preProcessors = [];
-      if (this.sass) {
-        this.preProcessors.push('sass')
-      }
-      if (this.stylus) {
-        this.preProcessors.push('stylus')
-      }
+        this.preProcessors = [];
+        if (this.sass) {
+          this.preProcessors.push('sass')
+        }
+        if (this.stylus) {
+          this.preProcessors.push('stylus')
+        }
 
-      this.styleLangs = this.preProcessors.slice(0);
+        this.styleLangs = this.preProcessors.slice(0);
 
-      if (this.css) {
-        this.styleLangs.push('css');
-      }
-      // this.config.save();
+        if (this.css) {
+          this.styleLangs.push('css');
+        }
+        // this.config.save();
 
-      done();
-    }.bind(this));
-  },
+        done();
+      }.bind(this));
+    },
 
-  default: function () {
-    if (!this.stylus) return;
+    phase2: function () {
+      if (!this.stylus) return;
 
-    var done = this.async();
+      var done = this.async();
 
-    info('Note: For Nib you need cairo installed for canvas installation used');
-    info('brew install cairo (MacOSX)');
-    info('wget https://raw.githubusercontent.com/LearnBoost/node-canvas/master/install -O - | sh');
+      info('Note: For Nib you need cairo installed for canvas installation used');
+      info('brew install cairo (MacOSX)');
+      info('wget https://raw.githubusercontent.com/LearnBoost/node-canvas/master/install -O - | sh');
 
-    var prompts = [{
-      type: 'checkbox',
-      name: 'stylusPlugins',
-      choices: [
-        'Autoprefixer',
-        'Nib',
-        'Axis', // extends nib
-        'Rupture',
-        'Fluidity',
-        'Jeet' // extends nib
-      ],
-      default: ['Autoprefixer', 'Nib'],
-      message: 'Stylus plugins'
-    }];
+      var prompts = [{
+        type: 'checkbox',
+        name: 'stylusPlugins',
+        choices: [
+          'Autoprefixer',
+          'Nib',
+          'Axis', // extends nib
+          'Rupture',
+          'Fluidity',
+          'Jeet' // extends nib
+        ],
+        default: ['Autoprefixer', 'Nib'],
+        message: 'Stylus plugins'
+      }];
 
 
-    this.prompt(prompts, function(answers) {
-      this.stylusPlugins = answers.stylusPlugins;
+      this.prompt(prompts, function(answers) {
+        this.stylusPlugins = answers.stylusPlugins;
 
-      var contains = containsFor(this.stylusPlugins);
-      this.nib = contains('Nib');
-      this.axis = contains('Axis');
-      this.fluidity = contains('Fluidity');
-      this.jeet = contains('Jeet');
-      this.rupture = contains('Rupture');
-      this.autoprefixer = contains('Autoprefixer');
+        var contains = containsFor(this.stylusPlugins);
+        this.nib = contains('Nib');
+        this.axis = contains('Axis');
+        this.fluidity = contains('Fluidity');
+        this.jeet = contains('Jeet');
+        this.rupture = contains('Rupture');
+        this.autoprefixer = contains('Autoprefixer');
 
-      done();
-    }.bind(this));
+        done();
+      }.bind(this));
+    }
   },
 
   // See File API: https://github.com/sboudrias/mem-fs-editor
   writing: {
+    readme: function() {
+      this.fs.copyTpl(
+        this.templatePath('root/_Styles.md'),
+        this.destinationPath('Styles.md'), {
+          stylus: this.stylus
+        }
+      );
+    },
+
     clearOld: function() {
       var self = this;
       if (!this.removeOld) return;
@@ -237,8 +248,6 @@ module.exports = yeoman.generators.Base.extend({
         );
       }
 
-      //
-
       var list = [];
       // autoprefixer should be last
       for (let name of this.stylusPlugins) {
@@ -248,10 +257,7 @@ module.exports = yeoman.generators.Base.extend({
         return plugin + '()';
       }).join(', ');
 
-      console.log('useList', useList);
-
       if (this.stylus) {
-        console.log('copy stylus task');
         this.fs.copyTpl(
           this.templatePath('styles/tasks/_stylus.js'),
           this.destinationPath('build/tasks/stylus.js'), {

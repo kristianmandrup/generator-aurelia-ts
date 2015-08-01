@@ -130,9 +130,18 @@ Experimental support for installing various Aurelia plguins:
 
 `yo aurelia-ts:plugins`
 
-Plugins list: - [Flux](https://github.com/tfrydrychewicz/aurelia-flux) - [Authentication](https://github.com/paulvanbladel/aureliauth) - [Validation](https://github.com/aurelia/validation) - [i18next](https://github.com/zewa666/aurelia-i18next) - [Computed properties](https://github.com/jdanyow/aurelia-computed/) - [Bootstrap Modal])https://github.com/PWKad/aurelia-bs-modal) (if Bootstrap) - [Rethink DB bindings](https://github.com/kristianmandrup/aurelia-rethink-bindtable) - [Breeze bindings](https://github.com/jdanyow/aurelia-breeze) - ... - (TODO: Add YOUR favorite plugins...)
+-	[Flux](https://github.com/tfrydrychewicz/aurelia-flux)
+-	[Authentication](https://github.com/paulvanbladel/aureliauth)
+-	[Validation](https://github.com/aurelia/validation)
+-	[i18next](https://github.com/zewa666/aurelia-i18next)
+-	[Computed properties](https://github.com/jdanyow/aurelia-computed/)
+-	[Bootstrap Modal](https://github.com/PWKad/aurelia-bs-modal)
+-	[Rethink DB bindings](https://github.com/kristianmandrup/aurelia-rethink-bindtable)
+-	[Breeze bindings](https://github.com/jdanyow/aurelia-breeze)
+-	...
+-	(TODO: Add YOUR favorite plugins...)
 
-See [jspm registry](https://github.com/jspm/registry/blob/master/registry.json) for predefined entries setup to be installed by name,such as: `jspm install semantic-ui`
+See [jspm registry](https://github.com/jspm/registry/blob/master/registry.json) for predefined entries setup to be installed by name, such as: `jspm install semantic-ui`
 
 Frameworks
 ----------
