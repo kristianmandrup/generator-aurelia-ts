@@ -181,8 +181,6 @@ module.exports = yeoman.generators.Base.extend({
     this.prompt(prompts, function(answers) {
       this.title = answers.title;
       this.appName = normalizeName(answers.appName || this.appName);
-      console.log(this.appName);
-
       this.appDesc = answers.title;
 
       this.authorName = answers.authorName;

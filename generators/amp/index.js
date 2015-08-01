@@ -21,7 +21,6 @@ function info(msg) {
 function jspmInstallAmp(names) {
   var params = names.map(function(name) {
     var fullName = ['ampersand', name].join('-');
-    console.log('fullName', fullName);
     return ['github:ampersandjs', fullName].join('/');
   });
   runJspmInstall(params);
