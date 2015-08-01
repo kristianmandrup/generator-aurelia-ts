@@ -1,6 +1,6 @@
 {
   "name": "generator-aurelia-ts",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Aurelia App generator with: TypeScript, CLI, UI frameworks and more ;)",
   "license": "MIT",
   "main": "app/index.js",
