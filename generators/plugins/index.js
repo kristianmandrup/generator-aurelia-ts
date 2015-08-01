@@ -3,9 +3,10 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
+var fs = require('node-fs-extra');
 
 var generator;
-var selected;
+var selected, ext;
 
 function info(msg) {
   console.log(msg);
@@ -164,6 +165,12 @@ function prepare4Tpl(list) {
   });
 }
 
+// test if project contains an app.ts file. If so assume we are using TypeScript!
+function getJsLangExt() {
+  var appTs = generator.destinationPath('src/app.ts');
+  return fs.existsSync(appTs) ? 'ts' : 'js';
+}
+
 module.exports = yeoman.generators.Base.extend({
 
   // note: arguments and options should be defined in the constructor.
@@ -173,6 +180,8 @@ module.exports = yeoman.generators.Base.extend({
     this.props = {};
     this.props.bootstrap = this.options.bootstrap;
     generator = this;
+
+    ext = getJsLangExt();
   },
 
   initializing: function() {
@@ -297,8 +306,8 @@ module.exports = yeoman.generators.Base.extend({
     srcFiles: function() {
       // TODO: choose to use either .ts or .js file somehow!
       this.fs.copyTpl(
-        this.templatePath('src/_plugin-config.js'),
-        this.destinationPath('src/plugin-config.js'), {
+        this.templatePath(`src/_plugin-config.${ext}`),
+        this.destinationPath(`src/plugin-config.${ext}`), {
           selected: prepare4Tpl(this.realPlugins),
           i18next: this.i18next,
           materialize: this.materialize,
@@ -319,6 +328,11 @@ module.exports = yeoman.generators.Base.extend({
   install: function() {
     info("Installing Plugins...");
     jspmInstall(selected);
+
+    // fixes bad jade dependency: https://github.com/Craga89/aurelia-jade-viewstrategy/issues/2
+    if (this.jade) {
+      runJspmInstall('npm:jade');
+    }
   },
 
   end: function() {
