@@ -17,6 +17,18 @@ function command(msg) {
   console.log('  $ ' + msg);
 }
 
+function copyView(framework, view) {
+  generator.fs.copy(
+    generator.templatePath(`views/${framework}/${view}.html`),
+    generator.destinationPath(`src/${view}.html`)
+  );
+}
+
+function selectedFramework(framework) {
+  if (framework.match(/Bootstrap/)) return 'bootstrap';
+  return generator.primary.toLowerCase();
+}
+
 var repoKeyMap = {
   'Bootstrap': 'bootstrap',
   'Bootstrap Material': 'bootstrap-material',
@@ -156,6 +168,19 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   writing: {
+    // For now only use one Framework as the baseline!
+    viewFiles: function() {
+      if (!this.primary) {
+        this.primary = 'Bootstrap';
+      }
+
+      info('Using primary UI framework: ' + this.primary);
+      let framework = selectedFramework(this.primary);
+      for (let view of ['app', 'nav-bar', 'welcome']) {
+        copyView(framework, view);
+      }
+    },
+
     app: function() {
       var self = this;
 
@@ -201,33 +226,6 @@ module.exports = yeoman.generators.Base.extend({
           semanticUI: self.semanticUI
         }
       );
-    },
-
-    // For now only use one Framework as the baseline!
-    viewFiles: function() {
-      if (!this.primary) {
-        this.primary = 'Bootstrap';
-      }
-
-      info('Using primary UI framework: ' + this.primary);
-
-      // default if no primary chosen
-      if (this.primary.match(/Bootstrap/)) {
-        this.bulkDirectory('views/bootstrap', 'src');
-      }
-      // TODO Bootstrap Material?
-
-      if (this.primary == 'Foundation') {
-        this.bulkDirectory('views/foundation', 'src');
-      }
-
-      if (this.primary == 'Semantic-UI') {
-        this.bulkDirectory('views/semantic-ui', 'src');
-      }
-
-      if (this.primary == 'Framework7') {
-        this.bulkDirectory('views/framework7', 'src');
-      }
     }
   },
 

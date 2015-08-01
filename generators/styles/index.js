@@ -13,9 +13,12 @@ function prepare4Tpl(list) {
   });
 }
 
+
 function info(msg) {
   console.log(msg);
 }
+
+let log = info;
 
 function command(msg) {
   console.log('  $ ' + msg);
@@ -181,19 +184,17 @@ module.exports = yeoman.generators.Base.extend({
     styleFiles: function() {
       var self = this;
 
-      var stylusIdx = this.styleLangs.indexOf('stylus');
-      if (stylusIdx >= 0) {
+      if (this.stylus) {
+        let stylusIdx = this.styleLangs.indexOf('Stylus');
         var bulkStyles = this.styleLangs.slice(0);
         bulkStyles.splice(stylusIdx, 1);
-      }
 
-      for (let lang of bulkStyles) {
-        var folder = stylesFolder(lang);
-        var path = stylesPath(folder);
-        this.bulkDirectory(path, path);
-      }
+        for (let lang of bulkStyles) {
+          var folder = stylesFolder(lang);
+          var path = stylesPath(folder);
+          this.bulkDirectory(path, path);
+        }
 
-      if (this.stylus) {
         this.fs.copyTpl(
           this.templatePath('styles/stylus/_styles.styl'),
           this.destinationPath('styles/stylus/styles.styl'), {
@@ -240,16 +241,17 @@ module.exports = yeoman.generators.Base.extend({
 
       var list = [];
       // autoprefixer should be last
-      for (let plugin of ['axis', 'rupture', 'jeet', 'autoprefixer']) {
-        if (this[plugin]) {
-          list.push(plugin);
-        }
+      for (let name of this.stylusPlugins) {
+        list.push(name.toLowerCase());
       }
       var useList = list.map(function(plugin) {
         return plugin + '()';
-      }).join(',');
+      }).join(', ');
+
+      console.log('useList', useList);
 
       if (this.stylus) {
+        console.log('copy stylus task');
         this.fs.copyTpl(
           this.templatePath('styles/tasks/_stylus.js'),
           this.destinationPath('build/tasks/stylus.js'), {

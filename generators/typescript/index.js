@@ -15,9 +15,13 @@ function runJspmInstall(list) {
   generator.spawnCommand('jspm', list);
 }
 
+// Can be used to create jspm package install map
+// See plugins generator
+var jsmpInstallsMap = {};
+
 function jspmInstall(names) {
   var params = names.map(function(name) {
-    var resolved = jspmInstalls[name];
+    var resolved = jsmpInstallsMap[name];
     if (!resolved) {
       resolved = name;
     }
@@ -26,13 +30,15 @@ function jspmInstall(names) {
   runJspmInstall(params);
 }
 
-// Can be used to create jspm package install map
-// See plugins generator
-var jsmpInstallsMap = {};
-
 // TODO: How to pass --save-dev option ??
 function jspmInstallDev(names) {
   jspmInstall(names);
+}
+
+function containsFor(list) {
+  return function contains(value) {
+    return list.indexOf(value) >= 0;
+  }
 }
 
 module.exports = yeoman.generators.Base.extend({
@@ -45,11 +51,12 @@ module.exports = yeoman.generators.Base.extend({
     this.props.cssFrameworks = this.options.cssFrameworks;
     this.cssFrameworks = this.props.cssFrameworks;
     if (this.cssFrameworks) {
-      // TODO: use helper function
-      this.semanticUI = this.cssFrameworks.indexOf('Semantic-UI') >= 0;
-      this.framework7 = this.cssFrameworks.indexOf('Framework7') >= 0;
-      this.foundation = this.cssFrameworks.indexOf('Foundation') >= 0;
-      this.bootstrap = this.cssFrameworks.indexOf('Bootstrap') >= 0;
+      let contains = containsFor(this.cssFrameworks);
+
+      this.semanticUI = contains('Semantic-UI');
+      this.framework7 = contains('Framework7');
+      this.foundation = contains('Foundation');
+      this.bootstrap = contains('Bootstrap');
     }
 
     this.props.visualStudio = this.options.visualStudio;

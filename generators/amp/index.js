@@ -64,7 +64,6 @@ module.exports = yeoman.generators.Base.extend({
       name: 'humanModel',
       message: 'Human model',
       default: false
-
     }];
 
     this.prompt(prompts, function(answers) {

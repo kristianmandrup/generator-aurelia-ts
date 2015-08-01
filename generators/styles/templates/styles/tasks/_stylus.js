@@ -10,7 +10,7 @@ var sourcemaps = require('gulp-sourcemaps');
 gulp.task('stylus', function () {
   gulp.src(paths.stylus)
     .pipe(sourcemaps.init())
-    .pipe(stylus({'include css': true}).use([<% useList %>]))
+    .pipe(stylus({'include css': true}).use([<%= useList %>]))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(paths.styleDest));
 });
