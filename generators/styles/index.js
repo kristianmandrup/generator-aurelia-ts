@@ -5,7 +5,7 @@ var yosay = require('yosay');
 require('sugar');
 var fs = require('node-fs-extra');
 
-var generator;
+var generator, linux, macOSX;
 
 function prepare4Tpl(list) {
   return list.map(function(item) {
@@ -120,6 +120,10 @@ module.exports = yeoman.generators.Base.extend({
     if (!this.stylus) return;
 
     var done = this.async();
+
+    info('Note: For Nib you need cairo installed for canvas installation used');
+    info('brew install cairo (MacOSX)');
+    info('wget https://raw.githubusercontent.com/LearnBoost/node-canvas/master/install -O - | sh');
 
     var prompts = [{
       type: 'checkbox',
@@ -283,8 +287,17 @@ module.exports = yeoman.generators.Base.extend({
       }
 
       if (this.nib) {
-        generator.npmInstall('nib', {saveDev: true});
+        if (this.cairo) {
+          if (linux) {
+            generator.spawnCommand('wget', ['https://raw.githubusercontent.com/LearnBoost/node-canvas/master/install -O - | sh']);
+          }
+          if (macOSX) {
+            generator.spawnCommand('brew', ['install', 'cairo']);
+          }
+        }
         generator.npmInstall('canvas', {saveDev: true});
+        generator.npmInstall('nib', {saveDev: true});
+
       }
 
       if (this.axis) {
