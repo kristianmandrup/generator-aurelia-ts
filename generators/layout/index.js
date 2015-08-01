@@ -13,10 +13,6 @@ function info(msg) {
   console.log(msg);
 }
 
-function command(msg) {
-  console.log('  $ ' + msg);
-}
-
 function copyView(framework, view) {
   generator.fs.copy(
     generator.templatePath(`views/${framework}/${view}.html`),
@@ -25,6 +21,7 @@ function copyView(framework, view) {
 }
 
 function selectedFramework(framework) {
+  if (framework == 'None') return;
   if (framework.match(/Bootstrap/)) return 'bootstrap';
   return generator.primary.toLowerCase();
 }
@@ -83,6 +80,9 @@ module.exports = yeoman.generators.Base.extend({
     // ui framework options
     this.option('ui', {type: 'string'});
 
+    this.appTitle = this.options.appTitle || 'My App';
+    this.appDesc = this.options.appDesc || 'No description...';
+
     this.props.uiFramework = uiFrameworkMap[this.options.ui];
 
     this.props.fa = this.options.fa;
@@ -93,78 +93,84 @@ module.exports = yeoman.generators.Base.extend({
 
   // TODO: Add prompt for style lang unless passed as argument
   // TODO: Add editor selection prompt
-  prompting: function() {
-    var done = this.async();
+  prompting: {
+    phase1: function() {
+      var done = this.async();
 
-    var prompts = [];
+      var prompts = [];
 
-    defaultUI = this.props.uiFramework || 'Bootstrap';
+      defaultUI = this.props.uiFramework || 'Bootstrap';
 
-    var uiFrameWorksPrompt = {
-      type: 'checkbox',
-      name: 'style',
-      choices: [
-        'Bootstrap',
-        'Bootstrap Material',
-        'Foundation',
-        'Semantic-UI',
-        'Framework7'
-      ],
-      default: [defaultUI],
-      message: 'Layout frameworks'
+      var uiFrameWorksPrompt = {
+        type: 'checkbox',
+        name: 'cssFrameworks',
+        choices: [
+          'None',
+          'Bootstrap',
+          'Bootstrap Material',
+          'Foundation',
+          'Semantic-UI',
+          'Framework7'
+        ],
+        default: [defaultUI],
+        message: 'Layout frameworks'
+      }
+
+      // should not prompt to install
+      // if options are passed to force install
+      var faPrompt = {
+        type: 'confirm',
+        name: 'fontAwesome',
+        message: 'Font Awesome',
+        default: true
+      };
+
+      if (!this.props.fa) {
+        prompts.push(faPrompt);
+      }
+
+      if (!this.props.uiFrameworks) {
+        prompts.push(uiFrameWorksPrompt);
+      }
+
+      // info('Install UI/Layout Frameworks:');
+
+      this.prompt(prompts, function(answers) {
+        this.cssFrameworks = answers.cssFrameworks.length > 0 ? answers.cssFrameworks : ['None'];
+
+        this.fontAwesome = answers.fontAwesome || this.props.fa;
+        var contains = containsFor(this.cssFrameworks);
+
+        this.semanticUI = contains('Semantic-UI');
+        this.framework7 = contains('Framework7');
+        this.foundation = contains('Foundation');
+        this.bootstrap = contains('Bootstrap');
+        this.bootstrapMaterial = contains('Bootstrap Material');
+
+        // this.config.save();
+        done();
+      }.bind(this));
+    },
+
+    phase2: function() {
+      var done = this.async();
+      var morePrompts = [{
+        type: 'list',
+        name: 'primary',
+        message: 'Primary layout framework',
+        choices: this.cssFrameworks,
+        default: [defaultUI]
+      }];
+
+      this.prompt(morePrompts, function(answers) {
+        this.primary = answers.primary;
+        if (this.primary == 'None') {
+          this.cssFrameworks = [];
+        }
+        // this.config.save();
+        done();
+      }.bind(this));
     }
-
-    // should not prompt to install
-    // if options are passed to force install
-    var faPrompt = {
-      type: 'confirm',
-      name: 'fontAwesome',
-      message: 'Font Awesome',
-      default: true
-    };
-
-    if (!this.props.fa) {
-      prompts.push(faPrompt);
-    }
-
-    if (!this.props.uiFrameworks) {
-      prompts.push(uiFrameWorksPrompt);
-    }
-
-    // info('Install UI/Layout Frameworks:');
-
-    this.prompt(prompts, function(answers) {
-      this.cssFrameworks = answers.style;
-      this.fontAwesome = answers.fontAwesome || this.props.fa;
-      var contains = containsFor(this.cssFrameworks);
-
-      this.semanticUI = contains('Semantic-UI');
-      this.framework7 = contains('Framework7');
-      this.foundation = contains('Foundation');
-      this.bootstrap = contains('Bootstrap');
-      this.bootstrapMaterial = contains('Bootstrap Material');
-
-      // this.config.save();
-      done();
-    }.bind(this));
-  },
-
-  default: function() {
-    var done = this.async();
-    var morePrompts = [{
-      type: 'list',
-      name: 'primary',
-      message: 'Primary layout framework',
-      choices: this.cssFrameworks,
-      default: [defaultUI]
-    }];
-
-    this.prompt(morePrompts, function(answers) {
-      this.primary = answers.primary;
-
-      // this.config.save();
-      done();
-    }.bind(this));
   },
 
   writing: {
@@ -173,16 +179,19 @@ module.exports = yeoman.generators.Base.extend({
       if (!this.primary) {
         this.primary = 'Bootstrap';
       }
+      this.selFramework = selectedFramework(this.primary);
 
+      if (!this.selFramework) return;
       info('Using primary UI framework: ' + this.primary);
-      let framework = selectedFramework(this.primary);
       for (let view of ['app', 'nav-bar', 'welcome']) {
-        copyView(framework, view);
+        copyView(this.selFramework, view);
       }
     },
 
     app: function() {
       var self = this;
+
+      if (!this.selFramework) return;
 
       if (fs.existsSync('src/app.js')) {
         self.fs.copyTpl(
@@ -234,7 +243,7 @@ module.exports = yeoman.generators.Base.extend({
       info("Installing Font Awesome :)");
       jspmInstall(['font-awesome']);
     }
-
+    if (!this.selFramework) return;
     info("Installing Layout frameworks...");
     var repoKeys = this.cssFrameworks.map(function(label) {
       info(label);
@@ -244,6 +253,7 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   end: function() {
+    if (!this.selFramework) return;
     info("Installed:" + this.cssFrameworks.join(' '));
   }
 });

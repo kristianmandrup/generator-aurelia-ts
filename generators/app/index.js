@@ -326,6 +326,8 @@ module.exports = yeoman.generators.Base.extend({
     if (this.installLayout) {
       this.composeWith('aurelia-ts:layout', {
         options: {
+          appTitle: this.appTitle,
+          appDesc: this.appDesc,
           ui: this.options.ui,
           fa: this.options.fa
         }
