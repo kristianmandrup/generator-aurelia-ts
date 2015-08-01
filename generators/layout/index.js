@@ -13,6 +13,10 @@ function info(msg) {
   console.log(msg);
 }
 
+function isEmpty(list) {
+  return (!list || list.length < 1);
+}
+
 function copyView(framework, view) {
   generator.fs.copy(
     generator.templatePath(`views/${framework}/${view}.html`),
@@ -113,10 +117,6 @@ module.exports = yeoman.generators.Base.extend({
         ],
         default: [defaultUI],
         message: 'Layout frameworks'
-        // if no answers return ['None'];
-        when: function(answers) {
-          return (!answers || answers.length == 0) ? ['None'] : answers;
-        }
       }
 
       // should not prompt to install
@@ -139,7 +139,7 @@ module.exports = yeoman.generators.Base.extend({
       // info('Install UI/Layout Frameworks:');
 
       this.prompt(prompts, function(answers) {
-        this.cssFrameworks = answers.cssFrameworks || [];
+        this.cssFrameworks = isEmpty(answers.cssFrameworks) ? ['None'] : answers.cssFrameworks;
 
         this.fontAwesome = answers.fontAwesome || this.props.fa;
         var contains = containsFor(this.cssFrameworks);
@@ -162,7 +162,7 @@ module.exports = yeoman.generators.Base.extend({
         name: 'primary',
         message: 'Primary layout framework',
         choices: this.cssFrameworks,
-        default: [defaultUI]
+        default: []
       }];
 
       this.prompt(morePrompts, function(answers) {
