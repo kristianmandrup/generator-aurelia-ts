@@ -28,19 +28,93 @@ function runJspmInstall(list) {
   generator.spawnCommand('jspm', list);
 }
 
-Array.prototype.hasEntry(obj) {
+Array.prototype.hasEntry = function(obj) {
   return this.indexOf(obj) >= 0;
 }
 
 function filterReal(list) {
-  list.filter(function(name) {
+  return list.filter(function(name) {
     return pluginMap[name];
   }).map(function(name) {
     return pluginMap[name];
   })
 }
 
-var pluginMap = [
+function docRepos(selected) {
+  return selected.map(function(name) {
+    let entry = repoMap[name];
+    return `- [${entry.label}](${entry.repo})`;
+  }).join('\n')
+}
+
+var repoMap = {
+  flux: {
+    label: 'Flux',
+    repo: 'https://github.com/tfrydrychewicz/aurelia-flux'
+  },
+  auth: {
+    label: 'Authentication',
+    repo: 'https://github.com/paulvanbladel/aureliauth'
+  },
+  validation: {
+    label: 'Validation',
+    repo: 'https://github.com/aurelia/validation'
+  },
+  computed: {
+    label: 'Computed properties',
+    repo: 'https://github.com/jdanyow/aurelia-computed',
+  },
+  i18next: {
+    label: 'i18next',
+    repo: 'https://github.com/zewa666/aurelia-i18next'
+  },
+  bsModal: {
+    label: 'Bootstrap Modal',
+    repo: 'https://github.com/PWKad/aurelia-bs-modal',
+  },
+  rethinkDB: {
+    label: 'Rethink DB bindings',
+    repo: 'https://github.com/kristianmandrup/aurelia-rethink-bindtable'
+  },
+  breeze: {
+    label: 'Breeze bindings',
+    repo: 'https://github.com/jdanyow/aurelia-breeze'
+  },
+  async: {
+    label: 'Async',
+    repo: 'https://github.com/jdanyow/aurelia-async'
+  },
+  animator: {
+    label: 'CSS Animator',
+    repo: 'https://github.com/aurelia/aurelia-animator-css'
+  },
+  dialog: {
+    label: 'Dialog',
+    repo: 'https://github.com/gooy/aurelia-dialogs'
+  },
+  fetch: {
+    label: 'Fetch Client',
+    repo: 'https://github.com/aurelia/fetch-client'
+  },
+  virtualList: {
+    label: 'Virtual List',
+    repo: 'https://github.com/aurelia/ui-virtualization'
+  },
+  leaflet: {
+    label: 'Leaflet',
+    repo: 'https://github.com/ceoaliongroo/aurelia-leaflet'
+  },
+  jadeViews: {
+    label: 'Jade View Strategy',
+    repo: 'https://github.com/Craga89/aurelia-jade-viewstrategy'
+  },
+  materialize: {
+    label: 'Material UI',
+    repo: 'https://github.com/manuel-guilbault/aurelia-materialize'
+  }
+}
+
+var pluginMap = {
   animator: 'aurelia-animator-css',
   validation: 'aurelia-validation',
   computed: 'aurelia-computed',
@@ -52,7 +126,7 @@ var pluginMap = [
   breeze: 'aurelia-breeze',
   bsModal: 'aurelia-bs-modal'
   // more...
-];
+};
 
 var jsmpInstallsMap = {
   animator: 'aurelia-animator-css',
@@ -184,7 +258,7 @@ module.exports = yeoman.generators.Base.extend({
         var answer = answers[key];
 
         if (typeof answer === 'boolean') {
-          this.sel[key] = answer;
+          this.sel[key] = answer ? key : false;
         } else {
           // Assume Array
           for (let choice of answer) {
@@ -205,7 +279,7 @@ module.exports = yeoman.generators.Base.extend({
     }.bind(this));
   },
 
-  writing: function () {
+  writing: {
     prepare: function() {
       this.realPlugins = filterReal(selected);
       this.conflicter.force = true;
@@ -215,15 +289,16 @@ module.exports = yeoman.generators.Base.extend({
       this.fs.copyTpl(
         this.templatePath('root/_Plugins.md'),
         this.destinationPath('Plugins.md'), {
-          selected: prepare4Tpl(realPlugins)
+          selectedPluginRepos: docRepos(selected)
         }
       );
     },
 
     srcFiles: function() {
+      // TODO: choose to use either .ts or .js file somehow!
       this.fs.copyTpl(
-        this.templatePath('src/_plugin_config.js'),
-        this.destinationPath('src/plugin_config.js'), {
+        this.templatePath('src/_plugin-config.js'),
+        this.destinationPath('src/plugin-config.js'), {
           selected: prepare4Tpl(this.realPlugins),
           i18next: this.i18next,
           materialize: this.materialize,
@@ -239,7 +314,7 @@ module.exports = yeoman.generators.Base.extend({
         );
       }
     }
-  }
+  },
 
   install: function() {
     info("Installing Plugins...");
@@ -247,6 +322,6 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   end: function() {
-    info('Installed: ' + selected.join(' '));
+    info('Installed: ' + selected.join(', '));
   }
 });
