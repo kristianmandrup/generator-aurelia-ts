@@ -11,10 +11,6 @@ function info(msg) {
   console.log(msg);
 }
 
-function spawn(params) {
-  generator.spawnCommand('jspm', params);
-}
-
 function jspmInstall(names) {
   var params = names.map(function(name) {
     var resolved = jsmpInstallsMap[name];
@@ -23,34 +19,62 @@ function jspmInstall(names) {
     }
     return resolved;
   });
-
-  params.unshift('install');
-  if (params) {
-    // var done = generator.async();
-    spawn(params);
-    // done();
-  }
+  runJspmInstall(params);
 }
 
+function runJspmInstall(list) {
+  if (!list || list.length ==0) return;
+  list.unshift('install');
+  generator.spawnCommand('jspm', list);
+}
+
+Array.prototype.hasEntry(obj) {
+  return this.indexOf(obj) >= 0;
+}
+
+function filterReal(list) {
+  list.filter(function(name) {
+    return pluginMap[name];
+  }).map(function(name) {
+    return pluginMap[name];
+  })
+}
+
+var pluginMap = [
+  animator: 'aurelia-animator-css',
+  validation: 'aurelia-validation',
+  computed: 'aurelia-computed',
+  async: 'aurelia-async',
+  virtualList: 'aurelia-ui-virtualization',
+  i18next: 'aurelia-i18next',
+  auth: 'aureli-auth',
+  leaflet: 'aurelia-leaflet',
+  breeze: 'aurelia-breeze',
+  bsModal: 'aurelia-bs-modal'
+  // more...
+];
+
 var jsmpInstallsMap = {
+  animator: 'aurelia-animator-css',
   async: 'aurelia-async',
   flux: 'aurelia-flux',
   computed: 'aurelia-computed',
   dialog: 'aurelia-dialog',
   fetch: 'aurelia-fetch-client',
   virtualList: 'aurelia-ui-virtualization',
-  leaflet: 'github:ceoaliongroo/aurelia-leaflet',
-  i18next: 'github:zewa666/aurelia-i18next',
+  leaflet: 'aurelia-leaflet=github:ceoaliongroo/aurelia-leaflet',
+  i18next: 'aurelia-i18next=github:zewa666/aurelia-i18next',
   bsModal: 'aurelia-bs-modal',
-  auth: 'github:paulvanbladel/aureliauth',
+  auth: 'aureli-auth=github:paulvanbladel/aureliauth',
   validation: 'aurelia-validation',
-  jadeViews: 'github:Craga89/aurelia-jade-viewstrategy',
-  materialize: 'github:manuel-guilbault/aurelia-materialize',
-  rethinkDB: 'github:kristianmandrup/aurelia-rethink-bindtable',
+  jadeViews: 'aurelia-jade-viewstrategy=github:Craga89/aurelia-jade-viewstrategy',
+  materialize: 'aurelia-materialize=github:manuel-guilbault/aurelia-materialize',
+  rethinkDB: 'aurelia-rethink-bindtable=github:kristianmandrup/aurelia-rethink-bindtable',
   breeze: 'aurelia-breeze'
 };
 
 var mapped = {
+  'Animator': 'animator',
   'Virtual List': 'virtualList',
   'Dialog': 'dialog',
   'Async': 'async',
@@ -58,6 +82,12 @@ var mapped = {
   'Breeze bindings': 'breeze',
   'RethinkDB bindings': 'rethinkDB',
   'Jade Views': 'jadeViews'
+}
+
+function prepare4Tpl(list) {
+  return list.map(function(item) {
+    return "'" + item + "'";
+  });
 }
 
 module.exports = yeoman.generators.Base.extend({
@@ -84,7 +114,7 @@ module.exports = yeoman.generators.Base.extend({
     var prompts = [{
       type: 'checkbox',
       name: 'ui',
-      choices: ['Virtual List', 'Dialog', 'Materialize'],
+      choices: ['Virtual List', 'Dialog', 'Materialize', 'Animator'],
       message: 'UI',
       default: [],
     }, {
@@ -158,7 +188,7 @@ module.exports = yeoman.generators.Base.extend({
         } else {
           // Assume Array
           for (let choice of answer) {
-            var name = mapped[choice];
+            var name = mapped[choice] || choice.toLowerCase();
             this.sel[name] = name;
           }
         }
@@ -175,10 +205,32 @@ module.exports = yeoman.generators.Base.extend({
     }.bind(this));
   },
 
+  writing: function (argument) {
+    srcFiles: function() {
+      var realPlugins = filterReal(selected);
+
+      this.conflicter.force = true;
+      this.fs.copyTpl(
+        this.templatePath('src/_plugin_config.js'),
+        this.destinationPath('src/plugin_config.js'), {
+          selected: prepare4Tpl(realPlugins),
+          i18next: this.i18next,
+          materialize: this.materialize,
+          validation: this.validation
+        }
+      );
+    },
+    specialFiles: function() {
+      if (this.validation) {
+        this.fs.copy(
+          this.templatePath('src/welcome.js'),
+          this.destinationPath('src/welcome.js')
+        );
+      }
+    }
+  }
+
   install: function() {
-    // TODO: iterate selection map
-    // lookup how to install selection in jspm map
-    // This is terrible pattern duplication (quick hack!)
     info("Installing Plugins...");
     jspmInstall(selected);
   },

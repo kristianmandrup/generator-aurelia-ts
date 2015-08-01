@@ -5,7 +5,7 @@ var yosay = require('yosay');
 require('sugar');
 var fs = require('node-fs-extra');
 
-var generator;
+var generator, linux, macOSX;
 
 function prepare4Tpl(list) {
   return list.map(function(item) {
@@ -121,6 +121,10 @@ module.exports = yeoman.generators.Base.extend({
 
     var done = this.async();
 
+    info('Note: For Nib you need cairo installed for canvas installation used');
+    info('brew install cairo (MacOSX)');
+    info('wget https://raw.githubusercontent.com/LearnBoost/node-canvas/master/install -O - | sh');
+
     var prompts = [{
       type: 'checkbox',
       name: 'stylusPlugins',
@@ -215,8 +219,8 @@ module.exports = yeoman.generators.Base.extend({
       watchTasks = prepare4Tpl(watchTasks);
 
       this.fs.copyTpl(
-        this.templatePath('styles/tasks/_css.js'),
-        this.destinationPath('build/tasks/css.js'), {
+        this.templatePath('styles/tasks/_styles.js'),
+        this.destinationPath('build/tasks/styles.js'), {
           preProcessors: preProcessors,
           watchTasks: watchTasks,
           styles: this.styleLangs.join(' and '),
@@ -279,24 +283,37 @@ module.exports = yeoman.generators.Base.extend({
       generator.npmInstall('gulp-stylus', {saveDev: true});
 
       if (this.autoprefixer) {
-        generator.npmInstall('autoprefixer-stylus', {save: true});
+        generator.npmInstall('autoprefixer-stylus', {saveDev: true});
       }
 
       if (this.nib) {
-        generator.npmInstall('nib', {save: true});
-        generator.npmInstall('canvas', {save: true});
+        if (this.cairo) {
+          if (linux) {
+            generator.spawnCommand('wget', ['https://raw.githubusercontent.com/LearnBoost/node-canvas/master/install -O - | sh']);
+          }
+          if (macOSX) {
+            generator.spawnCommand('brew', ['install', 'cairo']);
+          }
+        }
+        generator.npmInstall('canvas', {saveDev: true});
+        generator.npmInstall('nib', {saveDev: true});
+
       }
 
       if (this.axis) {
-        generator.npmInstall('axis', {save: true});
+        generator.npmInstall('axis', {saveDev: true});
       }
 
       if (this.fluidity) {
-        generator.npmInstall('fluidity', {save: true});
+        generator.npmInstall('fluidity', {saveDev: true});
+      }
+
+      if (this.rupture) {
+        generator.npmInstall('rupture', {saveDev: true});
       }
 
       if (this.jeet) {
-        generator.npmInstall('jeet', {save: true});
+        generator.npmInstall('jeet', {saveDev: true});
       }
     }
 

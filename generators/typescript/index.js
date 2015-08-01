@@ -9,30 +9,13 @@ function info(msg) {
   console.log(msg);
 }
 
-function spawn(params) {
-  generator.spawnCommand('jspm', params);
+function runJspmInstall(list) {
+  if (!list || list.length == 0) return;
+  list.unshift('install');
+  generator.spawnCommand('jspm', list);
 }
 
 function jspmInstall(names) {
-  var params = names.map(function(name) {
-    var resolved = jsmpInstallsMap[name];
-    if (!resolved) {
-      resolved = name;
-    }
-    return resolved;
-  });
-  for (let name of params) {
-    chalk.blue(name);
-  }
-
-  params.unshift('install');
-  if (params) {
-    // var done = generator.async();
-    spawn(params);
-    // done();
-  }
-}
-function jsmpInstallsMap(names) {
   var params = names.map(function(name) {
     var resolved = jspmInstalls[name];
     if (!resolved) {
@@ -40,16 +23,7 @@ function jsmpInstallsMap(names) {
     }
     return resolved;
   });
-  for (let name of params) {
-    chalk.blue(name);
-  }
-
-  params.unshift('install');
-  if (params) {
-    // var done = generator.async();
-    spawn(params);
-    // done();
-  }
+  runJspmInstall(params);
 }
 
 // Can be used to create jspm package install map
@@ -167,7 +141,8 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   install: function() {
-    jspmInstall(['typescript', 'npm:gulp-typescript', 'ts=github:frankwallis/plugin-typescript@^1.0.5']);
+    jspmInstall(['typescript', 'ts=github:frankwallis/plugin-typescript@^1.0.5']);
+    generator.npmInstall('gulp-typescript', {saveDev: true});
 
     // if (this.props.installDeps) {
     //   this.installDeps();

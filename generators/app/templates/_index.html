@@ -14,7 +14,15 @@
     <script src="jspm_packages/system.js"></script>
     <script src="config.js"></script>
     <script>
-      System.import('aurelia-bootstrapper');
+      <% if (!ie9) { %>System.import('aurelia-bootstrapper');<% } %>
+      <% if (ie9) { %>// Loads WeakMap polyfill needed by MutationObservers
+      System.import('core-js').then( function() {
+        // Imports MutationObserver polyfill
+        System.import('polymer/mutationobservers').then( function() {
+          // Ensures start of Aurelia when all required IE9 dependencies are loaded
+          System.import('aurelia-bootstrapper');
+        })
+      });<% } %>
     </script>
   </body>
 </html>

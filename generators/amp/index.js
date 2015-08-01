@@ -20,7 +20,8 @@ function info(msg) {
 
 function jspmInstallAmp(names) {
   var params = names.map(function(name) {
-    var fullName = []'ampersand', name].join('-');
+    var fullName = ['ampersand', name].join('-');
+    console.log('fullName', fullName);
     return ['github:ampersandjs', fullName].join('/');
   });
   runJspmInstall(params);
@@ -28,8 +29,8 @@ function jspmInstallAmp(names) {
 
 function runJspmInstall(list) {
   if (!list || list.length ==0) return;
-  var args = list.unshift('install');
-  generator.spawnCommand('jspm', args);
+  list.unshift('install');
+  generator.spawnCommand('jspm', list);
 }
 
 // Ampersand
@@ -68,10 +69,10 @@ module.exports = yeoman.generators.Base.extend({
 
     this.prompt(prompts, function(answers) {
       this.modules = [];
-      for (let key of Object.keys(answers.modules)) {
-        this[key] = answers[key];
-        this.modules.push(key);
+      for (let name of answers.modules) {
+        this[name] = true;
       }
+      this.modules = answers.modules;
       this.humanModel = answers.humanModel;
       // this.config.save();
 
