@@ -1,36 +1,13 @@
-// npm install -g ampersand : CLI
-// AmpersandJS/ampersand-app
-// AmpersandJS/ampersand-collection
-// https://github.com/ampersandjs/ampersand-model
-// https://github.com/ampersandjs/ampersand-rest-collection
-// AmpersandJS/ampersand-registry
-
 'use strict';
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
-
+let lib = require('../../lib');
+let util = require('./util');
 var generator;
-var selected;
 
-function info(msg) {
-  console.log(msg);
-}
-
-function jspmInstallAmp(names) {
-  var params = names.map(function(name) {
-    var fullName = ['ampersand', name].join('-');
-    return ['github:ampersandjs', fullName].join('/');
-  });
-  runJspmInstall(params);
-}
-
-function runJspmInstall(list) {
-  if (!list || list.length ==0) return;
-  list.unshift('install');
-  generator.spawnCommand('jspm', list);
-}
+let log = lib.log;
 
 // Ampersand
 module.exports = yeoman.generators.Base.extend({
@@ -45,6 +22,7 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   initializing: function() {
+    this.prompts = require('./prompts');
   },
 
   prompting: function() {
@@ -52,20 +30,8 @@ module.exports = yeoman.generators.Base.extend({
 
     // TODO: add more state managers
     // f.ex swarm.js for realtime
-    var prompts = [{
-      type: 'checkbox',
-      name: 'modules',
-      message: 'Ampersand state modulas',
-      choices: ['app', 'registry', 'state', 'collection', 'rest-collection', 'model'],
-      default: ['app', 'collection', 'model']
-    }, {
-      type: 'confirm',
-      name: 'humanModel',
-      message: 'Human model',
-      default: false
-    }];
 
-    this.prompt(prompts, function(answers) {
+    this.prompt(this.prompts, function(answers) {
       this.modules = [];
       for (let name of answers.modules) {
         this[name] = true;
@@ -79,9 +45,9 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   install: function() {
-    jspmInstallAmp(this.modules);
+    util.install(this.modules);
     if (this.humanModel) {
-      runJspmInstall(['github:HenrikJoreteg/human-model']);
+      jspm.packages(['github:HenrikJoreteg/human-model']);
     }
   },
   end: function() {

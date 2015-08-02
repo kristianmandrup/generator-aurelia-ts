@@ -3,18 +3,8 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
-
-var fs = require('fs');
-
+var fs = require('node-fs-extra');
 var generator;
-
-function info(msg) {
-  console.log(msg);
-}
-
-function command(msg) {
-  console.log('  $ ' + msg);
-}
 
 module.exports = yeoman.generators.Base.extend({
 

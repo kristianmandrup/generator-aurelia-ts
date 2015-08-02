@@ -51,25 +51,19 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   end: function() {
+    // src files
+    if (this.installTypeScript) {
+      this.composeWith('aurelia-ts:typescript', {});
+    } else {
+      this.composeWith('aurelia-ts:javascript', {});
+    }
+
     if (this.installStyles) {
       this.composeWith('aurelia-ts:styles', {
         options: {
           styleLang: this.props.styleLang,
           sass: this.options.sass,
           stylus: this.options.stylus
-        }
-      });
-    }
-
-    if (this.installTypeScript) {
-      this.composeWith('aurelia-ts:typescript', {
-        options: {
-          cssFrameworks: this.cssFrameworks,
-          githubAccount: this.githubAccount,
-          authorName: this.authorName,
-          authorEmail: this.authorEmail,
-          appDesc: this.appDesc,
-          appName: this.appName
         }
       });
     }
