@@ -1,62 +1,46 @@
 module.exports = {
-  createFor: function(opts) {
-    var prompts = [{
+  prompts: {
+    styles:   {
       type: 'confirm',
       name: 'installStyles',
       message: 'Install Styles',
       default: true
-    }, {
+    },
+    cli: {
       type: 'confirm',
       name: 'installCLI',
       message: 'Install Aurelia CLI',
       default: true
-    }];
-
-    var pluginsPrompt ={
+    },
+    plugins: {
       type: 'confirm',
       name: 'installPlugins',
       message: 'Install Aurelia Plugins',
       default: false
-    };
-
-    // should not prompt to install
-    // if options are passed to force install
-    var typeScriptPrompt = {
+    },
+    typescript: {
       type: 'confirm',
       name: 'installTypeScript',
       message: 'Install TypeScript',
       default: false
-    };
-
-    var vsPrompt = {
+    },
+    vs: {
       type: 'confirm',
       name: 'visualStudio',
       message: 'Visual Studio',
       default: false
-    };
-
-    var layoutPrompt = {
+    },
+    layout: {
       type: 'confirm',
       name: 'installLayout',
       message: 'Install UI Frameworks',
       default: true
-    };
-
-    if (!opts.vs) {
-      prompts.push(vsPrompt);
     }
-
-    if (!opts.plugins) {
-      prompts.push(pluginsPrompt);
-    }
-
-    if (!opts.ts) {
-      prompts.push(typeScriptPrompt);
-    }
-
-    if (!opts.uiFramework) {
-      prompts.push(layoutPrompt);
-    }
+  },
+  createFor: function(opts) {
+    var prompts = [];
+    for (name of let Object.keys(opts))
+      if (!opts[name]) prompts.push(this.prompts[name]);
     return prompts;
   }
 }

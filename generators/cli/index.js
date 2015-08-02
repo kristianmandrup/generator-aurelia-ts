@@ -5,25 +5,23 @@ var yosay = require('yosay');
 require('sugar');
 var fs = require('node-fs-extra');
 var generator;
+let lib = require('../../lib');
+let log = lib.log;
+let info = log.info;
+let command = log.command;
+let install = lib.install;
 
 module.exports = yeoman.generators.Base.extend({
-
   // note: arguments and options should be defined in the constructor.
   constructor: function() {
     yeoman.generators.Base.apply(this, arguments);
-
+  },
+  initializing: function() {
     generator = this;
     this.props = {};
   },
-
-  initializing: function() {
-  },
-
-  // TODO: Add prompt for style lang unless passed as argument
-  // TODO: Add editor selection prompt
   prompting: function() {
     var done = this.async();
-
     var prompts = [{
       type: 'confirm',
       name: 'installGlobal',
@@ -31,26 +29,21 @@ module.exports = yeoman.generators.Base.extend({
       default: false,
     }];
 
-    // info('Install Aurelia CLI:');
-
     this.prompt(prompts, function(answers) {
-
       this.installGlobal = answers.installGlobal;
       // this.config.save();
-
       done();
     }.bind(this));
   },
-
   install: function() {
     if (this.installGlobal) {
       info('Installing aurelia-cli in global registry...');
       info('This is useful for CLI commands such as:');
       command('aurelia new APPNAME');
-      this.npmInstall(['aurelia-cli'], {global: true });
+      install.npmGlobal(['aurelia-cli']);
     }
     info('Installing aurelia-cli locally for dev mode');
-    this.npmInstall(['aurelia-cli'], {saveDev: true });
+    install.npmDev(['aurelia-cli']);
   },
   end: function() {
     info('====================================================================');
