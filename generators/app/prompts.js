@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(gen) {
   return {
     prompts: {
@@ -39,7 +41,7 @@ module.exports = function(gen) {
       }
     },
     promptList: ['name', 'title', 'desc', 'github', 'authorEmail', 'authorEmail'],
-    create: function() {
+    createFor: function() {
       var prompts = [];
       for (let name of this.promptList)
         prompts.push(this.prompts[name]);

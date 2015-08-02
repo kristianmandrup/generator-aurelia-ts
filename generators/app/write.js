@@ -1,4 +1,4 @@
-let util = require('./util');
+'use strict';
 
 module.exports = function(gen) {
   return {
@@ -6,7 +6,7 @@ module.exports = function(gen) {
     rootFiles: [
       'aureliafile.js',
       'editorconfig',
-      'jshintrc'
+      'jshintrc',
       'npmignore',
       'aurelia.protractor.js',
       'gulpfile.js',
@@ -16,12 +16,12 @@ module.exports = function(gen) {
       'karma.conf.js',
       'protractor.conf.js',
       'LICENSE'
-    ]
+    ],
     prepare: function() {
     },
     build: function() {
       gen.bulkDirectory('build', 'build');
-    }
+    },
     doc: function() {
       gen.bulkDirectory('doc', 'docs');
     },
@@ -29,14 +29,14 @@ module.exports = function(gen) {
       write: function() {
         this.templates();
         this.files();
-      }
-      templates: {
-        gen.copy.rootTpl('_README.md', 'README.md', {gen.props.app});
+      },
+      templates: function() {
+        gen.copy.rootTpl('_README.md', 'README.md', gen.props.app);
         gen.copy.rootTpl('_gitignore','.gitignore', {vs: gen.props.vs});
         gen.copy.rootTpl('_package.json', 'package.json', props.pkg);
         gen.copy.rootTpl('_index.html', 'index.html', gen.props.appExt);
       },
-      files: {
+      files: function() {
         for (let file of this.rootFiles)
           gen.copy.rootTpl(file);
       }

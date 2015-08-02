@@ -31,7 +31,7 @@ module.exports = yeoman.generators.Base.extend({
   initializing: function() {
     this.appTitle = this.options.appTitle || 'My App';
     this.appDesc = this.options.appDesc || 'No description...';
-    this.props.uiFramework = uiFrameworkMap[this.options.ui];
+    this.props.uiFramework = util.mapUi(this.options.ui);
     this.props.fa = this.options.fa;
 
     this.myPrompts = this.prompts.createFor(this.props);
