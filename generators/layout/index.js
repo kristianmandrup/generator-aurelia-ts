@@ -49,8 +49,7 @@ module.exports = yeoman.generators.Base.extend({
         this.cssFrameworks = util.isEmpty(answers.cssFrameworks) ? ['None'] : answers.cssFrameworks;
 
         this.fontAwesome = answers.fontAwesome || this.props.fa;
-        this.ui = this.options.ui(this.cssFrameworks);
-
+        this.ui = options.uiFramework(this.cssFrameworks);
         // this.config.save();
         done();
       }.bind(this));

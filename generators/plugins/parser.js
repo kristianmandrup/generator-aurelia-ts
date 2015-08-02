@@ -1,14 +1,15 @@
+'use strict';
 var maps = require('./maps');
 
 module.exports = function(answers) {
   return {
     parse: function() {
       let plugins = {
-        obj: parseObj()
+        obj: this.parseObj()
       };
       plugins.selected = this.selected(plugins.obj);
       return plugins;
-    }
+    },
     parseObj: function() {
       let keys = Object.keys(answers);
       let sel = {};
@@ -25,10 +26,11 @@ module.exports = function(answers) {
           }
         }
       }
+      return sel;
     },
     selected: function(obj) {
       let keys = Object.keys(obj);
-      return keys.filter(key => { self.sel[key]; });
+      return keys.filter(function(key) { return obj[key]; });
     }
   }
 }

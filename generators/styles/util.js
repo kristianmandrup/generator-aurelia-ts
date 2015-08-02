@@ -5,18 +5,6 @@ let util = lib('util');
 
 module.exports = function(gen) {
   styleFolders: ['css', 'stylus', 'sass'],
-
-  // test if project contains an app.ts file. If so assume we are using TypeScript!
-  getJsLangExt: function() {
-    var appTs = gen.destinationPath('src/app.ts');
-    return fs.existsSync(appTs) ? 'ts' : 'js';
-  },
-  isTypeScript: function() {
-    this.getJsLangExt() === 'ts';
-  },
-  isJavaScript: function() {
-    this.getJsLangExt() === 'js';
-  },
   bulkStyles: function(styleLangs) {
     let stylusIdx = styleLangs.indexOf('Stylus');
     var bulkStyles = styleLangs.slice(0);

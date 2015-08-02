@@ -1,3 +1,6 @@
+'use strict';
+let maps = require('./maps');
+
 module.exports = {
   filterReal: function(list, objMap) {
     return list.filter(function(name) {
@@ -8,7 +11,7 @@ module.exports = {
   },
   docRepos: function(selected) {
     return selected.map(function(name) {
-      let entry = repoMap[name];
+      let entry = maps.repos[name];
       return `- [${entry.label}](${entry.repo})`;
     }).join('\n')
   }

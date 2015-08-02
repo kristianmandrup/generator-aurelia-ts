@@ -18,7 +18,6 @@ let prompts = require('./prompts');
 let parser = require('./parser');
 
 module.exports = yeoman.generators.Base.extend({
-
   // note: arguments and options should be defined in the constructor.
   constructor: function() {
     yeoman.generators.Base.apply(this, arguments);
@@ -29,10 +28,9 @@ module.exports = yeoman.generators.Base.extend({
   initializing: function() {
     this.props = {};
     this.props.bootstrap = this.options.bootstrap;
-    ext = getJsLangExt();
-
     this.util = lib.util;
     this.copy = lib.copy;
+
   },
 
   prompting: function() {
@@ -46,7 +44,7 @@ module.exports = yeoman.generators.Base.extend({
 
   writing: {
     prepare: function() {
-      this.realPlugins = filterReal(this.plugins.selected);
+      this.realPlugins = util.filterReal(this.plugins.selected);
       this.conflicter.force = true;
     },
     docs: function() {
@@ -58,14 +56,14 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     srcFiles: function() {
+      let ext = lib.info.getJsLangExt();
       // TODO: choose to use either .ts or .js file somehow!
-      this.copy.srcTpl(`src/_plugin-config.${ext}`), `src/plugin-config.${ext}`), {
+      this.copy.srcTpl(`src/_plugin-config.${ext}`, `src/plugin-config.${ext}`, {
           selected: prepare4Tpl(this.realPlugins),
           i18next: this.plugins.i18next,
           materialize: this.plugins.materialize,
           validation: this.plugins.validation
-        }
-      );
+        });
     },
     specialFiles: function() {
       if (this.validation) this.copy.srcFile('welcome.js');

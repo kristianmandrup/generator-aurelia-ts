@@ -1,4 +1,5 @@
 let util = require('./util');
+let extend = require('extend');
 
 module.exports = function(gen) {
   return {
