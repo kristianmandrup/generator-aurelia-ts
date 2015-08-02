@@ -9,7 +9,6 @@ let lib = require('../../lib');
 let log = lib.log;
 let info = log.info;
 let command = log.command;
-let install = lib.install;
 
 module.exports = yeoman.generators.Base.extend({
   // note: arguments and options should be defined in the constructor.
@@ -19,6 +18,7 @@ module.exports = yeoman.generators.Base.extend({
   initializing: function() {
     generator = this;
     this.props = {};
+    this.install = lib.install(this);
   },
   prompting: function() {
     var done = this.async();
@@ -35,15 +35,19 @@ module.exports = yeoman.generators.Base.extend({
       done();
     }.bind(this));
   },
-  install: function() {
-    if (this.installGlobal) {
-      info('Installing aurelia-cli in global registry...');
-      info('This is useful for CLI commands such as:');
-      command('aurelia new APPNAME');
-      install.npmGlobal(['aurelia-cli']);
+  install: {
+    global: function() {
+      if (this.installGlobal) {
+        info('Installing aurelia-cli in global registry...');
+        info('This is useful for CLI commands such as:');
+        command('aurelia new APPNAME');
+        this.install.npmGlobal(['aurelia-cli']);
+      }
+    },
+    local: function() {
+      info('Installing aurelia-cli locally for dev mode');
+      this.install.npmDev(['aurelia-cli']);
     }
-    info('Installing aurelia-cli locally for dev mode');
-    install.npmDev(['aurelia-cli']);
   },
   end: function() {
     info('====================================================================');
