@@ -3,18 +3,12 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
-
-var fs = require('fs');
-
+var fs = require('node-fs-extra');
 var generator;
-
-function info(msg) {
-  console.log(msg);
-}
-
-function command(msg) {
-  console.log('  $ ' + msg);
-}
+let lib = require('../../lib');
+let write = require('./write');
+let prompts = require('./prompts');
+let util = require('./util');
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -26,82 +20,24 @@ module.exports = yeoman.generators.Base.extend({
     this.option('fa'); // font awesome
     this.option('cli'); // aurelia CLI
     this.option('plugins');
+  },
 
+  initializing: function() {
+    generator = this;
     this.props = {};
     this.props.vs = this.options.vs;
     this.props.ts = this.options.ts;
     this.props.fa = this.options.fa;
     this.props.plugins = this.options.plugins;
-
-    generator = this;
-  },
-
-  initializing: function() {
+    this.prompts = lib.prompts;
   },
 
   prompting: function() {
     var done = this.async();
-    var prompts = [{
-      type: 'confirm',
-      name: 'installStyles',
-      message: 'Install Styles',
-      default: true
-    }, {
-      type: 'confirm',
-      name: 'installCLI',
-      message: 'Install Aurelia CLI',
-      default: true
-    }];
-
-    var pluginsPrompt ={
-      type: 'confirm',
-      name: 'installPlugins',
-      message: 'Install Aurelia Plugins',
-      default: false
-    };
-
-    // should not prompt to install
-    // if options are passed to force install
-    var typeScriptPrompt = {
-      type: 'confirm',
-      name: 'installTypeScript',
-      message: 'Install TypeScript',
-      default: false
-    };
-
-    var vsPrompt = {
-      type: 'confirm',
-      name: 'visualStudio',
-      message: 'Visual Studio',
-      default: false
-    };
-
-    var layoutPrompt = {
-      type: 'confirm',
-      name: 'installLayout',
-      message: 'Install UI Frameworks',
-      default: true
-    };
-
-    if (!this.props.vs) {
-      prompts.push(vsPrompt);
-    }
-
-    if (!this.props.plugins) {
-      prompts.push(pluginsPrompt);
-    }
-
-    if (!this.props.ts) {
-      prompts.push(typeScriptPrompt);
-    }
-
-    if (!this.props.uiFramework) {
-      prompts.push(layoutPrompt);
-    }
 
     // info('Install Aurelia CLI:');
 
-    this.prompt(prompts, function(answers) {
+    this.prompt(this.prompts.createFor(this.props), function(answers) {
 
       this.installStyles = answers.installStyles;
       this.installLayout = answers.installLayout || this.props.uiFramework;

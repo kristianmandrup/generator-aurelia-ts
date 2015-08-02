@@ -28,6 +28,7 @@
   ],
   "dependencies": {
     "chalk": "^1.0.0",
+    "extend": "^3.0.0",
     "node-fs-extra": "^0.8.1",
     "rimraf": "^2.4.0",
     "sinon": "^1.15.4",

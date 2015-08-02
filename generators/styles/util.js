@@ -1,10 +1,31 @@
-lib = function(file) {
+let lib = function(file) {
   return require(`../../lib/${file}`);
 }
+let util = lib('util');
 
-let util = require('./util');
+module.exports = function(gen) {
+  styleFolders: ['css', 'stylus', 'sass'],
 
-module.exports = {
+  // test if project contains an app.ts file. If so assume we are using TypeScript!
+  getJsLangExt: function() {
+    var appTs = gen.destinationPath('src/app.ts');
+    return fs.existsSync(appTs) ? 'ts' : 'js';
+  },
+  isTypeScript: function() {
+    this.getJsLangExt() === 'ts';
+  },
+  isJavaScript: function() {
+    this.getJsLangExt() === 'js';
+  },
+  bulkStyles: function(styleLangs) {
+    let stylusIdx = styleLangs.indexOf('Stylus');
+    var bulkStyles = styleLangs.slice(0);
+
+    if (stylusIdx >= 0)
+      bulkStyles.splice(stylusIdx, 1);
+    return bulkStyles;
+  },
+
   watchTasks: function(pre) {
     var watchTasks = [];
     if (pre.sass) {
@@ -19,7 +40,7 @@ module.exports = {
   useList: function(plugins) {
     var list = [];
     // autoprefixer should be last
-    for (let name of this.stylusPlugins) {
+    for (let name of plugins) {
       list.push(name.toLowerCase());
     }
     return list.map(function(plugin) {
@@ -27,7 +48,7 @@ module.exports = {
     }).join(', ');
   },
   stylesPath: function(folder) {
-    return ['styles', folder].join('/');
+    return ['styles', util.normalizeFolder(folder)].join('/');
   },
   mapToList: function(mapObj) {
     let list = [];
