@@ -3,43 +3,16 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 
+lib = function(file) {
+  return require(`../../lib/${file}`);
+}
+
+let install = lib('install');
+let copy = lib('copy');
+let log = lib('log');
+let options = lib('options');
+
 var generator;
-
-function info(msg) {
-  console.log(msg);
-}
-
-function runJspmInstall(list) {
-  if (!list || list.length == 0) return;
-  list.unshift('install');
-  generator.spawnCommand('jspm', list);
-}
-
-// Can be used to create jspm package install map
-// See plugins generator
-var jsmpInstallsMap = {};
-
-function jspmInstall(names) {
-  var params = names.map(function(name) {
-    var resolved = jsmpInstallsMap[name];
-    if (!resolved) {
-      resolved = name;
-    }
-    return resolved;
-  });
-  runJspmInstall(params);
-}
-
-// TODO: How to pass --save-dev option ??
-function jspmInstallDev(names) {
-  jspmInstall(names);
-}
-
-function containsFor(list) {
-  return function contains(value) {
-    return list.indexOf(value) >= 0;
-  }
-}
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -48,23 +21,11 @@ module.exports = yeoman.generators.Base.extend({
     var self = this;
     generator = this;
     this.props = {};
-    this.props.cssFrameworks = this.options.cssFrameworks;
-    this.cssFrameworks = this.props.cssFrameworks;
-    if (this.cssFrameworks) {
-      let contains = containsFor(this.cssFrameworks);
+    this.install = install(this);
+    this.copy = copy(this);
 
-      this.semanticUI = contains('Semantic-UI');
-      this.framework7 = contains('Framework7');
-      this.foundation = contains('Foundation');
-      this.bootstrap = contains('Bootstrap');
-    }
-
-    this.props.visualStudio = this.options.visualStudio;
-
-    this.installDeps = function() {
-      self.npmInstall();
-      self.spawnCommand('jspm', ['install']);
-    }
+    this.opts.ui = options.uiFramework(this.options);
+    // this.props.vs = this.options.vs;
   },
 
   initializing: function () {
@@ -89,13 +50,6 @@ module.exports = yeoman.generators.Base.extend({
       default : 'Atom'
     }];
 
-    // {
-    //   type: 'confirm',
-    //   name: 'installDeps',
-    //   message: 'Install dependencies for npm and jspm?',
-    //   default: false
-    // }
-
     // info('TypeScript configuration:');
     this.prompt(prompts, function (answers) {
       this.props = answers;
@@ -116,13 +70,8 @@ module.exports = yeoman.generators.Base.extend({
 
     // copy templates for package.json, build/tasks/build.js
     typescript: function () {
-      this.fs.copyTpl(
-        this.templatePath('root/tsconfig.json'),
-        this.destinationPath('tsconfig.json'), {
-          amd: this.amd
-        }
-      );
-      this.copy('root/build.js', 'build/tasks/build.js');
+      this.copy.rootTemplate('tsconfig.json', {amd: this.amd});
+      this.copy.buildFile('build.js');
     },
 
     // See http://yeoman.github.io/generator/actions.html
@@ -130,54 +79,40 @@ module.exports = yeoman.generators.Base.extend({
       this.bulkDirectory('scripts', 'scripts');
       this.bulkDirectory('typings', 'typings');
       // this.fs.delete('typings/es6-promise');
-      this.fs.copyTpl(
-        this.templatePath('typings/tsd.d.ts'),
-        this.destinationPath('typings/tsd.d.ts'), {
-          amd: this.amd
-        }
-      );
+      var typingsTpl = this.copy.createFn('template', 'ts', 'typings');
+      typingsTpl('_tsd.txt', 'tsd.d.ts'), {amd: this.amd});
     },
 
     srcFiles: function () {
-      var self = this;
       this.fs.delete('src/*.js');
       this.bulkDirectory('src', 'src');
-      this.fs.copyTpl(
-        this.templatePath('src/app.ts'),
-        this.destinationPath('src/app.ts'), {
-          semanticUI: self.semanticUI,
-          bootstrap: self.bootstrap,
-          foundation: self.foundation,
-          framework7: self.framework7
-        }
-      );
+      this.copy.srcTemplate('app.ts', this.opts.ui);
     },
 
     readme: function () {
-      this.copyTpl(
-        this.templatePath('root/_TypeScript.md'),
-        this.destinationPath('TypeScript.md'), {
-        };
-      );
-    }
-
+      this.copy.rootTemplate('_TypeScript.md', 'TypeScript.md'), {atom: this.props.atom});
+    },
+    gulpfile: function () {
+      this.copy.rootFile('ts-gulpfile.js');
+    },
+    buildTasks: function() {
+      this.copy.buildFile('test.js');
+    },
     testFiles: function() {
-      this.copy('root/ts-gulpfile.js', 'ts-gulpfile.js');
-      this.copy('root/karma.conf.js', 'karma.conf.js');
-      this.copy('root/test.js', 'build/tasks/test.js');
-      this.copy('test/unit/app.spec.js', 'test/unit/app.spec.js');
+      this.copy.rootFile('karma.conf.js');
+      this.copy.testFile('unit/app.spec.js');
     }
   },
 
   install: function() {
-    jspmInstall(['typescript', 'ts=github:frankwallis/plugin-typescript@^1.0.5']);
-    generator.npmInstall('gulp-typescript', {saveDev: true});
+    this.install.jspm.packages(['typescript', 'ts=github:frankwallis/plugin-typescript@^1.0.5']);
+    this.install.npmDev('gulp-typescript');
 
     // if (this.props.installDeps) {
     //   this.installDeps();
     // }
   },
   end: function() {
-    info('TypeScript installation complete :)');
+    log.info('TypeScript installation complete :)');
   }
 });

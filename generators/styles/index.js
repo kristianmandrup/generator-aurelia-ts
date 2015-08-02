@@ -5,41 +5,19 @@ var yosay = require('yosay');
 require('sugar');
 var fs = require('node-fs-extra');
 
+let lib = function(file) {
+  return require(`../../lib/${file}`);
+}
+
+let util = require('./util');
+let stylesPath = util.stylesPath;
+
+let install = lib('install');
+let copy = lib('copy');
+let log = lib('log');
+let options = lib('options');
+
 var generator, linux, macOSX;
-
-function prepare4Tpl(list) {
-  return list.map(function(item) {
-    return "'" + item + "'";
-  });
-}
-
-function isEmpty(list) {
-  return (!list || list.length < 1);
-}
-
-function info(msg) {
-  console.log(msg);
-}
-
-let log = info;
-
-function command(msg) {
-  console.log('  $ ' + msg);
-}
-
-function stylesPath(folder) {
-  return ['styles', folder].join('/');
-}
-
-function stylesFolder(lang) {
-  return lang.toLowerCase();
-}
-
-function containsFor(list) {
-  return function contains(value) {
-    return list.indexOf(value) >= 0;
-  }
-}
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -53,14 +31,8 @@ module.exports = yeoman.generators.Base.extend({
     this.option('sass');
     this.option('stylus');
 
-    this.defaultStyles = [];
-    if (this.options.sass) {
-      this.defaultStyles.push('SASS')
-    }
-    if (this.options.stylus) {
-      this.defaultStyles.push('Stylus')
-    }
-
+    this.defaultStyles = util.defaultStyles(this.options);
+    // choose preferred style (Stylus highest priority)
     this.styleLang = this.defaultStyles[0] || 'css';
   },
 
@@ -93,25 +65,15 @@ module.exports = yeoman.generators.Base.extend({
       }];
 
       this.prompt(prompts, function(answers) {
-        this.styles = isEmpty(answers.styles) ? ['None'] : answers.styles;
+        this.chosenStyles = isEmpty(answers.styles) ? ['None'] : answers.styles;
+        this.styles = util.styles(this.chosenStyles);
 
-        var contains = containsFor(this.styles);
-
-        this.css = contains('None');
-        this.sass = contains('SASS');
-        this.stylus = contains('Stylus');
         this.removeOld = answers.removeOld;
         this.useJade = answers.useJade;
 
-        this.preProcessors = [];
-        if (this.sass) {
-          this.preProcessors.push('sass')
-        }
-        if (this.stylus) {
-          this.preProcessors.push('stylus')
-        }
+        this.preProcessors = util.mapToList(this.styles.pre);
         this.styleLangs = this.preProcessors.slice(0);
-        if (this.css) {
+        if (this.styles.css) {
           this.styleLangs.push('css');
         }
         // this.config.save();
@@ -121,13 +83,14 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     phase2: function () {
-      if (!this.stylus) return;
+      if (!this.styles.pre.stylus) return;
 
       var done = this.async();
 
       info('Note: For Nib you need cairo installed for canvas installation used');
       info('brew install cairo (MacOSX)');
       info('wget https://raw.githubusercontent.com/LearnBoost/node-canvas/master/install -O - | sh');
+      info('IO.js: See https://github.com/mafintosh/node-gyp-install')
 
       var prompts = [{
         type: 'checkbox',
@@ -145,16 +108,9 @@ module.exports = yeoman.generators.Base.extend({
       }];
 
       this.prompt(prompts, function(answers) {
-        this.stylusPlugins = answers.stylusPlugins;
-
-        var contains = containsFor(this.stylusPlugins);
-        this.nib = contains('Nib');
-        this.axis = contains('Axis');
-        this.fluidity = contains('Fluidity');
-        this.jeet = contains('Jeet');
-        this.rupture = contains('Rupture');
-        this.autoprefixer = contains('Autoprefixer');
-
+        this.stylus = {plugins: {}};
+        this.stylus.plugins.list = answers.stylusPlugins;
+        this.stylus.plugins.obj = util.addons(this.stylus.plugins);
         done();
       }.bind(this));
     }
@@ -166,7 +122,7 @@ module.exports = yeoman.generators.Base.extend({
       this.fs.copyTpl(
         this.templatePath('root/_Styles.md'),
         this.destinationPath('Styles.md'), {
-          stylus: this.stylus
+          stylus: this.addons.stylus
         }
       );
     },
@@ -192,45 +148,27 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     styleFiles: function() {
-      var self = this;
-      if (this.stylus) {
-        let stylusIdx = this.styleLangs.indexOf('Stylus');
-        var bulkStyles = this.styleLangs.slice(0);
-        if (stylusIdx >= 0)
-          bulkStyles.splice(stylusIdx, 1);
-        for (let lang of bulkStyles) {
-          var folder = stylesFolder(lang);
-          var path = stylesPath(folder);
-          this.bulkDirectory(path, path);
-        }
+      if (!this.styles.pre.stylus) return;
 
-        this.fs.copyTpl(
-          this.templatePath('styles/stylus/_styles.styl'),
-          this.destinationPath('styles/stylus/styles.styl'), {
-            nib: this.nib, // @import 'nib'
-            axis: this.axis,
-            fluidity: this.fluidity,
-            rupture: this.rupture,
-            jeet: this.jeet
-          }
-        );
+      let stylusIdx = this.styleLangs.indexOf('Stylus');
+      var bulkStyles = this.styleLangs.slice(0);
+
+      if (stylusIdx >= 0)
+        bulkStyles.splice(stylusIdx, 1);
+
+      for (let lang of bulkStyles) {
+        var folder = stylesFolder(lang);
+        var path = stylesPath(folder);
+        this.bulkDirectory(path, path);
       }
+      this.copy.stylesTemplate('stylus/_styles.styl', 'stylus/styles.styl', this.addons);
     },
 
     cssBuildTask: function() {
-      var watchTasks = [];
-      if (this.sass) {
-        watchTasks.push('sass:watch');
-      }
-      if (this.stylus) {
-        watchTasks.push('stylus:watch');
-      }
-      var preProcessors = prepare4Tpl(this.preProcessors);
-      watchTasks = prepare4Tpl(watchTasks);
+      var watchTasks = util.watchTasks(this.styles.pre);
+      var preProcessors = util.prepare4Tpl(this.preProcessors);
 
-      this.fs.copyTpl(
-        this.templatePath('styles/tasks/_styles.js'),
-        this.destinationPath('build/tasks/styles.js'), {
+      this.copy.buildTemplate('_styles.js', 'styles.js'), {
           preProcessors: preProcessors,
           watchTasks: watchTasks,
           styles: this.styleLangs.join(' and '),
@@ -239,94 +177,30 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     cssPreProcessorTasks: function() {
-      if (this.sass) {
-        this.fs.copy(
-          this.templatePath('styles/tasks/sass.js'),
-          this.destinationPath('build/tasks/sass.js')
-        );
-      }
+      if (!this.styles.pre.sass) return;
+
+      this.fs.copy(
+        this.templatePath('styles/tasks/sass.js'),
+        this.destinationPath('build/tasks/sass.js')
+      );
     },
     stylusTasks: function() {
-      if (!this.stylus) return;
-
-      var list = [];
-      // autoprefixer should be last
-      for (let name of this.stylusPlugins) {
-        list.push(name.toLowerCase());
-      }
-      var useList = list.map(function(plugin) {
-        return plugin + '()';
-      }).join(', ');
-
-      this.fs.copyTpl(
-        this.templatePath('styles/tasks/_stylus.js'),
-        this.destinationPath('build/tasks/stylus.js'), {
-          nib: this.nib,
-          axis: this.axis,
-          fluidity: this.fluidity,
-          rupture: this.rupture,
-          jeet: this.jeet,
-          autoprefixer: this.autoprefixer,
-          useList: useList
-        }
+      if (!this.styles.pre.stylus) return;
+      var useList = util.useList(this.stylus.plugins.list)
+      this.copy.buildTemplate('_stylus.js', 'stylus.js',
+        extend(this.addons, {useList: useList})
       );
     },
 
     templateTasks: function() {
-      if (this.useJade) {
-        this.fs.copy(
-          this.templatePath('styles/tasks/jade.js'),
-          this.destinationPath('build/tasks/jade.js')
-        );
-      }
+      if (this.useJade) this.copy.buildFile('jade.js');
     }
   },
 
   install: function() {
-    if (this.sass) {
-      generator.npmInstall('gulp-sass', {saveDev: true});
-    }
-    if (this.stylus) {
-      generator.npmInstall('gulp-stylus', {saveDev: true});
-
-      if (this.autoprefixer) {
-        generator.npmInstall('autoprefixer-stylus', {saveDev: true});
-      }
-
-      if (this.nib) {
-        if (this.cairo) {
-          if (linux) {
-            generator.spawnCommand('wget', ['https://raw.githubusercontent.com/LearnBoost/node-canvas/master/install -O - | sh']);
-          }
-          if (macOSX) {
-            generator.spawnCommand('brew', ['install', 'cairo']);
-          }
-        }
-        generator.npmInstall('canvas', {saveDev: true});
-        generator.npmInstall('nib', {saveDev: true});
-
-      }
-
-      if (this.axis) {
-        generator.npmInstall('axis', {saveDev: true});
-      }
-
-      if (this.fluidity) {
-        generator.npmInstall('fluidity', {saveDev: true});
-      }
-
-      if (this.rupture) {
-        generator.npmInstall('rupture', {saveDev: true});
-      }
-
-      if (this.jeet) {
-        generator.npmInstall('jeet', {saveDev: true});
-      }
-    }
-
-    if (this.useJade) {
-      generator.npmInstall('gulp-jade', {saveDev: true});
-    }
+    if (this.styles.pre.sass) install.sass();
+    if (this.styles.pre.stylus) install.stylus();
+    if (this.useJade) install.jade();
   },
 
   end: function() {

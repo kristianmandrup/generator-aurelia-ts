@@ -6,18 +6,6 @@ require('sugar');
 
 var generator;
 
-function normalizeName(name) {
-  return name.replace(/ /,'-').toLowerCase();
-}
-
-function info(msg) {
-  console.log(msg);
-}
-
-function command(msg) {
-  console.log('  $ ' + msg);
-}
-
 var uiFrameworkMap = {
   bs: 'Bootstrap',
   zurb: 'Foundation',
@@ -25,22 +13,6 @@ var uiFrameworkMap = {
   f7: 'Framework7'
 };
 
-function runJspmInstall(list) {
-  if (!list || list.length == 0) return;
-  list.unshift('install');
-  generator.spawnCommand('jspm', list);
-}
-
-function jspmInstall(names) {
-  var params = names.map(function(name) {
-    var resolved = jspmInstalls[name];
-    if (!resolved) {
-      resolved = name;
-    }
-    return resolved;
-  });
-  runJspmInstall(params);
-}
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -114,68 +86,7 @@ module.exports = yeoman.generators.Base.extend({
       name: 'authorName',
       message: 'Your name',
       default: this.props.authorName
-    }, {
-      type: 'confirm',
-      name: 'installStyles',
-      message: 'Install Styles',
-      default: true
-    }, {
-      type: 'confirm',
-      name: 'installCLI',
-      message: 'Install Aurelia CLI',
-      default: true
-    }, {
-      type: 'confirm',
-      name: 'ie9Support',
-      message: 'Support IE9',
-      default: true
     }];
-
-    var pluginsPrompt ={
-      type: 'confirm',
-      name: 'installPlugins',
-      message: 'Install Aurelia Plugins',
-      default: false
-    };
-
-    // should not prompt to install
-    // if options are passed to force install
-    var typeScriptPrompt = {
-      type: 'confirm',
-      name: 'installTypeScript',
-      message: 'Install TypeScript',
-      default: false
-    };
-
-    var vsPrompt = {
-      type: 'confirm',
-      name: 'visualStudio',
-      message: 'Visual Studio',
-      default: false
-    };
-
-    var layoutPrompt = {
-      type: 'confirm',
-      name: 'installLayout',
-      message: 'Install UI Frameworks',
-      default: true
-    };
-
-    if (!this.props.vs) {
-      prompts.push(vsPrompt);
-    }
-
-    if (!this.props.plugins) {
-      prompts.push(pluginsPrompt);
-    }
-
-    if (!this.props.ts) {
-      prompts.push(typeScriptPrompt);
-    }
-
-    if (!this.props.uiFramework) {
-      prompts.push(layoutPrompt);
-    }
 
     // info('Create Aurelia Application:');
     this.prompt(prompts, function(answers) {
@@ -186,12 +97,6 @@ module.exports = yeoman.generators.Base.extend({
       this.authorName = answers.authorName;
       this.authorEmail = answers.authorEmail;
       this.githubAccount = answers.githubAccount;
-
-      this.installStyles = answers.installStyles;
-      this.installLayout = answers.installLayout || this.props.uiFramework;
-      this.installCLI = answers.installCLI || this.props.cli;
-      this.installPlugins = answers.installPlugins || this.props.plugins;
-      this.installTypeScript = answers.installTypeScript || this.props.ts;
 
       this.visualStudio = answers.visualStudio || this.props.vs;
       this.ie9Support = answers.ie9Support;
@@ -298,55 +203,7 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   end: function() {
-    if (this.installStyles) {
-      this.composeWith('aurelia-ts:styles', {
-        options: {
-          styleLang: this.props.styleLang,
-          sass: this.options.sass,
-          stylus: this.options.stylus
-        }
-      });
-    }
-
-    if (this.installTypeScript) {
-      this.composeWith('aurelia-ts:typescript', {
-        options: {
-          cssFrameworks: this.cssFrameworks,
-          githubAccount: this.githubAccount,
-          authorName: this.authorName,
-          authorEmail: this.authorEmail,
-          appDesc: this.appDesc,
-          appName: this.appName
-        }
-      });
-    }
-
-    if (this.installLayout) {
-      this.composeWith('aurelia-ts:layout', {
-        options: {
-          appTitle: this.appTitle,
-          appDesc: this.appDesc,
-          ui: this.options.ui,
-          fa: this.options.fa
-        }
-      });
-    }
-
-    if (this.installPlugins) {
-      this.composeWith('aurelia-ts:plugins', {
-        options: {
-          bootstrap: this.bootstrap
-        }
-      });
-    }
-
-    if (this.installCLI) {
-      this.composeWith('aurelia-ts:cli', {
-        options: {}
-      });
-    }
-
-    this.composeWith('aurelia-ts:state', {
+    this.composeWith('aurelia-ts:decorate', {
       options: {}
     });
   }

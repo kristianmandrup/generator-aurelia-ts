@@ -9,16 +9,17 @@ Generate an [Aurelia](aurelia.io) Quick Start project with: - [Aurelia CLI](http
 
 Generator tested on MacOSX via `npm link`
 
--	`aurelia-ts`
--	`aurelia-ts:plugins`
--	`aurelia-ts:cli`
--	`aurelia-ts:styles`
--	`aurelia-ts:layout`
--	`aurelia-ts:typescript`
--	`aurelia-ts:state`
--	`aurelia-ts:amp` - Ampersand models
+-	`aurelia-ts` (new app)
+-	`aurelia-ts:decorate` (decorate app)
+-	`aurelia-ts:plugins` (add plugins)
+-	`aurelia-ts:cli` (add CLI)
+-	`aurelia-ts:styles` (add CSS preprocessors: SASS/Stylus )
+-	`aurelia-ts:layout` (add ui/layout framework:)
+-	`aurelia-ts:typescript` (add typescript)
+-	`aurelia-ts:state` (add state or stores)
+-	`aurelia-ts:amp` - (add Ampersand models/collections)
 
-Now includes IE9 support via polyfill for mutationobservers ;)
+Now includes IE9 support ;)
 
 ### Layout Frameworks
 
