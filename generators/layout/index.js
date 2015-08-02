@@ -13,6 +13,7 @@ let prompts = require('./prompts');
 let util = lib.util;
 let writer = lib.writer;
 let copy = lib.copy;
+let options = lib.options;
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -31,11 +32,12 @@ module.exports = yeoman.generators.Base.extend({
   initializing: function() {
     this.appTitle = this.options.appTitle || 'My App';
     this.appDesc = this.options.appDesc || 'No description...';
-    this.props.uiFramework = util.mapUi(this.options.ui);
+    this.props.uiFramework = options.mapUi(this.options.ui);
     this.props.fa = this.options.fa;
 
-    this.myPrompts = this.prompts.createFor(this.props);
+    this.myPrompts = prompts.createFor(this.props);
     this.myUtil = require('./util')(this);
+    this.writer = writer(write(this));
   },
 
   prompting: {
@@ -66,8 +68,8 @@ module.exports = yeoman.generators.Base.extend({
     }
   },
 
-  writing: {
-    writer.writeAll();
+  writing: function() {
+    this.writer.writeAll();
   },
 
   install: function() {

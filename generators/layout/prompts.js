@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
   editors: ['Atom', 'VS', 'WebStorm', 'Sublime', 'Other'],
   createFor: function(opts) {

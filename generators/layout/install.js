@@ -1,3 +1,4 @@
+'use strict';
 let maps = require('./maps');
 let lib = require('../../lib');
 let log = lib.log;

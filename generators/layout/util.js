@@ -1,3 +1,4 @@
+'use strict';
 module.exports = function(gen) {
   return {
     copyView: function(framework, view) {

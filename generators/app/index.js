@@ -4,9 +4,10 @@ var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
 var generator;
+let extend = require('extend');
 
 let prompts = require('./prompts');
-let write = require('./write');
+let writeConf = require('./write');
 
 let lib = require('../../lib');
 let install = lib.install;
@@ -55,7 +56,7 @@ module.exports = yeoman.generators.Base.extend({
 
     this.props.githubAccount = this.config.get('githubAccount');
 
-    this.writer = writer(this);
+    this.writer = writer(writeConf(this));
     this.myPrompts = prompts(this);
   },
 

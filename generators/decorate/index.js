@@ -6,9 +6,9 @@ require('sugar');
 var fs = require('node-fs-extra');
 var generator;
 let lib = require('../../lib');
-let write = require('./write');
 let prompts = require('./prompts');
-let util = require('./util');
+// let util = require('./util');
+// let write = require('./write');
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -29,7 +29,7 @@ module.exports = yeoman.generators.Base.extend({
     this.props.ts = this.options.ts;
     this.props.fa = this.options.fa;
     this.props.plugins = this.options.plugins;
-    this.prompts = lib.prompts;
+    this.prompts = prompts;
   },
 
   prompting: function() {
@@ -37,7 +37,7 @@ module.exports = yeoman.generators.Base.extend({
 
     // info('Install Aurelia CLI:');
 
-    this.prompt(this.prompts.createFor(this.props), function(answers) {
+    this.prompt(this.prompts.create(), function(answers) {
 
       this.installStyles = answers.installStyles;
       this.installLayout = answers.installLayout || this.props.uiFramework;

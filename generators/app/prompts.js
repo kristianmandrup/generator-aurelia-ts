@@ -40,7 +40,7 @@ module.exports = function(gen) {
         default: gen.props.authorName
       }
     },
-    promptList: ['name', 'title', 'desc', 'github', 'authorEmail', 'authorEmail'],
+    promptList: ['name', 'title', 'desc', 'github', 'authorName', 'authorEmail'],
     createFor: function() {
       var prompts = [];
       for (let name of this.promptList)

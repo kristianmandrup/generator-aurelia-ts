@@ -33,9 +33,8 @@ module.exports = yeoman.generators.Base.extend({
 
     // init phase helpers
     this.prompts = lib.prompts(this);
-    this.write = lib.write(this);
     this.install = lib.install(this);
-    this.writer = lib.writer(this.write)
+    this.writer = lib.writer(write(this));
   },
 
   prompting: {

@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   prompts: {
     styles:   {
@@ -37,10 +39,11 @@ module.exports = {
       default: true
     }
   },
-  createFor: function(opts) {
-    var prompts = [];
-    for (name of let Object.keys(opts))
-      if (!opts[name]) prompts.push(this.prompts[name]);
-    return prompts;
+  promptList: ['styles', 'cli', 'plugins', 'typescript', 'vs', 'layout'],
+  create: function() {
+    var list = [];
+    for (let name of this.promptList)
+      list.push(this.prompts[name]);
+    return list;
   }
 }
