@@ -4,7 +4,7 @@ var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
 let lib = require('../../lib');
-let util = require('./util');
+let install = require('./install');
 var generator;
 
 let log = lib.log;
@@ -23,6 +23,7 @@ module.exports = yeoman.generators.Base.extend({
 
   initializing: function() {
     this.prompts = require('./prompts');
+    this.install = lib.install(this);
   },
 
   prompting: function() {
@@ -45,10 +46,7 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   install: function() {
-    util.install(this.modules);
-    if (this.humanModel) {
-      jspm.packages(['github:HenrikJoreteg/human-model']);
-    }
+    install(this).all(this);
   },
   end: function() {
   }
