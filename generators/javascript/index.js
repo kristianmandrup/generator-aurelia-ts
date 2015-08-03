@@ -15,6 +15,7 @@ module.exports = yeoman.generators.Base.extend({
 
   initializing: function() {
     generator = this;
+    this.copy = lib.copy(this)
   },
 
   writing: {
@@ -24,8 +25,8 @@ module.exports = yeoman.generators.Base.extend({
     app: function() {
     },
     srcFiles: function() {
-      generator.conflicter.force = true;
-      generator.bulkDirectory('src', 'src');
+      this.conflicter.force = true;
+      this.copy.bulkDir('src');
     }
   },
   end: function() {

@@ -31,14 +31,13 @@ module.exports = yeoman.generators.Base.extend({
 
     // TODO: add more state managers
     // f.ex swarm.js for realtime
-
     this.prompt(this.prompts, function(answers) {
       this.modules = [];
       for (let name of answers.modules) {
         this[name] = true;
       }
-      this.modules = answers.modules;
-      this.humanModel = answers.humanModel;
+      this.props.modules = answers.modules;
+      this.props.humanModel = answers.humanModel;
       // this.config.save();
 
       done();
@@ -46,7 +45,7 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   install: function() {
-    install(this).all(this);
+    install(this).all(this.props);
   },
   end: function() {
   }

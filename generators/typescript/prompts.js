@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
   createFor: function(opts) {
     return [{
@@ -12,8 +13,8 @@ module.exports = {
       type    : 'list',
       name    : 'editor',
       message : 'Choose Editor',
-      choices: editors
-      default : 'Atom'
+      choices: editors,
+      default : ['Atom']
     }];
   }
 }
