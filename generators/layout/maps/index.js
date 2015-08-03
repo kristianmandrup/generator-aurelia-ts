@@ -1,4 +1,3 @@
 module.exports = {
-  repos: require('./repos'),
-  ui: require('./ui'),
+  repos: require('./repos')
 }

@@ -10,6 +10,7 @@ let lib = require('../../lib');
 let write = require('./write');
 let prompts = require('./prompts');
 let util = require('./util');
+let install = require('./install');
 let writer = lib.writer;
 let copy = lib.copy;
 let options = lib.options;
@@ -39,6 +40,7 @@ module.exports = yeoman.generators.Base.extend({
     this.myUtil = require('./util')(this);
     this.writer = writer(write(this));
     this.copy = copy(this);
+    this.install = lib.install(this);
     this.util = lib.util;
   },
 
@@ -74,6 +76,7 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   install: function() {
+    install(this).all(this);
   },
 
   end: function() {
