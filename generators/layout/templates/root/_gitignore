@@ -4,7 +4,7 @@ jspm_packages
 bower_components
 .DS_Store
 
-<% if (semanticUI) { %>
+<% if (ui.semantic) { %>
 ## Ignore Semantic-UI distribution files
 semantic/dist
 <% } %>

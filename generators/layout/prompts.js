@@ -6,7 +6,7 @@ module.exports = {
       phase1: function() {
         var prompts = [];
 
-        var defaultUI = opts.uiFramework || 'Bootstrap';
+        var defaultUI = opts.ui.use || 'Bootstrap';
 
         var uiFrameWorksPrompt = {
           type: 'checkbox',

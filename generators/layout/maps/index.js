@@ -1,3 +1,4 @@
 module.exports = {
-  repos: require('./repos')
+  repos: require('./repos'),
+  extras: require('./extras')
 }

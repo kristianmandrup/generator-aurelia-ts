@@ -10,7 +10,7 @@ module.exports = function(gen) {
     selectedFramework: function(framework) {
       if (framework == 'None') return;
       if (framework.match(/Bootstrap/)) return 'bootstrap';
-      return gen.primary.toLowerCase();
+      return framework.toLowerCase();
     }
   }
 }

@@ -21,7 +21,7 @@ module.exports = yeoman.generators.Base.extend({
   },
   initializing: function () {
     this.props = {};
-    this.props.ui = options.uiFramework(this.options.ui);
+    this.props.ui = options.uiFrameworks(this.options.ui);
     this.install = install(this);
     this.copy = copy(this);
     this.writer = lib.writer(write(this));

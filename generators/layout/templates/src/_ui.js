@@ -1,7 +1,7 @@
-<% if (bootstrap) { %>
+<% if (ui.bootstrap) { %>
 import 'bootstrap';
 import 'bootstrap/css/bootstrap.css!';
-<% } %><% if (foundation) { %>
+<% } %><% if (ui.foundation) { %>
 // import 'modernizr';
 // import 'fastclick';
 import 'foundation';
@@ -11,10 +11,10 @@ import 'foundation/js/foundation/foundation.reveal';
 // Pace - a loading spinner plugin
 // http://github.hubspot.com/pace/docs/welcome/
 // import 'pace/themes/silver/loading-bar.css';
-<% } %><% if (semanticUI) { %>
+<% } %><% if (ui.semantic) { %>
 import 'semantic-ui';
 // import 'semantic/dist/semantic.css!'; // your themes and customizations
-<% } %><% if (framework7) { %>
+<% } %><% if (ui.framework7) { %>
 import 'framework7';
 import 'framework7/css/framework7.ios.css!';
 import 'framework7/css/framework7.ios.colors.css!';

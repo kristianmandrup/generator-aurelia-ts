@@ -12,22 +12,23 @@ let util = require('./util');
 let install = require('./install');
 let info = lib.log.info;
 
+function frameworks(gen, answers) {
+  return gen.util.isEmpty(answers.cssFrameworks) ? ['None'] : answers.cssFrameworks;
+}
+
 module.exports = yeoman.generators.Base.extend({
   // note: arguments and options should be defined in the constructor.
   constructor: function() {
     yeoman.generators.Base.apply(this, arguments);
     generator = this;
-    this.props = {};
+    this.props = {ui: {}};
     this.option('fa'); // font awesome
     // ui framework options
     this.option('ui', {type: 'string'});
   },
 
   initializing: function() {
-    this.appTitle = this.options.appTitle || 'My App';
-    this.appDesc = this.options.appDesc || 'No description...';
-    this.props.uiFramework = lib.options.mapUi(this.options.ui);
-    this.props.fa = this.options.fa;
+    this.props.ui.use = lib.options.mapUi(this.options.ui);
 
     this.myPrompts = prompts.createFor(this.props);
     this.myUtil = require('./util')(this);
@@ -40,12 +41,11 @@ module.exports = yeoman.generators.Base.extend({
   prompting: {
     phase1: function() {
       var done = this.async();
-
       this.prompt(this.myPrompts.phase1(), function(answers) {
         // TODO: extract util
-        this.cssFrameworks = this.util.isEmpty(answers.cssFrameworks) ? ['None'] : answers.cssFrameworks;
-        this.fontAwesome = answers.fontAwesome || this.props.fa;
-        this.ui = lib.options.uiFramework(this.cssFrameworks);
+        this.props.cssFrameworks = frameworks(this, answers);
+        this.props.fontAwesome = answers.fontAwesome || this.options.fa;
+        this.props.ui.obj = lib.options.uiFrameworks(this.cssFrameworks);
         // this.config.save();
         done();
       }.bind(this));
@@ -53,13 +53,20 @@ module.exports = yeoman.generators.Base.extend({
 
     phase2: function() {
       var done = this.async();
-      this.prompt(this.myPrompts.phase2(this), function(answers) {
-        this.primary = answers.primary;
-        if (this.primary == 'None') this.cssFrameworks = [];
+      this.prompt(this.myPrompts.phase2(this.props), function(answers) {
+        this.props.ui.primary = answers.primary;
+        let ui = this.props.ui;
+        if (ui.primary == 'None') this.props.cssFrameworks = [];
+
+        this.props.ui.selected = this.myUtil.selectedFramework(ui.primary);
         // this.config.save();
         done();
       }.bind(this));
     }
+  },
+
+  // set props!
+  configuring: function() {
   },
 
   writing: function() {
@@ -67,11 +74,10 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   install: function() {
-    install(this).all(this);
+    install(this).all(this.props);
   },
 
   end: function() {
-    if (!this.selFramework) return;
-    info("Installed:" + this.cssFrameworks.join(' '));
+    info("Installed:" + this.props.cssFrameworks.join(', '));
   }
 });

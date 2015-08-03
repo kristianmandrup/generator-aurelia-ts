@@ -13,30 +13,28 @@ module.exports = function(gen) {
     dirs: ['docs', 'root', 'src', 'views'],
     docs: function() {
       gen.copy.docsTpl('_Layout.md', {
-        semanticUI: gen.semanticUI
+        ui: gen.props.ui.obj
       });
     },
     root: function() {
       gen.copy.rootTpl('_gitignore', {
-        vs: gen.props.visualStudio,
-        semanticUI: gen.semanticUI
+        vs: gen.props.vs,
+        ui: gen.props.ui.obj
       });
     },
     src: function() {
       if (!gen.selFramework) return;
       var ext = gen.util.getJsLangExt();
-      gen.copy.srcTpl('_ui.js', opts.ui);
-      gen.copy.srcFile(`app.${ext}`, opts.ui);
+      let ui = {ui: gen.props.ui.obj};
+      gen.copy.srcTpl('_ui.js', ui);
+      gen.copy.srcFile(`app.${ext}`, ui);
     },
     // For primary UI framework chosen
     views: function() {
-      if (!gen.primary) {
-        gen.primary = 'Bootstrap';
-      }
-      gen.selFramework = gen.myUtil.selectedFramework(gen.primary);
-      if (!gen.selFramework) return;
+      let ui = gen.props.ui;
+      if (!ui.selected) return;
       for (let view of ['app', 'nav-bar', 'welcome']) {
-        copyView(gen.selFramework, view);
+        copyView(ui.selected, view);
       }
     }
   }
