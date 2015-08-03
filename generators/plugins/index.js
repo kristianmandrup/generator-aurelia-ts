@@ -32,11 +32,12 @@ module.exports = yeoman.generators.Base.extend({
     this.copy = lib.copy(this);
     this.install = lib.install(this);
     this.info = lib.info(this);
+    this.prompts = prompts(this);
   },
 
   prompting: function() {
     var done = this.async();
-    this.prompt(prompts.createFor(this), function(answers) {
+    this.prompt(this.prompts.createFor(this), function(answers) {
       this.plugins = parser(answers).parse();
       // this.config.save();
       done();
@@ -78,7 +79,7 @@ module.exports = yeoman.generators.Base.extend({
 
     // fixes bad jade dependency: https://github.com/Craga89/aurelia-jade-viewstrategy/issues/2
     if (this.plugins.jade) {
-      install.jspm.packages(['npm:jade']);
+      // install.jspm.packages(['npm:jade']);
     }
   },
 

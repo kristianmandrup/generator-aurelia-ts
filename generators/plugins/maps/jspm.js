@@ -11,7 +11,7 @@ module.exports = {
   bsModal: 'aurelia-bs-modal',
   auth: 'aureli-auth=github:paulvanbladel/aureliauth',
   validation: 'aurelia-validation',
-  jadeViews: 'aurelia-jade-viewstrategy=github:Craga89/aurelia-jade-viewstrategy',
+  // jadeViews: 'aurelia-jade-viewstrategy=github:Craga89/aurelia-jade-viewstrategy',
   materialize: 'aurelia-materialize=github:manuel-guilbault/aurelia-materialize',
   rethinkDB: 'aurelia-rethink-bindtable=github:kristianmandrup/aurelia-rethink-bindtable',
   breeze: 'aurelia-breeze'
