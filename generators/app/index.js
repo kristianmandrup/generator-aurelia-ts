@@ -41,11 +41,11 @@ module.exports = yeoman.generators.Base.extend({
 
   initializing: function() {
     this.util = util;
-    this.props = {};
-    this.props.appName = this.appname ? this.appname.camelize() : null;
+    this.props = {app: {}, pkg: {}};
+    this.props.app.name = this.appname ? this.appname.camelize() : null;
+    this.props.app.moduleName = this.util.normalizeName(this.props.appName);
+    this.props.app.title = this.util.humanize(this.props.appName);
 
-    this.props.moduleName = this.util.normalizeName(this.props.appName);
-    this.props.appTitle = this.util.humanize(this.props.appName);
     this.props.uiFramework = options.mapUi(this.options.ui)
 
     this.props.styleLang = this.options.stylus || this.options.sass || 'css';
@@ -54,8 +54,9 @@ module.exports = yeoman.generators.Base.extend({
     this.props.fa = this.options.fa;
     this.props.plugins = this.options.plugins;
 
-    this.props.githubAccount = this.config.get('githubAccount');
+    this.props.pkg.githubAccount = this.config.get('githubAccount');
 
+    this.copy = copy(this);
     this.writer = writer(writeConf(this));
     this.myPrompts = prompts(this);
   },
@@ -67,19 +68,20 @@ module.exports = yeoman.generators.Base.extend({
 
     // info('Create Aurelia Application:');
     this.prompt(this.myPrompts.createFor(this), function(answers) {
+      let app = this.props.app;
       this.props.app = {
-        name: util.normalizeName(answers.appName || this.appName),
-        title: answers.title,
-        desc: answers.appDesc
+        name: util.normalizeName(answers.appName || app.name),
+        title: answers.title || app.title,
+        desc: answers.desc || app.desc
       };
 
       this.props.pkg = {};
       for (let name of ['authorName', 'authorEmail', 'githubAccount'])
         this.props.pkg[name] = answers[name];
 
-      this.props.vs = answers.visualStudio || this.props.vs;
-      this.props.ie9 = answers.ie9Support;
-      this.props.appExt = extend(this.props.app, {ie9: this.ie9});
+      this.props.decorate = answers.decorate;
+      this.props.appExt = extend({ie9: answers.ie9}, this.props.app);
+      console.log('ext', this.props.appExt);
 
       this.config.save();
 
@@ -88,18 +90,21 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   writing: function() {
+    log.info('Writing app files...')
+    generator.conflicter.force = true;
     this.writer.writeAll();
   },
 
   install: function() {
     if (this.ie9) {
-      install.jspm.packages(['github:polymer/mutationobservers']);
+      // install.jspm.packages(['github:polymer/mutationobservers']);
     }
   },
 
   end: function() {
-    this.composeWith('aurelia-ts:decorate', {
-      options: {}
-    });
+    if (!this.decorate) return;
+    // this.composeWith('aurelia-ts:decorate', {
+    //   options: {}
+    // });
   }
 });
