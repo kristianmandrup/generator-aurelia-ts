@@ -1,8 +1,12 @@
 'use strict';
 var maps = require('./maps');
+var lib = require('../../lib');
+var prompts = lib.prompts;
 
 module.exports = function(answers) {
   return {
+    allPlugins: Object.keys(maps.jspm),
+    listPrompts: ['ui', 'bindings'],
     parse: function() {
       let plugins = {
         obj: this.parseObj()
@@ -11,22 +15,15 @@ module.exports = function(answers) {
       return plugins;
     },
     parseObj: function() {
-      let keys = Object.keys(answers);
-      let sel = {};
+      let keys = this.allPlugins;
+      let selectionObj = {};
       for (let key of keys) {
-        var answer = answers[key];
-
-        if (typeof answer === 'boolean') {
-          sel[key] = answer ? key : false;
-        } else {
-          // Assume Array
-          for (let choice of answer) {
-            var name = maps.names[choice] || choice.toLowerCase();
-            sel[name] = name;
-          }
-        }
+        selectionObj[key] = prompts.value(answers[key], key);
       }
-      return sel;
+      for (let key of this.listPrompts) {
+        prompts.mapListAnswers(selectionObj, answers[key]);
+      }
+      return selectionObj;
     },
     selected: function(obj) {
       let keys = Object.keys(obj);

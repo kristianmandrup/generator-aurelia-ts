@@ -60,7 +60,7 @@ module.exports = function (gen) {
       bindings: {
         type: 'checkbox',
         name: 'bindings',
-        choices: ['Async', 'Breeze bindings', 'RethinkDB bindings'],
+        choices: ['Async', 'Breeze', 'RethinkDB'],
         message: 'Bindings',
         default: [],
       }

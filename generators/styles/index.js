@@ -48,6 +48,7 @@ module.exports = yeoman.generators.Base.extend({
 
       this.prompt(this.prompts.phase1, function(answers) {
         this.chosenStyles = this.util.isEmpty(answers.styles) ? ['None'] : answers.styles;
+
         this.styles = util.styles(this.chosenStyles);
         this.removeOld = answers.removeOld;
         this.useJade = answers.useJade;
@@ -73,6 +74,7 @@ module.exports = yeoman.generators.Base.extend({
         this.stylus = {plugins: {}};
         this.stylus.plugins.list = answers.stylusPlugins;
         this.stylus.plugins.obj = util.addOns(this.stylus.plugins.list);
+
         done();
       }.bind(this));
     }
