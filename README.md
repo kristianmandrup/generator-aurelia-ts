@@ -1,27 +1,26 @@
-# generator-aurelia-ts
+generator-aurelia-ts
+====================
 
 [![Build Status](https://secure.travis-ci.org/kristianmandrup/generator-aurelia-ts.png?branch=master)](https://travis-ci.org/kristianmandrup/generator-aurelia-ts)
 
-Generate an [Aurelia](aurelia.io) Quick Start project with:
-- [Aurelia CLI](http://www.programwitherik.com/what-is-aurelia-cli-how-does-it-work/)
-- [SASS](http://sass-lang.com/) or [Stylus](https://learnboost.github.io/stylus/) CSS extenstion language
-- TypeScript definitions
-- A popular UI framework of your choice
-- Plugins of your choice installed
-- Aurelia CLI for rapid development...
+Generate an [Aurelia](aurelia.io) Quick Start project with: - [Aurelia CLI](http://www.programwitherik.com/what-is-aurelia-cli-how-does-it-work/) - [SASS](http://sass-lang.com/) or [Stylus](https://learnboost.github.io/stylus/) CSS extenstion language - TypeScript definitions - A popular UI framework of your choice - Plugins of your choice installed - Aurelia CLI for rapid development...
 
-### Status
+### Generators
 
-All tests pass!
+-	`aurelia-ts` (new app)
+-	`aurelia-ts:decorate` (decorate app)
+-	`aurelia-ts:plugins` (add plugins)
+-	`aurelia-ts:cli` (add CLI)
+-	`aurelia-ts:styles` (add CSS preprocessors: SASS/Stylus )
+-	`aurelia-ts:layout` (add ui/layout framework:)
+-	`aurelia-ts:javascript` (javascript app)
+-	`aurelia-ts:typescript` (typescript app)
+-	`aurelia-ts:state` (add state or stores)
+-	`aurelia-ts:amp` - (add Ampersand models/collections)
 
-Generator Tested on MacOSX via `npm link` and all generators work as expected :)
+Now includes IE9 support ;)
 
-- `aurelia-ts`
-- `aurelia-ts:plugins`
-- `aurelia-ts:cli`
-- `aurelia-ts:styles`
-- `aurelia-ts:layout`
-- `aurelia-ts:typescript`
+Note: Generator has been tested on MacOSX via `npm link`
 
 ### Layout Frameworks
 
@@ -29,15 +28,9 @@ Run: `yo aurelia-ts:layout`
 
 The layout generator currently supports:
 
-Fonts:
-- [Font Awesome](http://fortawesome.github.io/Font-Awesome/)
+Fonts: - [Font Awesome](http://fortawesome.github.io/Font-Awesome/)
 
-CSS:
-- [Bootstrap](http://getbootstrap.com)
-- [Bootstrap Material](https://fezvrasta.github.io/bootstrap-material-design/)
-- [Zurb Foundation](http://foundation.zurb.com/)
-- [Semantic UI](semantic-ui.com)
-- [Framework7](http://www.idangero.us/framework7)
+CSS: - [Bootstrap](http://getbootstrap.com) - [Bootstrap Material](https://fezvrasta.github.io/bootstrap-material-design/) - [Zurb Foundation](http://foundation.zurb.com/) - [Semantic UI](semantic-ui.com) - [Framework7](http://www.idangero.us/framework7)
 
 Make a pull request to make the generator support your favorite alternative UI/Layout framework (see *Contributing* below).
 
@@ -51,7 +44,8 @@ Ideas ror how to best achieve TypeScript support are most welcome!
 
 Please submit pull requests for further TypeScript Definition updates or help integrate with auto generation (when mature).
 
-## Install
+Install
+-------
 
 To install generator-aurelia-ts from npm, run:
 
@@ -59,7 +53,8 @@ To install generator-aurelia-ts from npm, run:
 npm install -g generator-aurelia-ts
 ```
 
-## Run
+Run
+---
 
 Create a folder for your app:
 
@@ -98,6 +93,14 @@ The generator also supports *SCSS* and *Stylus* via `--scss` and `--stylus` opti
 yo aurelia-ts --stylus
 ```
 
+### Stylus plugins
+
+-	[Nib](https://github.com/tj/nib)
+-	[Axis](http://axis.netlify.com/)
+-	[Rupture](http://jenius.github.io/rupture/)
+-	[Fluidity](www.fluiditycss.com)
+-	[Jeet](http://jeet.gs/)
+
 ### UI framework option
 
 You can also pass the UI framework as a `--ui` option
@@ -106,25 +109,14 @@ You can also pass the UI framework as a `--ui` option
 yo aurelia-ts --stylus --ui sem
 ```
 
-The ui can take any of these shorthands:
-- `bs` Bootstrap
-- `zurb` Zurb Foundation
-- `sem` Semantic-UI
-- `f7` Framework7
+The ui can take any of these shorthands: - `bs` Bootstrap - `zurb` Zurb Foundation - `sem` Semantic-UI - `f7` Framework7
 
 ### Prompts
 
-You will be prompted for the following:
-- application name?
-- application title?
-- github account?
-- email?
-- name?
-- Install Aurelia CLI?
-- Install TypeScript?
-- Visual Studio?
+You will be prompted for the following: - application name? - application title? - github account? - email? - name? - Install Aurelia CLI? - Install TypeScript? - Visual Studio?
 
-## TypeScript
+TypeScript
+----------
 
 After setting up the basic project structure, the main generator will ask you to call the `aurelia-ts:typescript` generator.
 
@@ -140,21 +132,21 @@ Experimental support for installing various Aurelia plguins:
 
 `yo aurelia-ts:plugins`
 
-Plugins list:
-- [Flux](https://github.com/tfrydrychewicz/aurelia-flux)
-- [Authentication](https://github.com/paulvanbladel/aureliauth)
-- [Validation](https://github.com/aurelia/validation)
-- [i18next](https://github.com/zewa666/aurelia-i18next)
-- [Computed properties](https://github.com/jdanyow/aurelia-computed/)
-- [Bootstrap Modal])https://github.com/PWKad/aurelia-bs-modal) (if Bootstrap)
-- [Rethink DB bindings](https://github.com/kristianmandrup/aurelia-rethink-bindtable)
-- [Breeze bindings](https://github.com/jdanyow/aurelia-breeze)
-- ...
-- (TODO: Add YOUR favorite plugins...)
+-	[Flux](https://github.com/tfrydrychewicz/aurelia-flux)
+-	[Authentication](https://github.com/paulvanbladel/aureliauth)
+-	[Validation](https://github.com/aurelia/validation)
+-	[i18next](https://github.com/zewa666/aurelia-i18next)
+-	[Computed properties](https://github.com/jdanyow/aurelia-computed/)
+-	[Bootstrap Modal](https://github.com/PWKad/aurelia-bs-modal)
+-	[Rethink DB bindings](https://github.com/kristianmandrup/aurelia-rethink-bindtable)
+-	[Breeze bindings](https://github.com/jdanyow/aurelia-breeze)
+-	...
+-	(TODO: Add YOUR favorite plugins...)
 
-See [jspm registry](https://github.com/jspm/registry/blob/master/registry.json) for predefined entries setup to be installed by name,such as: `jspm install semantic-ui`
+See [jspm registry](https://github.com/jspm/registry/blob/master/registry.json) for predefined entries setup to be installed by name, such as: `jspm install semantic-ui`
 
-## Frameworks
+Frameworks
+----------
 
 ### Semantic-UI
 
@@ -164,10 +156,7 @@ For *Semantic-UI* you should reference `/semantic/dist` in `app.js`
 // import '../semantic/dist'; // your themes and customizations
 ```
 
-You can then customize your layout from within the `/semantic` folder using:
-- [Build tools](http://semantic-ui.com/introduction/build-tools.html)
-- [Theming](http://semantic-ui.com/usage/theming.html)
-- [Recipes](http://semantic-ui.com/introduction/advanced-usage.html)
+You can then customize your layout from within the `/semantic` folder using: - [Build tools](http://semantic-ui.com/introduction/build-tools.html) - [Theming](http://semantic-ui.com/usage/theming.html) - [Recipes](http://semantic-ui.com/introduction/advanced-usage.html)
 
 ### Contributing
 
@@ -202,8 +191,7 @@ var repoKeyMap = {
 }
 ```
 
-Add the [JSPM](jspm.io) imports to `templates/src/app.js`.
-JSPM can load css via the [JSPM CSS loader](https://github.com/geelen/jspm-loader-css)
+Add the [JSPM](jspm.io) imports to `templates/src/app.js`. JSPM can load css via the [JSPM CSS loader](https://github.com/geelen/jspm-loader-css)
 
 See the [framework7 distribution folder](https://github.com/nolimits4web/Framework7/tree/master/dist) and use it to guide your ES2015 module imports.
 
@@ -241,17 +229,20 @@ Most likely due to an [EJS](http://ejs.co/) template error (typically a missing 
 
 ### Contributors
 
-- [@telekosmos](https://github.com/telekosmos)
-- [@kristianmandrup](https://github.com/kristianmandrup)
-- You :)
+-	[@telekosmos](https://github.com/telekosmos)
+-	[@kristianmandrup](https://github.com/kristianmandrup)
+-	You :)
 
-## TODO
+TODO
+----
 
 Ideas for improvement are welcome :)
 
-- More UI frameworks such as [Gumby](http://www.gumbyframework.com/)
-- Support for more editors/IDEs: Visual Studio, WebStorm etc.
+-	[bootstrap3-stylus](https://github.com/MContagious/bootstrap3-stylus)
+-	More UI frameworks such as [Gumby](http://www.gumbyframework.com/)
+-	Support for more editors/IDEs: Visual Studio, WebStorm etc.
 
-## License
+License
+-------
 
 MIT

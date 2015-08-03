@@ -6,6 +6,7 @@ var outputRoot = 'dist/';
 module.exports = {
   root: appRoot,
   source: appRoot + '**/*.js',
+  jadeSrc: appRoot +'templates/**/*.jade',
   sourceTS: appRoot + '**/*.ts',
   typings: appRoot + '../typings/tsd.d.ts',
   html: appRoot + '**/*.html',
@@ -13,6 +14,7 @@ module.exports = {
   sass: 'styles/sass/**/*.scss',
   stylus: 'styles/stylus/**/*.scss',
   styleDest: './styles/css',
+
   output: outputRoot,
   sourceMapRelativePath: '../' + appRoot,
   doc:'./doc',

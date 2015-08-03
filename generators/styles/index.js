@@ -3,184 +3,90 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
-var fs = require('node-fs-extra')
-
-var defaultUI;
-
-var generator;
-
-function prepare4Tpl(list) {
-  return list.map(function(item) {
-    return "'" + item + "'";
-  });
-}
-
-function info(msg) {
-  console.log(msg);
-}
-
-function command(msg) {
-  console.log('  $ ' + msg);
-}
-
-function stylesPath(folder) {
-  return ['styles', folder].join('/');
-}
-
-function stylesFolder(lang) {
-  return lang.toLowerCase();
-}
+var extend = require('extend');
+var fs = require('node-fs-extra');
+let lib = require('../../lib');
+let write = require('./write');
+let prompts = require('./prompts');
+let util = require('./util');
+let install = require('./install');
+let stylesPath = util.stylesPath;
+let log = lib.log;
+let info = log.info;
+var generator, linux, macOSX;
 
 module.exports = yeoman.generators.Base.extend({
 
   // note: arguments and options should be defined in the constructor.
   constructor: function() {
     yeoman.generators.Base.apply(this, arguments);
-
     generator = this;
-    this.props = {};
-
+    // define options that the generator accepts
     this.option('sass');
     this.option('stylus');
-
-    this.defaultStyles = [];
-    if (this.options.sass) {
-      this.defaultStyles.push('SASS')
-    }
-    if (this.options.stylus) {
-      this.defaultStyles.push('Stylus')
-    }
-
-    this.styleLang = this.defaultStyles[0] || 'css';
   },
 
   initializing: function() {
+    // set initial properties
+    this.props = {};
+    // this.props.styles = util.styles(this.options);
+    // choose preferred style (Stylus highest priority)
+    this.props.styleLang = 'css'; // this.props.styles[0] || 'css';
+
+    // init phase helpers
+    this.install = lib.install(this);
+    this.copy = lib.copy(this);
+    this.writer = lib.writer(write(this));
+    this.prompts = prompts.createFor(this);
+    this.util = lib.util;
+    install = install(this);
   },
 
-  prompting: function() {
-    var done = this.async();
+  prompting: {
+    phase1: function() {
+      var done = this.async();
 
-    var prompts = [{
-      type: 'checkbox',
-      name: 'styles',
-      choices: [
-        'None (CSS)',
-        'Stylus',
-        'SASS'
-      ],
-      default: this.defaultStyles,
-      message: 'CSS Preprocessors'
-    }, {
-      type: 'prompt',
-      name: 'removeOld',
-      default: false,
-      message: 'Remove old styles'
-    }];
+      this.prompt(this.prompts.phase1, function(answers) {
+        this.chosenStyles = this.util.isEmpty(answers.styles) ? ['None'] : answers.styles;
 
-    this.prompt(prompts, function(answers) {
-      this.styles = answers.styles;
-      this.css = this.styles.indexOf('None (CSS)') >= 0;
-      this.sass = this.styles.indexOf('SASS') >= 0;
-      this.stylus = this.styles.indexOf('Stylus') >= 0;
-      this.removeOld = answers.removeOld;
+        this.styles = util.styles(this.chosenStyles);
+        this.removeOld = answers.removeOld;
+        this.useJade = answers.useJade;
+        this.preProcessors = util.mapToList(this.styles.pre);
+        this.styleLangs = this.preProcessors.slice(0);
+        if (this.styles.css) this.styleLangs.push('css');
+        // this.config.save();
 
-      this.preProcessors = [];
-      if (this.sass) {
-        this.preProcessors.push('sass')
-      }
-      if (this.stylus) {
-        this.preProcessors.push('stylus')
-      }
-
-      this.styleLangs = this.preProcessors.slice(0);
-
-      if (this.css) {
-        this.styleLangs.push('css');
-      }
-      // this.config.save();
-
-      done();
-    }.bind(this));
-  },
-
-  // See File API: https://github.com/sboudrias/mem-fs-editor
-  writing: {
-    clearOld: function() {
-      var self = this;
-      if (!this.removeOld) return;
-      for (let folder of ['css', 'stylus', 'sass']) {
-        var path = this.destinationPath(stylesPath(folder));
-        if (fs.existsSync(path)) {
-          fs.removeSync(path, function(err) {
-            info('deleted:' + path);
-          });
-        }
-      }
-
-      var path = this.destinationPath('styles/styles.css');
-      if (fs.existsSync(path)) {
-        fs.remove(path, function(err) {
-          info('deleted:' + path);
-        });
-      }
+        done();
+      }.bind(this));
     },
 
-    styleFiles: function() {
-      var self = this;
-      for (let lang of this.styleLangs) {
-        var folder = stylesFolder(lang);
-        var path = stylesPath(folder);
-        this.bulkDirectory(path, path);
-      }
-    },
+    phase2: function () {
+      if (!this.styles.pre.stylus) return;
 
-    cssBuildTask: function() {
-      var watchTasks = [];
-      if (this.sass) {
-        watchTasks.push('sass:watch');
-      }
-      if (this.stylus) {
-        watchTasks.push('stylus:watch');
-      }
-      var preProcessors = prepare4Tpl(this.preProcessors);
-      watchTasks = prepare4Tpl(watchTasks);
+      var done = this.async();
+      info('Note: For Nib you need cairo installed for canvas installation used');
+      info('brew install cairo (MacOSX)');
+      info('wget https://raw.githubusercontent.com/LearnBoost/node-canvas/master/install -O - | sh');
+      info('IO.js: See https://github.com/mafintosh/node-gyp-install')
 
-      this.fs.copyTpl(
-        this.templatePath('styles/tasks/_css.js'),
-        this.destinationPath('build/tasks/css.js'), {
-          preProcessors: preProcessors,
-          watchTasks: watchTasks,
-          styles: this.styleLangs.join(' and '),
-        }
-      );
-    },
+      this.prompt(this.prompts.phase2, function(answers) {
+        this.stylus = {plugins: {}};
+        this.stylus.plugins.list = answers.stylusPlugins;
+        this.stylus.plugins.obj = util.addOns(this.stylus.plugins.list);
 
-    cssPreProcessorTasks: function() {
-      if (this.sass) {
-        this.fs.copy(
-          this.templatePath('styles/tasks/sass.js'),
-          this.destinationPath('build/tasks/sass.js')
-        );
-      }
-
-      if (this.stylus) {
-        this.fs.copy(
-          this.templatePath('styles/tasks/stylus.js'),
-          this.destinationPath('build/tasks/stylus.js')
-        );
-      }
+        done();
+      }.bind(this));
     }
   },
-
+  writing: function() {
+    this.writer.writeAll();
+  },
   install: function() {
-    if (this.sass) {
-      generator.npmInstall('gulp-sass', {saveDev: true});
-    }
-    if (this.stylus) {
-      generator.npmInstall('gulp-stylus', {saveDev: true});
-    }
+    if (this.styles.pre.sass) install.sass();
+    if (this.styles.pre.stylus) install.stylus();
+    if (this.useJade) install.jade();
   },
-
   end: function() {
     info("Installed:" + this.preProcessors.join(' '));
   }
