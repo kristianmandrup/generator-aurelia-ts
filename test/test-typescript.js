@@ -15,6 +15,10 @@ describe('aurelia-ts:typescript', function () {
     exec: this.spy
   });
 
+  this.bowerInstallCalls = [];
+  this.npmInstallCalls = [];
+  this.spawnCommandCalls = [];
+
   before(function(done) {
     app = helpers.run(path.join(__dirname, '../generators/typescript'))
       .withOptions({
@@ -26,13 +30,28 @@ describe('aurelia-ts:typescript', function () {
         appName: 'The App name'
       })
       .withPrompts({
-        typescript: true,
+        editor: 'Atom',
         amd: true,
         installDeps: false
       })
+      .on('ready', function(generator) {
+        generator.bowerInstall = function() {
+          this.bowerInstallCalls.push(arguments);
+        }.bind(this);
+        generator.npmInstall = function() {
+          this.npmInstallCalls.push(arguments);
+        }.bind(this);
+        generator.spawnCommand = function() {
+          this.spawnCommandCalls.push(arguments);
+        }.bind(this);
+      }.bind(this))
       .on('end', function() {
         done();
       });
+  }.bind(this));
+
+  it('generator can be run', function() {
+    assert(app !== undefined);
   });
 
   it('creates files', function () {
@@ -56,6 +75,7 @@ describe('aurelia-ts:typescript', function () {
       ['build/tasks/build.js', /require\s*\(["']gulp\-typescript["']\);/],
       ['build/tasks/build.js', /module:\s+"amd"/],
       ['build/tasks/build.js', /target:\s+"es5"/],
+      ['tsconfig.json', /"module":\s+"amd"/]
     ]);
     assert.fileContent([
       ['src/app.ts', /\/\/\/\s+<reference path="\.\.\/typings\/tsd\.d\.ts"\s*\/>/],
@@ -64,31 +84,37 @@ describe('aurelia-ts:typescript', function () {
     ]);
   });
 
-  /*
   it('makes test tasks depending on build', function() {
     assert.fileContent([
       ['build/tasks/test.js', /\[['"]build\-system['"]\]/]
     ]);
   });
-  */
 
   it('makes karma configuration', function() {
-    /*
     assert.noFileContent([
       ['karma.conf.js', /src/]
     ]);
-    */
-    /*
     // load the right files and babel preprocessor
     assert.fileContent([
       ['karma.conf.js', /loadFiles:\s*\[.*dist\/.*\]/],
       ['karma.conf.js', /preprocessors:\s*\{\s*.+\s*.+\s*'dist\/.*\.js':\s*\['babel'\]/]
     ]);
-    */
-  })
+  });
+
+  it('install npm dependencies', function() {
+    assert(this.npmInstallCalls.length > 0);
+    assert(this.npmInstallCalls.length == 1);
+    assert(this.npmInstallCalls[0][0].indexOf('gulp') != -1);
+  }.bind(this));
+
+  it('install jspm dependencies', function() {
+    assert(this.spawnCommandCalls.length == 1);
+    assert(this.spawnCommandCalls[0][0] == 'jspm');
+    assert(this.spawnCommandCalls[0][1].indexOf('typescript') != -1);
+  }.bind(this))
 });
 
-
+/*
 describe('aurelia-ts:typescript -no TS support-', function () {
   this.spy = sinon.spy();
   var dummyGen = generator.Base.extend({
@@ -120,10 +146,11 @@ describe('aurelia-ts:typescript -no TS support-', function () {
     assert.noFile([
       'package.json', 'src/app.js', 'src/welcome.js', 'src/nav-bar.js'
     ]);
-    */
+    *
     assert.noFile([
       'tsconfig.json', 'typings/tsd.d.ts',
       'src/app.ts', 'src/welcome.ts', 'src/nav-bar.ts'
     ]);
   });
 });
+*/

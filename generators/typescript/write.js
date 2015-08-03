@@ -20,7 +20,8 @@ module.exports = function(gen) {
     },
     tasks: function() {
       gen.copy.buildFile('test.js');
-      gen.copy.buildFile('build.js');
+      // gen.copy.buildFile('build.js');
+      gen.copy.buildTpl('build.js', {amd: gen.props.amd});
     },
     test: function() {
       gen.copy.testFile('unit/app.spec.js');

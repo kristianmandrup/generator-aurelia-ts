@@ -40,7 +40,6 @@ module.exports = yeoman.generators.Base.extend({
   },
   writing: function() {
     this.writer.writeAll();
-
   },
   install: function() {
     this.install.jspm.packages(['typescript', 'ts=github:frankwallis/plugin-typescript@^1.0.5']);

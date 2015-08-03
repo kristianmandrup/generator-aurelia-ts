@@ -5,10 +5,10 @@ module.exports = {
       type    : 'confirm',
       name    : 'amd',
       message : 'Use Aurelia AMD?',
-      default : opts.amd,
-      when: function(answers) {
-        return answers.typescript;
-      }
+      default : opts.amd || true
+//      when: function(answers) {
+//        return answers.typescript;
+//      }
     }, {
       type    : 'list',
       name    : 'editor',
