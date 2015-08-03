@@ -1,3 +1,5 @@
+import {Router} from 'aurelia-router';
+
 export class App {
   configureRouter(config, router){
     config.title = 'Aurelia';

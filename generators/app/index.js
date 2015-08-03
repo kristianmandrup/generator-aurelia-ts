@@ -59,6 +59,7 @@ module.exports = yeoman.generators.Base.extend({
     this.copy = copy(this);
     this.writer = writer(writeConf(this));
     this.myPrompts = prompts(this);
+    this.install = install(this);
   },
 
   // TODO: Add prompt for style lang unless passed as argument
@@ -80,9 +81,8 @@ module.exports = yeoman.generators.Base.extend({
         this.props.pkg[name] = answers[name];
 
       this.props.decorate = answers.decorate;
-      this.props.appExt = extend({ie9: answers.ie9}, this.props.app);
-      console.log('ext', this.props.appExt);
-
+      this.props.ie9 = answers.ie9;
+      this.props.appExt = extend({ie9: this.props.ie9}, this.props.app);
       this.config.save();
 
       done();
@@ -91,20 +91,20 @@ module.exports = yeoman.generators.Base.extend({
 
   writing: function() {
     log.info('Writing app files...')
-    generator.conflicter.force = true;
+    // generator.conflicter.force = true;
     this.writer.writeAll();
   },
 
   install: function() {
-    if (this.ie9) {
-      // install.jspm.packages(['github:polymer/mutationobservers']);
+    if (this.props.ie9) {
+      this.install.jspm.packages(['github:polymer/mutationobservers']);
     }
   },
 
   end: function() {
-    if (!this.decorate) return;
-    // this.composeWith('aurelia-ts:decorate', {
-    //   options: {}
-    // });
+    if (!this.props.decorate) return;
+    this.composeWith('aurelia-ts:decorate', {
+      options: {}
+    });
   }
 });

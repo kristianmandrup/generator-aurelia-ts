@@ -56,7 +56,7 @@ module.exports = function(gen) {
         default: true
       }
     },
-    promptList: [], // ['name', 'title', 'desc', 'github', 'authorName', 'authorEmail', 'ie9', 'decorate'],
+    promptList: ['name', 'title', 'desc', 'github', 'authorName', 'authorEmail', 'ie9', 'decorate'],
     createFor: function() {
       var prompts = [];
       for (let name of this.promptList)

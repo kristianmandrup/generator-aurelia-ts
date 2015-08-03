@@ -1,7 +1,4 @@
-let lib = function(file) {
-  return require(`../../lib/${file}`);
-}
-let install = lib('install');
+'use strict';
 
 function installCairo(opts) {
   if (opts.linux) {
@@ -12,7 +9,13 @@ function installCairo(opts) {
   }
 }
 
+function npmMap(name) {
+  if (name.match(/prefixer/)) return 'autoprefixer-stylus'
+  return name;
+}
+
 module.exports = function (gen) {
+  let install = gen.install;
   return {
     jade: function() {
       install.npmDev('gulp-jade');
@@ -22,8 +25,9 @@ module.exports = function (gen) {
     },
     stylus: function() {
       install.npmDev('gulp-stylus');
-      for (let addon of this.addonsList) {
-        install.npmDev(addon);
+      let list = gen.stylus.plugins.list;
+      for (let addon of list) {
+        install.npmDev(npmMap(addon));
       }
     },
     installCairo: installCairo,

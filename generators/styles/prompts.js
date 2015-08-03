@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
   editors: ['Atom', 'VS', 'WebStorm', 'Sublime', 'Other'],
   createFor: function(opts) {
@@ -35,7 +36,7 @@ module.exports = {
         ],
         default: ['Autoprefixer', 'Nib'],
         message: 'Stylus plugins'
-      }];
+      }]
     };
   }
 };

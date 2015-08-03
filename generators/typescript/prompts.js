@@ -1,5 +1,4 @@
 module.exports = {
-  editors: ['Atom', 'VS', 'WebStorm', 'Sublime', 'Other'],
   createFor: function(opts) {
     return [{
       type    : 'confirm',
@@ -10,11 +9,13 @@ module.exports = {
         return answers.typescript;
       }
     }, {
-      type    : 'confirm',
+      type    : 'list',
       name    : 'editor',
       message : 'Choose Editor',
-      choices: this.editors
+      choices: editors
       default : 'Atom'
     }];
   }
 }
+
+let editors = ['Atom', 'VS', 'WebStorm', 'Sublime', 'Other'];

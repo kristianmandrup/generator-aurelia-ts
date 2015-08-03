@@ -1,9 +1,9 @@
-let lib = function(file) {
-  return require(`../../lib/${file}`);
-}
-let util = lib('util');
+'use strict';
+let lib = require('../../lib');
+let util = lib.util;
 
-module.exports = function(gen) {
+module.exports = {
+  g: util,
   styleFolders: ['css', 'stylus', 'sass'],
   bulkStyles: function(styleLangs) {
     let stylusIdx = styleLangs.indexOf('Stylus');
@@ -40,7 +40,7 @@ module.exports = function(gen) {
   },
   mapToList: function(mapObj) {
     let list = [];
-    for (key in mapObj) {
+    for (let key in mapObj) {
       list.push(key);
     }
     return list;

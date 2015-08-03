@@ -18,7 +18,8 @@ module.exports = function(gen) {
       var self = this;
       if (!this.selFramework) return;
       var ext = this.util.getJsLangExt();
-      this.copy.srcTpl(`app.${ext}`, opts.ui);
+      this.copy.srcTpl('_ui.js', opts.ui);
+      this.copy.srcFile(`app.${ext}`, opts.ui);
     },
     // For primary UI framework chosen
     views: function() {
