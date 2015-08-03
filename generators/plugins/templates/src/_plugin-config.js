@@ -6,9 +6,7 @@ export default class PluginConfig {
   configs = {
     'aurelia-auth': (baseConfig) => {
          baseConfig.configure(config);
-    }
-    <% if (i18next) { %>
-    , 'aurelia-i18next': (instance) => {
+    }<% if (i18next) { %>, 'aurelia-i18next': (instance) => {
       // adapt options to your needs (see http://i18next.com/pages/doc_init.html)
       instance.setup({
         resGetPath : 'locale/__lng__/__ns__.json',
@@ -19,11 +17,7 @@ export default class PluginConfig {
         fallbackLng : 'en',
         debug : false
       });
-    }
-    <% } %>
-    <% if (materialize && validation) { %>
-    , 'aurelia-validation': (config) => { config.useViewStrategy(new MaterialValidationViewStrategy()); }
-    <% } %>
+    }<% } %><% if (materialize && validation) { %>, 'aurelia-validation': (config) => { config.useViewStrategy(new MaterialValidationViewStrategy()); }<% } %>
   };
 
   constructor(aurelia){

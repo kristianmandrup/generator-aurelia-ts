@@ -52,11 +52,9 @@ module.exports = yeoman.generators.Base.extend({
 
   end: function() {
     // src files
-    if (this.installTypeScript) {
-      this.composeWith('aurelia-ts:typescript', {});
-    } else {
-      this.composeWith('aurelia-ts:javascript', {});
-    }
+    let lang = this.installTypeScript ? 'typescript' : 'javascript';
+    let appGenerator = ['aurelia-ts', lang].join(':');
+    this.composeWith(appGenerator, {});
 
     if (this.installStyles) {
       this.composeWith('aurelia-ts:styles', {

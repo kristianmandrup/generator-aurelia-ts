@@ -4,15 +4,15 @@ var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
 var fs = require('node-fs-extra');
+var utl = require('util');
 
 let lib = require('../../lib');
-
 let log = lib.log;
-
 var generator;
 var selected, ext;
 
-var maps = require('./maps');
+const maps = require('./maps');
+
 var util = require('./util');
 let prompts = require('./prompts');
 let parser = require('./parser');
@@ -29,8 +29,9 @@ module.exports = yeoman.generators.Base.extend({
     this.props = {};
     this.props.bootstrap = this.options.bootstrap;
     this.util = lib.util;
-    this.copy = lib.copy;
-
+    this.copy = lib.copy(this);
+    this.install = lib.install(this);
+    this.info = lib.info(this);
   },
 
   prompting: function() {
@@ -44,22 +45,23 @@ module.exports = yeoman.generators.Base.extend({
 
   writing: {
     prepare: function() {
-      this.realPlugins = util.filterReal(this.plugins.selected);
+      this.realPlugins = util.filterReal(this.plugins.selected, maps.plugins);
       this.conflicter.force = true;
     },
     docs: function() {
       // TODO: copy all such docs to /docs folder
+      let selectedPluginRepos = util.docRepos(this.plugins.selected);
       this.copy.rootTpl('_Plugins.md', 'Plugins.md', {
-          selectedPluginRepos: docRepos(this.plugins.selected)
+          selectedPluginRepos: selectedPluginRepos
         }
       );
     },
 
     srcFiles: function() {
-      let ext = lib.info.getJsLangExt();
+      let ext = this.info.getLangExt();
       // TODO: choose to use either .ts or .js file somehow!
-      this.copy.srcTpl(`src/_plugin-config.${ext}`, `src/plugin-config.${ext}`, {
-          selected: prepare4Tpl(this.realPlugins),
+      this.copy.srcTpl(`_plugin-config.${ext}`, `plugin-config.${ext}`, {
+          selected: this.util.prepare4Tpl(this.realPlugins),
           i18next: this.plugins.i18next,
           materialize: this.plugins.materialize,
           validation: this.plugins.validation
@@ -71,8 +73,8 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   install: function() {
-    log.info("Installing Plugins...");
-    lib.jspm.resolvedPackages(selected, maps.jspmInstalls);
+    log.info('Installing Plugins...');
+    this.install.jspm.resolvedPackages(this.plugins.selected, maps.jspm);
 
     // fixes bad jade dependency: https://github.com/Craga89/aurelia-jade-viewstrategy/issues/2
     if (this.plugins.jade) {
@@ -81,6 +83,6 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   end: function() {
-    log.info('Installed: ' + this.plugins.selected.join(', '));
+    // log.info('Installed: ' + this.plugins.selected.join(', '));
   }
 });

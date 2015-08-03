@@ -24,8 +24,8 @@ module.exports = yeoman.generators.Base.extend({
     app: function() {
     },
     srcFiles: function() {
-      gen.conflicter.force = true;
-      gen.bulkDirectory('src', 'src');
+      generator.conflicter.force = true;
+      generator.bulkDirectory('src', 'src');
     }
   },
   end: function() {
