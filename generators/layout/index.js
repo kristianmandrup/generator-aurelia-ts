@@ -9,11 +9,11 @@ var generator;
 let lib = require('../../lib');
 let write = require('./write');
 let prompts = require('./prompts');
-
-let util = lib.util;
+let util = require('./util');
 let writer = lib.writer;
 let copy = lib.copy;
 let options = lib.options;
+let info = lib.log.info;
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -38,6 +38,8 @@ module.exports = yeoman.generators.Base.extend({
     this.myPrompts = prompts.createFor(this.props);
     this.myUtil = require('./util')(this);
     this.writer = writer(write(this));
+    this.copy = copy(this);
+    this.util = lib.util;
   },
 
   prompting: {
@@ -46,7 +48,7 @@ module.exports = yeoman.generators.Base.extend({
 
       this.prompt(this.myPrompts.phase1(), function(answers) {
         // TODO: extract util
-        this.cssFrameworks = util.isEmpty(answers.cssFrameworks) ? ['None'] : answers.cssFrameworks;
+        this.cssFrameworks = this.util.isEmpty(answers.cssFrameworks) ? ['None'] : answers.cssFrameworks;
 
         this.fontAwesome = answers.fontAwesome || this.props.fa;
         this.ui = options.uiFramework(this.cssFrameworks);

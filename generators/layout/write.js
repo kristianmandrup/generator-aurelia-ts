@@ -1,37 +1,42 @@
 'use strict';
+let util = require('./util');
 
 module.exports = function(gen) {
+  function copyView(framework, view) {
+    gen.fs.copy(
+      gen.templatePath(`views/${framework}/${view}.html`),
+      gen.destinationPath(`src/${view}.html`)
+    );
+  }
+
   return {
-    dirs: ['root', 'src', 'views'],
+    dirs: ['docs', 'root', 'src', 'views'],
+    docs: function() {
+      gen.copy.docsTpl('_Layout.md', {
+        semanticUI: gen.semanticUI
+      });
+    },
     root: function() {
-      this.copy.rootTpl('root/_gitignore', '.gitignore', {
+      gen.copy.rootTpl('_gitignore', {
         vs: gen.props.visualStudio,
         semanticUI: gen.semanticUI
       });
-      this.copy.rootTpl('_README.md', 'README.md', {
-        appTitle: self.appTitle,
-        appDesc: self.appDesc,
-        semanticUI: self.semanticUI
-      });
     },
     src: function() {
-      var self = this;
-      if (!this.selFramework) return;
-      var ext = this.util.getJsLangExt();
-      this.copy.srcTpl('_ui.js', opts.ui);
-      this.copy.srcFile(`app.${ext}`, opts.ui);
+      if (!gen.selFramework) return;
+      var ext = gen.util.getJsLangExt();
+      gen.copy.srcTpl('_ui.js', opts.ui);
+      gen.copy.srcFile(`app.${ext}`, opts.ui);
     },
     // For primary UI framework chosen
     views: function() {
-      if (!this.primary) {
-        this.primary = 'Bootstrap';
+      if (!gen.primary) {
+        gen.primary = 'Bootstrap';
       }
-      this.selFramework = util.selectedFramework(this.primary);
-      if (!this.selFramework) return;
-
-      info('Using primary UI framework: ' + this.primary);
+      gen.selFramework = gen.myUtil.selectedFramework(gen.primary);
+      if (!gen.selFramework) return;
       for (let view of ['app', 'nav-bar', 'welcome']) {
-        copyView(this.selFramework, view);
+        copyView(gen.selFramework, view);
       }
     }
   }
