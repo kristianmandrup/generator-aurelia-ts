@@ -97,7 +97,7 @@ describe('aurelia-ts:plugins', function () {
 
     // assert(jspmArgs.indexOf('aurelia-async') != -1);
     for (let plugin in plugins) {
-      console.log(`${plugin}->${plugins[plugin]}`);
+      // console.log(`${plugin}->${plugins[plugin]}`);
       assert(jspmArgs.indexOf(plugins[plugin]) != -1);
     }
   }.bind(this));
