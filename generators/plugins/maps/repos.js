@@ -23,12 +23,12 @@ module.exports = {
     label: 'Bootstrap Modal',
     repo: 'https://github.com/PWKad/aurelia-bs-modal',
   },
-  rethinkDB: {
-    label: 'Rethink DB bindings',
+  rethinkDb: {
+    label: 'RethinkDB',
     repo: 'https://github.com/kristianmandrup/aurelia-rethink-bindtable'
   },
   breeze: {
-    label: 'Breeze bindings',
+    label: 'Breeze',
     repo: 'https://github.com/jdanyow/aurelia-breeze'
   },
   async: {

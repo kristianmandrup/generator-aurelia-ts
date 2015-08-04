@@ -5,6 +5,6 @@ module.exports = {
   'Async': 'async',
   'Materialize': 'materialize',
   'Breeze bindings': 'breeze',
-  'RethinkDB bindings': 'rethinkDB',
+  'RethinkDB bindings': 'rethinkDb',
   'Jade Views': 'jadeViews'
 }

@@ -42,6 +42,7 @@ module.exports = yeoman.generators.Base.extend({
       // selected: [...]
       this.props.plugins = parser(answers).parse();
       // this.config.save();
+      // console.log(`index.js:: this.props.plugins selected: ${this.props.plugins.selected}`)
       done();
     }.bind(this));
   },
@@ -70,6 +71,6 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   end: function() {
-    // log.info('Installed: ' + this.plugins.selected.join(', '));
+    log.info('Installed: ' + this.props.plugins.selected.join(', '));
   }
 });

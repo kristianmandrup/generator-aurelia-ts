@@ -8,6 +8,7 @@ module.exports = {
   auth: 'aureli-auth',
   leaflet: 'aurelia-leaflet',
   breeze: 'aurelia-breeze',
-  bsModal: 'aurelia-bs-modal'
+  bsModal: 'aurelia-bs-modal',
+  rethinkDb: 'aurelia-rethink-bindtable'
   // more...
 };

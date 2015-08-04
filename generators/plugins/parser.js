@@ -14,6 +14,7 @@ module.exports = function(answers) {
       plugins.selected = this.selected(plugins.obj);
       return plugins;
     },
+
     parseObj: function() {
       let keys = this.allPlugins;
       let selectionObj = {};
@@ -23,8 +24,10 @@ module.exports = function(answers) {
       for (let key of this.listPrompts) {
         prompts.mapListAnswers(selectionObj, answers[key]);
       }
+      console.log(`selectionObj.keys: ${Object.keys(selectionObj)}`);
       return selectionObj;
     },
+
     selected: function(obj) {
       let keys = Object.keys(obj);
       return keys.filter(function(key) { return obj[key]; });

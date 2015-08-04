@@ -7,6 +7,7 @@ module.exports = function(gen) {
     docs: function() {
       // TODO: copy all such docs to /docs folder
       let plugins = gen.props.plugins;
+
       let selectedPluginRepos = util.docRepos(plugins.selected);
       gen.copy.docsTpl('_Plugins.md', {
           selectedPluginRepos: selectedPluginRepos

@@ -26,20 +26,26 @@ function extras(frameworks) {
 module.exports = function(gen) {
   return {
     all: function(opts) {
+      let jspmPacksToInstall = [];
       if (opts.fontAwesome) {
         log.info("Installing Font Awesome :)");
-        gen.install.jspm.packages(['font-awesome']);
+        // gen.install.jspm.packages(['font-awesome']);
+        jspmPacksToInstall.push('font-awesome');
       }
 
       let frameworks = opts.cssFrameworks;
       // this.selectedFramework
       if (!opts.ui.selected) return;
       log.info('Installing UI frameworks:' + frameworks.join(', '));
-      gen.install.jspm.packages(repoKeys(frameworks));
+      // gen.install.jspm.packages(repoKeys(frameworks));
+      jspmPacksToInstall = jspmPacksToInstall.concat(repoKeys(frameworks));
       // install extras for certain UI frameworks
       let xtras = extras(frameworks);
       log.info('Installing Xtras:');
-      gen.install.jspm.packages(xtras);
+      // gen.install.jspm.packages(xtras);
+      jspmPacksToInstall = jspmPacksToInstall.concat(extras(frameworks));
+
+      gen.install.jspm.packages(jspmPacksToInstall);
     }
   }
 }

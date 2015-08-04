@@ -9,7 +9,8 @@ var sinon = require('sinon');
 var fs = require('fs');
 var app;
 
-/*
+// TODO pending testing these three plugins!!
+var plugins = {
   async: 'aurelia-async',
   flux: 'aurelia-flux',
   computed: 'aurelia-computed',
@@ -17,22 +18,20 @@ var app;
   fetch: 'aurelia-fetch-client',
   virtualList: 'aurelia-ui-virtualization',
   i18next: 'aurelia-i18next=github:zewa666/aurelia-i18next',
-  bsModal: 'aurelia-bs-modal',
-  auth: 'github:paulvanbladel/aureliauth',
+  // bsModal: 'aurelia-bs-modal',
+  // auth: 'github:paulvanbladel/aureliauth',
   validation: 'aurelia-validation',
-  rethinkDB: 'github:kristianmandrup/aurelia-rethink-bindtable',
+  // rethinkDb: 'github:kristianmandrup/aurelia-rethink-bindtable',
   breeze: 'aurelia-breeze'
-*/
+};
 
-/*
 describe('aurelia-ts:plugins', function () {
   this.spy = sinon.spy();
   var dummyGen = generator.Base.extend({
     exec: this.spy
   });
-
+/*
   var pkgFile = 'package.json';
-
   function pkgKeyExpr(name) {
     var key = "aurelia\-" + name + ":";
     return new RegExp(key, 'g');
@@ -40,8 +39,11 @@ describe('aurelia-ts:plugins', function () {
   function entry(name) {
     return [pkgFile, pkgKeyExpr(name)];
   }
-
+*/
+  this.npmInstallCalls = [];
+  this.spawnCommandCalls = [];
   before(function(done) {
+    /*
     var fs = require('fs');
     fs.exists('./package.json', function (exists) {
       if (exists) {
@@ -51,7 +53,7 @@ describe('aurelia-ts:plugins', function () {
         fs.writeFileSync('package.json', packageJson);
       }
     });
-
+    */
     app = helpers.run(path.join(__dirname, '../generators/plugins'))
       .withOptions({
         cssFramework: 'Bootstrap',
@@ -64,14 +66,42 @@ describe('aurelia-ts:plugins', function () {
         validation: true,
         computed: true,
         i18next: true,
-        bindings: ['Async', 'Breeze bindings', 'RethinkDB bindings'],
+        bindings: ['Async', 'Breeze', 'RethinkDB'],
         bsModal: true
       })
+      .on('ready', function(generator) {
+        generator.npmInstall = function() {
+          this.npmInstallCalls.push(arguments);
+        }.bind(this);
+        generator.spawnCommand = function() {
+          this.spawnCommandCalls.push(arguments);
+        }.bind(this);
+      }.bind(this))
       .on('end', function() {
         done();
       });
+  }.bind(this)); // EO before
+
+  it('generator can be run', function() {
+    assert(app !== undefined);
   });
 
+  it('jspm is called once', function() {
+    assert(this.spawnCommandCalls.length == 1);
+    assert(this.npmInstallCalls.length == 0);
+  }.bind(this));
+
+  it('install the right plugins', function() {
+    let jspmArgs = this.spawnCommandCalls[0][1];
+    assert(this.spawnCommandCalls[0][0].indexOf('jspm') != -1);
+
+    // assert(jspmArgs.indexOf('aurelia-async') != -1);
+    for (let plugin in plugins) {
+      console.log(`${plugin}->${plugins[plugin]}`);
+      assert(jspmArgs.indexOf(plugins[plugin]) != -1);
+    }
+  }.bind(this));
+  /*
   after(function() {
     fs.exists('./package.json', function (exists) {
       if (exists) {
@@ -86,7 +116,7 @@ describe('aurelia-ts:plugins', function () {
       }
     });
   });
-
+  *
   describe('writes jspm dependencies to package.json', function() {
     it('includes async', function() {
       assert.fileContent([
@@ -154,5 +184,5 @@ describe('aurelia-ts:plugins', function () {
       ]);
     });
   });
+  */
 });
-*/

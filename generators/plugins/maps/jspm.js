@@ -13,6 +13,6 @@ module.exports = {
   validation: 'aurelia-validation',
   // jadeViews: 'aurelia-jade-viewstrategy=github:Craga89/aurelia-jade-viewstrategy',
   materialize: 'aurelia-materialize=github:manuel-guilbault/aurelia-materialize',
-  rethinkDB: 'aurelia-rethink-bindtable=github:kristianmandrup/aurelia-rethink-bindtable',
+  rethinkDb: 'aurelia-rethink-bindtable=github:kristianmandrup/aurelia-rethink-bindtable',
   breeze: 'aurelia-breeze'
 };
