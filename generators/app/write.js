@@ -20,12 +20,20 @@ module.exports = function(gen) {
         pkg: props.pkg
       });
       gen.copy.rootTpl('_index.html', 'index.html', props.appExt);
-      // for (let file of rootFiles)
-      //   gen.copy.rootFile(file);
+      // Are all of them just files and no templates?
+      for (let file of rootFiles) {
+        if ((file == 'editorconfig') || (file == 'jshintrc'))
+          gen.copy.rootFile(file, '.'+file);
+        else
+          gen.copy.rootFile(file);
+      }
+
     },
+    /*
     styles: function() {
       gen.copy.bulkDir('styles');
     },
+    */
     test: function() {
       gen.copy.bulkDir('test');
     }

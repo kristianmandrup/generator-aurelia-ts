@@ -91,6 +91,7 @@ describe('aurelia-ts:plugins', function () {
     assert(this.npmInstallCalls.length == 0);
   }.bind(this));
 
+  // This could be as well unrolled in separate plugins
   it('install the right plugins', function() {
     let jspmArgs = this.spawnCommandCalls[0][1];
     assert(this.spawnCommandCalls[0][0].indexOf('jspm') != -1);
@@ -101,88 +102,5 @@ describe('aurelia-ts:plugins', function () {
       assert(jspmArgs.indexOf(plugins[plugin]) != -1);
     }
   }.bind(this));
-  /*
-  after(function() {
-    fs.exists('./package.json', function (exists) {
-      if (exists) {
-        var content = fs.readFileSync('package.json');
-        console.log('removing fixture: package.json')
-        if (content.match(/test-plugins/)) {
-          fs.unlink('package.json', function (err) {
-            if (err) throw err;
-            console.log('successfully deleted package.json');
-          });
-        }
-      }
-    });
-  });
-  *
-  describe('writes jspm dependencies to package.json', function() {
-    it('includes async', function() {
-      assert.fileContent([
-        entry('async')
-      ]);
-    });
 
-    it('includes breeze', function() {
-      assert.fileContent([
-        entry('breeze')
-      ]);
-    });
-
-    it('includes bs-modal', function() {
-      assert.fileContent([
-        entry('bs-modal')
-      ]);
-    });
-
-    it('includes computed', function() {
-      assert.fileContent([
-        entry('computed')
-      ]);
-    });
-
-    it('includes dialog', function() {
-      assert.fileContent([
-        entry('dialog')
-      ]);
-    });
-
-    it('includes flux', function() {
-      assert.fileContent([
-        entry('flux')
-      ]);
-    });
-
-    it('includes fetch', function() {
-      assert.fileContent([
-        entry('fetch')
-      ]);
-    });
-
-    it('includes i18next', function() {
-      assert.fileContent([
-        entry('i18next')
-      ]);
-    });
-
-    it('includes rethink-bindtable', function() {
-      assert.fileContent([
-        entry('rethink-bindtable')
-      ]);
-    });
-
-    it('includes ui-virtualization', function() {
-      assert.fileContent([
-        entry('ui-virtualization')
-      ]);
-    });
-
-    it('includes validation', function() {
-      assert.fileContent([
-        [pkgFile, /"aureliaauth":/]
-      ]);
-    });
-  });
-  */
 });

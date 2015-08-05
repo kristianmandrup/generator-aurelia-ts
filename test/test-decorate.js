@@ -47,7 +47,6 @@ describe('aurelia-ts:decorate', function () {
 
 
   describe('styles', function() {
-
     before(function(done) {
       let dummyGens = [
         [dummyGen, 'aurelia-ts:styles'],
