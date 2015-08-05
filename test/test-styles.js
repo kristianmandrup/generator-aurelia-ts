@@ -9,7 +9,7 @@ var sinon = require('sinon');
 var fs = require('fs');
 var app;
 
-// Need tests for all combinations??
+// Need test for no styles => just raw CSS
 var styles = ['SASS', 'Stylus'];
 var useJade = true;
 var stylusPlugins = ['Autoprefixer', 'Nib', 'Axis', // extends nib
@@ -57,7 +57,7 @@ describe('aurelia-ts:styles', function () {
     assert(app !== undefined);
   });
 
-  it('npm is run just once', function() {
+  it('npm is run more than once', function() {
     assert(this.spawnCommandCalls.length == 0);
     assert(this.npmInstallCalls.length > 1);
   }.bind(this));
@@ -95,10 +95,12 @@ describe('aurelia-ts:styles', function () {
   });
 
   // Check if every plugin has a related npm call for it
+  // This could be unrolled in several tests one per plugin
   it('install stylus plugins', function() {
     let aux = true;
     stylusPlugins.forEach(function(plugin, index, plugins) {
       // npmCallsArgs.forEach(function(call, indexC, calls) {
+      // check there is the plugin name(s) at least in one npm call 
       let res = npmCallsArgs.some(function(call, indexC, calls){
         return call.toLowerCase().indexOf(plugin.toLowerCase()) > -1;
       });

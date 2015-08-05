@@ -9,7 +9,7 @@ var sinon = require('sinon');
 var fs = require('fs');
 var app;
 
-// Need tests for all combinations??
+
 describe('aurelia-ts:amd for Ampersand modules', function () {
   this.spy = sinon.spy();
   var dummyGen = generator.Base.extend({
