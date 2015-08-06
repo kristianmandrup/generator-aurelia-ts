@@ -5,20 +5,22 @@ generator-aurelia-ts
 
 Generate an [Aurelia](aurelia.io) Quick Start project with: - [Aurelia CLI](http://www.programwitherik.com/what-is-aurelia-cli-how-does-it-work/) - [SASS](http://sass-lang.com/) or [Stylus](https://learnboost.github.io/stylus/) CSS extenstion language - TypeScript definitions - A popular UI framework of your choice - Plugins of your choice installed - Aurelia CLI for rapid development...
 
-### Status
+### Generators
 
-Generator tested on MacOSX via `npm link`
+-	`aurelia-ts` (new app)
+-	`aurelia-ts:decorate` (decorate app)
+-	`aurelia-ts:plugins` (add plugins)
+-	`aurelia-ts:cli` (add CLI)
+-	`aurelia-ts:styles` (add CSS preprocessors: SASS/Stylus )
+-	`aurelia-ts:layout` (add ui/layout framework:)
+-	`aurelia-ts:javascript` (javascript app)
+-	`aurelia-ts:typescript` (typescript app)
+-	`aurelia-ts:state` (add state or stores)
+-	`aurelia-ts:amp` - (add Ampersand models/collections)
 
--	`aurelia-ts`
--	`aurelia-ts:plugins`
--	`aurelia-ts:cli`
--	`aurelia-ts:styles`
--	`aurelia-ts:layout`
--	`aurelia-ts:typescript`
--	`aurelia-ts:state`
--	`aurelia-ts:amp` - Ampersand models
+Now includes IE9 support ;)
 
-Now includes IE9 support via polyfill for mutationobservers ;)
+Note: Generator has been tested on MacOSX via `npm link`
 
 ### Layout Frameworks
 

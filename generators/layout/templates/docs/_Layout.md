@@ -1,7 +1,7 @@
 Layout
 ======
 
-<% if (semanticUI) { %>
+<% if (ui.semantic) { %>
 
 Semantic UI
 -----------

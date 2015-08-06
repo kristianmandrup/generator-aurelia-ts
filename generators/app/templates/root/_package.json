@@ -1,15 +1,15 @@
 {
-  "name": "<%= appName %>",
+  "name": "<%= app.name %>",
   "version": "0.0.1",
-  "description": "<%= appDesc %>",
+  "description": "<%= app.desc %>",
   "keywords": [
     "aurelia"
   ],
   "bugs": {
-    "url": "https://github.com/<%= githubAccount %>/<%= appName %>/issues"
+    "url": "https://github.com/<%= pkg.githubAccount %>/<%= app.name %>/issues"
   },
   "license": "MIT",
-  "author": "<%= authorName %> <%= authorEmail %>",
+  "author": "<%= pkg.authorName %> <%= pkg.authorEmail %>",
   "main": "dist/commonjs/index.js",
   "scripts": {
     "test": "gulp test",
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/<%= githubAccount %>/<%= authorName %>"
+    "url": "http://github.com/<%= pkg.githubAccount %>/<%= pkg.authorName %>"
   },
   "devDependencies": {
     "aurelia-tools": "^0.1.3",
@@ -76,11 +76,6 @@
       "aurelia-templating-binding": "github:aurelia/templating-binding@^0.13.0",
       "aurelia-templating-resources": "github:aurelia/templating-resources@^0.13.0",
       "aurelia-templating-router": "github:aurelia/templating-router@^0.14.0",
-      <% if (foundation) { %>
-      "fastclick": "npm:fastclick@^1.0.6",
-      "modernizr": "github:Modernizr/Modernizr@^2.8.3",
-      "pace": "github:HubSpot/pace",
-      <% } %>
       "core-js": "npm:core-js@^0.9.4",
       "css": "github:systemjs/plugin-css@^0.1.9"
     },
