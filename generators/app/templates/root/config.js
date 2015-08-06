@@ -1,16 +1,16 @@
 System.config({
+  "defaultJSExtensions": true,
   "transpiler": "babel",
   "babelOptions": {
     "optional": [
-      "runtime",
       "es7.decorators",
-      "es7.classProperties"
+      "es7.classProperties",
+      "runtime"
     ]
   },
   "paths": {
-    "*": "dist/*.js",
-    "github:*": "jspm_packages/github/*.js",
-    "npm:*": "jspm_packages/npm/*.js",
-    "aurelia-skeleton-navigation/*": "dist/*.js"
+    "*": "dist/*",
+    "github:*": "jspm_packages/github/*",
+    "npm:*": "jspm_packages/npm/*"
   }
 });
