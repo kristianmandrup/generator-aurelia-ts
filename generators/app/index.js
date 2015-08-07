@@ -17,6 +17,8 @@ let util = lib.util;
 let options = lib.options;
 let writer = lib.writer;
 
+let defaults = require('./defaults');
+
 module.exports = yeoman.generators.Base.extend({
   // note: arguments and options should be defined in the constructor.
   constructor: function() {
