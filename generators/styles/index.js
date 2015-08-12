@@ -65,7 +65,7 @@ module.exports = yeoman.generators.Base.extend({
       if (!this.styles.pre.stylus) return;
 
       var done = this.async();
-      info('Note: For Nib you need cairo installed for canvas installation used');
+      info('Note: For Nib you might need cairo installed (for canvas)');
       info('brew install cairo (MacOSX)');
       info('wget https://raw.githubusercontent.com/LearnBoost/node-canvas/master/install -O - | sh');
       info('IO.js: See https://github.com/mafintosh/node-gyp-install')

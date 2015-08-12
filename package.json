@@ -1,6 +1,6 @@
 {
   "name": "generator-aurelia-ts",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Aurelia Turbo Start generator with: TypeScript, CLI, UI frameworks and more ;)",
   "license": "MIT",
   "main": "app/index.js",

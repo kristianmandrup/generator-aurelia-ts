@@ -32,6 +32,7 @@ module.exports = {
           'Axis', // extends nib
           'Rupture',
           'Fluidity',
+          'Typographic',
           'Jeet' // extends nib
         ],
         default: ['Autoprefixer', 'Nib'],
