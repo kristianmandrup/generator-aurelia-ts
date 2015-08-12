@@ -1,5 +1,5 @@
-generator-aurelia-ts
-====================
+Aurelia Turbo Start generator
+=============================
 
 [![Build Status](https://secure.travis-ci.org/kristianmandrup/generator-aurelia-ts.png?branch=master)](https://travis-ci.org/kristianmandrup/generator-aurelia-ts)
 

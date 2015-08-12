@@ -45,8 +45,8 @@ module.exports = yeoman.generators.Base.extend({
     this.util = util;
     this.props = {app: {}, pkg: {}};
     this.props.app.name = this.appname ? this.appname.camelize() : null;
-    this.props.app.moduleName = this.util.normalizeName(this.props.appName);
-    this.props.app.title = this.util.humanize(this.props.appName);
+    this.props.app.moduleName = this.util.normalizeName(this.props.app.name);
+    this.props.app.title = this.util.humanize(this.props.app.name);
 
     this.props.uiFramework = options.mapUi(this.options.ui)
 
