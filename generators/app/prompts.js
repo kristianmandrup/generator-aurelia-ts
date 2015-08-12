@@ -10,7 +10,7 @@ module.exports = function(gen) {
       name: {
         type: 'input',
         name: 'appName',
-        message: 'application (module) name',
+        message: 'application (package) name',
         default: app.moduleName // Name
       },
       title: {

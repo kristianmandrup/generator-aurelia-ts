@@ -1,3 +1,6 @@
+'use strict';
+let path = require('path');
+
 module.exports = (function () {
     var workingDirName = path.basename(process.cwd()),
       homeDir, osUserName, configFile, user;
