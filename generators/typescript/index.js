@@ -2,14 +2,14 @@
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
-let prompts = require('./prompts');
-let write = require('./write');
-let lib = require('../../lib');
-let install = lib.install;
-let copy = lib.copy;
-let log = lib.log;
-let util = lib.util;
-let options = lib.options;
+var prompts = require('./prompts');
+var write = require('./write');
+var lib = require('../../lib');
+var install = lib.install;
+var copy = lib.copy;
+var log = lib.log;
+var util = lib.util;
+var options = lib.options;
 var generator;
 
 module.exports = yeoman.generators.Base.extend({

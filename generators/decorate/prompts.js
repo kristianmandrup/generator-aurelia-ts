@@ -42,7 +42,7 @@ module.exports = {
   promptList: ['styles', 'cli', 'plugins', 'typescript', 'vs', 'layout'],
   create: function() {
     var list = [];
-    for (let name of this.promptList)
+    for (var name of this.promptList)
       list.push(this.prompts[name]);
     return list;
   }

@@ -22,13 +22,15 @@ Now includes IE9 support ;)
 
 ### Compatibility
 
-The generator uses a subset of [ES2015](https://babeljs.io/docs/learn-es2015/) syntax. Your global node.js should be compatible with `let` statements and `strict` mode. We recommend that you use [nvm](https://github.com/creationix/nvm) to manage your system installed Node versions.
+The genrator has been tested successfully on Node.js 0.12.7
+
+We recommend that you use [nvm](https://github.com/creationix/nvm) to manage your system installed Node versions.
 
 Install NVM
 
 `curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash`
 
-We highly recommend using [IOjs](https://iojs.org/en/index.html)
+We highly recommend using [IOjs](https://iojs.org/en/index.html) or the latest Node.js (>0.12)
 
 To install IOjs via NVM:
 

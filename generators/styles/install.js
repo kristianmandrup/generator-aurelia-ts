@@ -15,7 +15,7 @@ function npmMap(name) {
 }
 
 module.exports = function (gen) {
-  let install = gen.install;
+  var install = gen.install;
   return {
     jade: function() {
       install.npmDev('gulp-jade');
@@ -25,8 +25,8 @@ module.exports = function (gen) {
     },
     stylus: function() {
       install.npmDev('gulp-stylus');
-      let list = gen.stylus.plugins.list;
-      for (let addon of list) {
+      var list = gen.stylus.plugins.list;
+      for (var addon of list) {
         install.npmDev(npmMap(addon));
       }
     },

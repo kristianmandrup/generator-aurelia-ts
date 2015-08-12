@@ -5,12 +5,12 @@ var yosay = require('yosay');
 require('sugar');
 var fs = require('fs');
 var generator;
-let lib = require('../../lib');
-let write = require('./write');
-let prompts = require('./prompts');
-let util = require('./util');
-let install = require('./install');
-let info = lib.log.info;
+var lib = require('../../lib');
+var write = require('./write');
+var prompts = require('./prompts');
+var util = require('./util');
+var install = require('./install');
+var info = lib.log.info;
 
 function frameworks(gen, answers) {
   return gen.util.isEmpty(answers.cssFrameworks) ? ['None'] : answers.cssFrameworks;
@@ -55,7 +55,7 @@ module.exports = yeoman.generators.Base.extend({
       var done = this.async();
       this.prompt(this.myPrompts.phase2(this.props), function(answers) {
         this.props.ui.primary = answers.primary;
-        let ui = this.props.ui;
+        var ui = this.props.ui;
         if (ui.primary == 'None') this.props.cssFrameworks = [];
 
         this.props.ui.selected = this.myUtil.selectedFramework(ui.primary);

@@ -12,7 +12,7 @@ module.exports = function(gen) {
       gen.copy.bulkDir('doc', 'docs');
     },
     root: function() {
-      let props = gen.props;
+      var props = gen.props;
       gen.copy.rootTpl('_README.md', 'README.md', props.app);
       gen.copy.rootTpl('_gitignore','.gitignore', {vs: props.vs});
       gen.copy.rootTpl('_package.json', 'package.json', {
@@ -21,7 +21,7 @@ module.exports = function(gen) {
       });
       gen.copy.rootTpl('_index.html', 'index.html', props.appExt);
       // Are all of them just files and no templates?
-      for (let file of rootFiles) {
+      for (var file of rootFiles) {
         if ((file == 'editorconfig') || (file == 'jshintrc'))
           gen.copy.rootFile(file, '.'+file);
         else
@@ -40,7 +40,7 @@ module.exports = function(gen) {
   };
 }
 
-let rootFiles = [
+var rootFiles = [
   'aureliafile.js',
   'editorconfig',
   'jshintrc',

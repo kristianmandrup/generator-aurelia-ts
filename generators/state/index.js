@@ -32,7 +32,7 @@ module.exports = yeoman.generators.Base.extend({
       type: 'confirm',
       name: 'ampersand',
       message: 'Ampersand models and collections',
-      default: false,
+      default: true,
     }];
 
     this.prompt(prompts, function(answers) {

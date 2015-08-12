@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = function(gen) {
-  let props = gen.props;
-  let app = props.app;
-  let pkg = props.pkg;
+  var props = gen.props;
+  var app = props.app;
+  var pkg = props.pkg;
 
   return {
     prompts: {
@@ -59,7 +59,7 @@ module.exports = function(gen) {
     promptList: ['name', 'title', 'desc', 'github', 'authorName', 'authorEmail', 'ie9', 'decorate'],
     createFor: function() {
       var prompts = [];
-      for (let name of this.promptList)
+      for (var name of this.promptList)
         prompts.push(this.prompts[name]);
       return prompts;
     }

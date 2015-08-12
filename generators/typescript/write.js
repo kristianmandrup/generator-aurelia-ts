@@ -4,8 +4,8 @@ module.exports = function(gen) {
     dirs: ['docs', 'root', 'src', 'tasks', 'test', 'typings'],
     docs: function() {
       gen.copy.docsFile('tsd-generation.md', 'typescript/tsd-generation.md');
-      let editorFile = `Aurelia-TypeScript-IDE-${gen.props.editor}.md`;
-      gen.copy.docsFile(`editors/${editorFile}`, `typescript/editors/${editorFile}`);
+      var editorFile = 'Aurelia-TypeScript-IDE-' + gen.props.editor + '.md';
+      gen.copy.docsFile('editors/' + editorFile, 'typescript/editors/' + editorFile);
     },
     typings: function () {
       gen.copy.bulkDir('typings');

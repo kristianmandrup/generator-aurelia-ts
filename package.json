@@ -1,6 +1,6 @@
 {
   "name": "generator-aurelia-ts",
-  "version": "0.6.3",
+  "version": "0.7.0",
   "description": "Aurelia Turbo Start generator with: TypeScript, CLI, UI frameworks and more ;)",
   "license": "MIT",
   "main": "app/index.js",
@@ -22,7 +22,7 @@
     "url": "https://github.com/telekosmos"
   },
   "engines": {
-    "node": ">= 0.12.7",
+    "node": ">= 0.12",
     "npm": ">=1.4.3"
   },
   "scripts": {

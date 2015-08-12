@@ -5,10 +5,10 @@ var yosay = require('yosay');
 require('sugar');
 var fs = require('node-fs-extra');
 var generator;
-let lib = require('../../lib');
-let log = lib.log;
-let info = log.info;
-let command = log.command;
+var lib = require('../../lib');
+var log = lib.log;
+var info = log.info;
+var command = log.command;
 
 module.exports = yeoman.generators.Base.extend({
   // note: arguments and options should be defined in the constructor.
