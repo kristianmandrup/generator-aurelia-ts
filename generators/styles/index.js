@@ -5,14 +5,14 @@ var yosay = require('yosay');
 require('sugar');
 var extend = require('extend');
 var fs = require('node-fs-extra');
-let lib = require('../../lib');
-let write = require('./write');
-let prompts = require('./prompts');
-let util = require('./util');
-let install = require('./install');
-let stylesPath = util.stylesPath;
-let log = lib.log;
-let info = log.info;
+var lib = require('../../lib');
+var write = require('./write');
+var prompts = require('./prompts');
+var util = require('./util');
+var install = require('./install');
+var stylesPath = util.stylesPath;
+var log = lib.log;
+var info = log.info;
 var generator, linux, macOSX;
 
 module.exports = yeoman.generators.Base.extend({

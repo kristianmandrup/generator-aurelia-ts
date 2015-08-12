@@ -1,13 +1,13 @@
 'use strict';
-let util = require('./util');
-let extend = require('extend');
+var util = require('./util');
+var extend = require('extend');
 
 module.exports = function(gen) {
   return {
     dirs: ['root', 'styles', 'tasks'],
     prepare: function() {
       if (!gen.removeOld) return;
-      for (let folder of util.styleFolders) {
+      for (var folder of util.styleFolders) {
         gen.fs.delete(folder);
       }
       gen.fs.delete('styles/styles.css');
@@ -17,7 +17,7 @@ module.exports = function(gen) {
     },
     styles: function() {
       // since styles for Stylus is a template, we want to remove it from bulk directory copy
-      for (let lang of util.bulkStyles(gen.styleLangs)) {
+      for (var lang of util.bulkStyles(gen.styleLangs)) {
         var path = util.stylesPath(lang);
         gen.copy.bulkDir(path);
       }
@@ -25,7 +25,7 @@ module.exports = function(gen) {
       gen.copy.stylesTemplate('stylus/_styles.styl', 'stylus/styles.styl', gen.stylus.plugins.obj);
     },
     tasks: function() {
-      let pre = gen.styles.pre;
+      var pre = gen.styles.pre;
       gen.copy.buildTpl('_styles.js', 'styles.js', {
         preProcessors: util.g.prepare4Tpl(gen.preProcessors),
         watchTasks: util.watchTasks(pre),

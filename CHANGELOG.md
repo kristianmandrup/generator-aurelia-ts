@@ -1,3 +1,8 @@
+0.6.4
+
+-	Tested on Node.js 0.12.6
+-	Removed `let` and string interpolations to make compatible with non-IOjs Node.js
+
 0.6.1
 -----
 

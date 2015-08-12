@@ -1,13 +1,7 @@
 'use strict';
-let util = require('./util');
 
 module.exports = function(gen) {
-  function copyView(framework, view) {
-    gen.fs.copy(
-      gen.templatePath(`views/${framework}/${view}.html`),
-      gen.destinationPath(`src/${view}.html`)
-    );
-  }
+  var util = require('./util')(gen);
 
   return {
     dirs: ['docs', 'root', 'src', 'views'],
@@ -25,16 +19,16 @@ module.exports = function(gen) {
     src: function() {
       if (!gen.selFramework) return;
       var ext = gen.util.getJsLangExt();
-      let ui = {ui: gen.props.ui.obj};
+      var ui = {ui: gen.props.ui.obj};
       gen.copy.srcTpl('_ui.js', ui);
-      gen.copy.srcFile(`app.${ext}`, ui);
+      gen.copy.srcFile('app.' + ext, ui);
     },
     // For primary UI framework chosen
     views: function() {
-      let ui = gen.props.ui;
+      var ui = gen.props.ui;
       if (!ui.selected) return;
-      for (let view of ['app', 'nav-bar', 'welcome']) {
-        copyView(ui.selected, view);
+      for (var view of ['app', 'nav-bar', 'welcome']) {
+        util.copyView(ui.selected, view);
       }
     }
   }

@@ -2,8 +2,8 @@
 module.exports = function(gen) {
   return {
     all: function(opts) {
-      let names = opts.modules;
-      let packsToInstall = [];
+      var names = opts.modules;
+      var packsToInstall = [];
       var params = names.map(function(name) {
         var fullName = ['ampersand', name].join('-');
         return ['github:ampersandjs', fullName].join('/');

@@ -19,4 +19,4 @@ module.exports = {
   }
 }
 
-let editors = ['Atom', 'VS', 'WebStorm', 'Sublime', 'Other'];
+var editors = ['Atom', 'VS', 'WebStorm', 'Sublime', 'Other'];

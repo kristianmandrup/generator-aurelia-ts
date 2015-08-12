@@ -4,20 +4,20 @@ var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
 var generator;
-let extend = require('extend');
+var extend = require('extend');
 
-let prompts = require('./prompts');
-let writeConf = require('./write');
+var prompts = require('./prompts');
+var writeConf = require('./write');
 
-let lib = require('../../lib');
-let install = lib.install;
-let copy = lib.copy;
-let log = lib.log;
-let util = lib.util;
-let options = lib.options;
-let writer = lib.writer;
+var lib = require('../../lib');
+var install = lib.install;
+var copy = lib.copy;
+var log = lib.log;
+var util = lib.util;
+var options = lib.options;
+var writer = lib.writer;
 
-let defaults = require('./defaults');
+var defaults = require('./defaults');
 
 module.exports = yeoman.generators.Base.extend({
   // note: arguments and options should be defined in the constructor.
@@ -71,7 +71,7 @@ module.exports = yeoman.generators.Base.extend({
 
     // info('Create Aurelia Application:');
     this.prompt(this.myPrompts.createFor(this), function(answers) {
-      let app = this.props.app;
+      var app = this.props.app;
       this.props.app = {
         name: util.normalizeName(answers.appName || app.name),
         title: answers.title || app.title,
@@ -79,7 +79,7 @@ module.exports = yeoman.generators.Base.extend({
       };
 
       this.props.pkg = {};
-      for (let name of ['authorName', 'authorEmail', 'githubAccount'])
+      for (var name of ['authorName', 'authorEmail', 'githubAccount'])
         this.props.pkg[name] = answers[name];
 
       this.props.decorate = answers.decorate;

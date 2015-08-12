@@ -30,7 +30,7 @@ module.exports = function (gen) {
       leaflet: {
         type: 'confirm',
         name: 'leaflet',
-        message: 'Leaflet Map API',
+        message: 'Leafvar Map API',
         default: false,
       },
       auth: {
@@ -68,7 +68,7 @@ module.exports = function (gen) {
     promptList: ['ui', 'fetch', 'flux', 'leaflet', 'auth', 'validation', 'computed', 'i18next', 'bindings'],
     createFor: function(opts) {
       var prompts = [];
-      for (let name of this.promptList)
+      for (var name of this.promptList)
         prompts.push(this.prompts[name]);
 
       var bsModalPrompt = {

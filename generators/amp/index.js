@@ -3,11 +3,11 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
-let lib = require('../../lib');
-let install = require('./install');
+var lib = require('../../lib');
+var install = require('./install');
 var generator;
 
-let log = lib.log;
+var log = lib.log;
 
 // Ampersand
 module.exports = yeoman.generators.Base.extend({
@@ -33,7 +33,7 @@ module.exports = yeoman.generators.Base.extend({
     // f.ex swarm.js for realtime
     this.prompt(this.prompts, function(answers) {
       this.modules = [];
-      for (let name of answers.modules) {
+      for (var name of answers.modules) {
         this[name] = true;
       }
       this.props.modules = answers.modules;

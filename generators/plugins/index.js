@@ -6,15 +6,15 @@ require('sugar');
 var extend = require('extend');
 var fs = require('node-fs-extra');
 var utl = require('util');
-let lib = require('../../lib');
-let log = lib.log;
+var lib = require('../../lib');
+var log = lib.log;
 var generator;
 var selected, ext;
 const maps = require('./maps');
-let util = require('./util');
-let write = require('./write');
-let prompts = require('./prompts');
-let parser = require('./parser');
+var util = require('./util');
+var write = require('./write');
+var prompts = require('./prompts');
+var parser = require('./parser');
 
 module.exports = yeoman.generators.Base.extend({
   // note: arguments and options should be defined in the constructor.
@@ -48,7 +48,7 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   configuring: function() {
-    let plugins = this.props.plugins;
+    var plugins = this.props.plugins;
     this.props.plugins.real = util.filterReal(plugins.selected, maps.plugins);
     this.props.plugins.conf = extend({}, plugins.obj, {
       selected: this.util.prepare4Tpl(plugins.real),
@@ -61,7 +61,7 @@ module.exports = yeoman.generators.Base.extend({
 
   install: function() {
     log.info('Installing Plugins...');
-    let plugins = this.props.plugins;
+    var plugins = this.props.plugins;
     this.install.jspm.resolvedPackages(plugins.selected, maps.jspm);
 
     // fixes bad jade dependency: https://github.com/Craga89/aurelia-jade-viewstrategy/issues/2

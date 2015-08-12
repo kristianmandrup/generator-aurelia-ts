@@ -5,10 +5,10 @@ var yosay = require('yosay');
 require('sugar');
 var fs = require('node-fs-extra');
 var generator;
-let lib = require('../../lib');
-let prompts = require('./prompts');
-// let util = require('./util');
-// let write = require('./write');
+var lib = require('../../lib');
+var prompts = require('./prompts');
+// var util = require('./util');
+// var write = require('./write');
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -52,8 +52,8 @@ module.exports = yeoman.generators.Base.extend({
 
   end: function() {
     // src files
-    let lang = this.installTypeScript ? 'typescript' : 'javascript';
-    let appGenerator = ['aurelia-ts', lang].join(':');
+    var lang = this.installTypeScript ? 'typescript' : 'javascript';
+    var appGenerator = ['aurelia-ts', lang].join(':');
     this.composeWith(appGenerator, {});
 
     if (this.installStyles) {

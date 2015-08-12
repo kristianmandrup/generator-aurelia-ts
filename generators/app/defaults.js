@@ -1,5 +1,5 @@
 'use strict';
-let path = require('path');
+var path = require('path');
 
 module.exports = (function () {
     var workingDirName = path.basename(process.cwd()),

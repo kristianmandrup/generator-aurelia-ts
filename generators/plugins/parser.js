@@ -8,7 +8,7 @@ module.exports = function(answers) {
     allPlugins: Object.keys(maps.jspm),
     listPrompts: ['ui', 'bindings'],
     parse: function() {
-      let plugins = {
+      var plugins = {
         obj: this.parseObj()
       };
       plugins.selected = this.selected(plugins.obj);
@@ -16,12 +16,12 @@ module.exports = function(answers) {
     },
 
     parseObj: function() {
-      let keys = this.allPlugins;
-      let selectionObj = {};
-      for (let key of keys) {
+      var keys = this.allPlugins;
+      var selectionObj = {};
+      for (var key of keys) {
         selectionObj[key] = prompts.value(answers[key], key);
       }
-      for (let key of this.listPrompts) {
+      for (var key of this.listPrompts) {
         prompts.mapListAnswers(selectionObj, answers[key]);
       }
       console.log(`selectionObj.keys: ${Object.keys(selectionObj)}`);
@@ -29,7 +29,7 @@ module.exports = function(answers) {
     },
 
     selected: function(obj) {
-      let keys = Object.keys(obj);
+      var keys = Object.keys(obj);
       return keys.filter(function(key) { return obj[key]; });
     }
   }

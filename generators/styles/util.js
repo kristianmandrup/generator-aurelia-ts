@@ -1,12 +1,12 @@
 'use strict';
-let lib = require('../../lib');
-let util = lib.util;
+var lib = require('../../lib');
+var util = lib.util;
 
 module.exports = {
   g: util,
   styleFolders: ['css', 'stylus', 'sass'],
   bulkStyles: function(styleLangs) {
-    let stylusIdx = styleLangs.indexOf('Stylus');
+    var stylusIdx = styleLangs.indexOf('Stylus');
     var bulkStyles = styleLangs.slice(0);
 
     if (stylusIdx >= 0)
@@ -28,7 +28,7 @@ module.exports = {
   useList: function(plugins) {
     var list = [];
     // autoprefixer should be last
-    for (let name of plugins) {
+    for (var name of plugins) {
       list.push(name.toLowerCase());
     }
     return list.map(function(plugin) {
@@ -39,8 +39,8 @@ module.exports = {
     return ['styles', util.normalizeFolder(folder)].join('/');
   },
   mapToList: function(mapObj) {
-    let list = [];
-    for (let key in mapObj) {
+    var list = [];
+    for (var key in mapObj) {
       list.push(key);
     }
     return list;
