@@ -57,12 +57,14 @@ module.exports = {
   },
   addOns: function(plugins) {
     var contains = util.containsFor(plugins);
+    // TODO: refactor to avoid duplication pattern!
     return {
       nib: contains('Nib'),
       axis: contains('Axis'),
       fluidity: contains('Fluidity'),
       jeet: contains('Jeet'),
       rupture: contains('Rupture'),
+      typographic: contains('Typographic'),
       autoprefixer: contains('Autoprefixer')
     };
   }

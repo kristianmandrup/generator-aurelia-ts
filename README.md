@@ -122,6 +122,7 @@ yo aurelia-ts --stylus
 -	[Axis](http://axis.netlify.com/)
 -	[Rupture](http://jenius.github.io/rupture/)
 -	[Fluidity](www.fluiditycss.com)
+-	[Typographic](http://corysimmons.github.io/typographic/)
 -	[Jeet](http://jeet.gs/)
 
 We highly recommend watching these [Stylus tutorial videos](https://www.youtube.com/playlist?list=PLLnpHn493BHFWQGA1PcyQZWAfR96a4CkH) to get a feel and understanding of the power of using Stylus with plugins and get over the temptation to use Bootstrap or kin for all your styling needs. Break your bad habits ;)
