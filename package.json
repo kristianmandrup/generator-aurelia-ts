@@ -1,9 +1,9 @@
 {
   "name": "generator-aurelia-ts",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Aurelia Turbo Start generator with: TypeScript, CLI, UI frameworks and more ;)",
   "license": "MIT",
-  "main": "app/index.js",
+  "main": "generators/app/index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/kristianmandrup/generator-aurelia-ts.git"
@@ -28,9 +28,6 @@
   "scripts": {
     "test": "mocha"
   },
-  "files": [
-    "generators"
-  ],
   "keywords": [
     "yeoman-generator",
     "aurelia",
