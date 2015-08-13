@@ -3,37 +3,25 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
-
-var fs = require('fs');
-
+var fs = require('node-fs-extra');
 var generator;
-
-function info(msg) {
-  console.log(msg);
-}
-
-function command(msg) {
-  console.log('  $ ' + msg);
-}
+var lib = require('../../lib');
+var log = lib.log;
+var info = log.info;
+var command = log.command;
 
 module.exports = yeoman.generators.Base.extend({
-
   // note: arguments and options should be defined in the constructor.
   constructor: function() {
     yeoman.generators.Base.apply(this, arguments);
-
+  },
+  initializing: function() {
     generator = this;
     this.props = {};
+    this.install = lib.install(this);
   },
-
-  initializing: function() {
-  },
-
-  // TODO: Add prompt for style lang unless passed as argument
-  // TODO: Add editor selection prompt
   prompting: function() {
     var done = this.async();
-
     var prompts = [{
       type: 'confirm',
       name: 'installGlobal',
@@ -41,26 +29,25 @@ module.exports = yeoman.generators.Base.extend({
       default: false,
     }];
 
-    // info('Install Aurelia CLI:');
-
     this.prompt(prompts, function(answers) {
-
       this.installGlobal = answers.installGlobal;
       // this.config.save();
-
       done();
     }.bind(this));
   },
-
-  install: function() {
-    if (this.installGlobal) {
-      info('Installing aurelia-cli in global registry...');
-      info('This is useful for CLI commands such as:');
-      command('aurelia new APPNAME');
-      this.npmInstall(['aurelia-cli'], {global: true });
+  install: {
+    global: function() {
+      if (this.installGlobal) {
+        info('Installing aurelia-cli in global registry...');
+        info('This is useful for CLI commands such as:');
+        command('aurelia new APPNAME');
+        this.install.npmGlobal(['aurelia-cli']);
+      }
+    },
+    local: function() {
+      info('Installing aurelia-cli locally for dev mode');
+      this.install.npmDev(['aurelia-cli']);
     }
-    info('Installing aurelia-cli locally for dev mode');
-    this.npmInstall(['aurelia-cli'], {saveDev: true });
   },
   end: function() {
     info('====================================================================');

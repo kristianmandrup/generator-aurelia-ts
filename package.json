@@ -1,10 +1,16 @@
 {
   "name": "generator-aurelia-ts",
-  "version": "0.6.0",
-  "description": "Aurelia App generator with: TypeScript, CLI, UI frameworks and more ;)",
+  "version": "0.7.2",
+  "description": "Aurelia Turbo Start generator with: TypeScript, CLI, UI frameworks and more ;)",
   "license": "MIT",
-  "main": "app/index.js",
-  "repository": "kristianmandrup/generator-aurelia-ts",
+  "main": "generators/app/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kristianmandrup/generator-aurelia-ts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kristianmandrup/generator-aurelia-ts/issues"
+  },
   "author": {
     "name": "Kristian Mandrup",
     "email": "kmandrup@gmail.com",
@@ -15,12 +21,13 @@
     "email": "telekosmos@ymail.com",
     "url": "https://github.com/telekosmos"
   },
+  "engines": {
+    "node": ">= 0.12",
+    "npm": ">=1.4.3"
+  },
   "scripts": {
     "test": "mocha"
   },
-  "files": [
-    "generators"
-  ],
   "keywords": [
     "yeoman-generator",
     "aurelia",
@@ -28,6 +35,8 @@
   ],
   "dependencies": {
     "chalk": "^1.0.0",
+    "extend": "^3.0.0",
+    "iniparser": "^1.0.5",
     "node-fs-extra": "^0.8.1",
     "rimraf": "^2.4.0",
     "sinon": "^1.15.4",

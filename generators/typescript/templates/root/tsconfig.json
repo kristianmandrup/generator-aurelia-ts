@@ -2,7 +2,7 @@
   "version": "1.6.0",
   "compilerOptions": {
     "target": "es5",
-    "module": "<%= amd? 'amd': 'commonjs' %>",
+    "module": "<%= (amd)? 'amd': 'commonjs' %>",
     "declaration": false,
     "noImplicitAny": false,
     "removeComments": false,

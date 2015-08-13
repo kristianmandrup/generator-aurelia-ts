@@ -1,22 +1,43 @@
-generator-aurelia-ts
-====================
+Aurelia Turbo Start generator
+=============================
 
 [![Build Status](https://secure.travis-ci.org/kristianmandrup/generator-aurelia-ts.png?branch=master)](https://travis-ci.org/kristianmandrup/generator-aurelia-ts)
 
 Generate an [Aurelia](aurelia.io) Quick Start project with: - [Aurelia CLI](http://www.programwitherik.com/what-is-aurelia-cli-how-does-it-work/) - [SASS](http://sass-lang.com/) or [Stylus](https://learnboost.github.io/stylus/) CSS extenstion language - TypeScript definitions - A popular UI framework of your choice - Plugins of your choice installed - Aurelia CLI for rapid development...
 
-### Status
+### Generators
 
-All tests pass!
+-	`aurelia-ts` (new app)
+-	`aurelia-ts:decorate` (decorate app)
+-	`aurelia-ts:plugins` (add plugins)
+-	`aurelia-ts:cli` (add CLI)
+-	`aurelia-ts:styles` (add CSS preprocessors: SASS/Stylus )
+-	`aurelia-ts:layout` (add ui/layout framework:)
+-	`aurelia-ts:javascript` (javascript app)
+-	`aurelia-ts:typescript` (typescript app)
+-	`aurelia-ts:state` (add state or stores)
+-	`aurelia-ts:amp` - (add Ampersand models/collections)
 
-Generator Tested on MacOSX via `npm link` and all generators work as expected :)
+Now includes IE9 support ;)
 
--	`aurelia-ts`
--	`aurelia-ts:plugins`
--	`aurelia-ts:cli`
--	`aurelia-ts:styles`
--	`aurelia-ts:layout`
--	`aurelia-ts:typescript`
+### Compatibility
+
+The genrator has been tested successfully on Node.js 0.12.7
+
+We recommend that you use [nvm](https://github.com/creationix/nvm) to manage your system installed Node versions.
+
+Install NVM
+
+`curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash`
+
+We highly recommend using [IOjs](https://iojs.org/en/index.html) or the latest Node.js (>0.12)
+
+To install IOjs via NVM:
+
+-	`nvm ls-remote` - list of Node and IOjs versions available
+-	`nvm install iojs` - install latest IOjs
+-	`nvm alias default iojs` - make iojs your default (optional)
+-	`node -v`
 
 ### Layout Frameworks
 
@@ -24,9 +45,17 @@ Run: `yo aurelia-ts:layout`
 
 The layout generator currently supports:
 
-Fonts: - [Font Awesome](http://fortawesome.github.io/Font-Awesome/)
+#### Font frameworks
 
-CSS: - [Bootstrap](http://getbootstrap.com) - [Bootstrap Material](https://fezvrasta.github.io/bootstrap-material-design/) - [Zurb Foundation](http://foundation.zurb.com/) - [Semantic UI](semantic-ui.com) - [Framework7](http://www.idangero.us/framework7)
+-	[Font Awesome](http://fortawesome.github.io/Font-Awesome/)
+
+#### CSS frameworks
+
+-	[Bootstrap](http://getbootstrap.com)
+-	[Bootstrap Material](https://fezvrasta.github.io/bootstrap-material-design/)
+-	[Zurb Foundation](http://foundation.zurb.com/)
+-	[Semantic UI](semantic-ui.com)
+-	[Framework7](http://www.idangero.us/framework7)
 
 Make a pull request to make the generator support your favorite alternative UI/Layout framework (see *Contributing* below).
 
@@ -36,21 +65,17 @@ We currently use [Aurelia Typings](https://github.com/cmichaelgraham/aurelia-typ
 
 We would like to soon integrate use of the [aurelia-amd-bundler](https://github.com/cmichaelgraham/aurelia-amd-bundler)
 
-Ideas ror how to best achieve TypeScript support are most welcome!
+Ideas on how to best achieve TypeScript support are most welcome!
 
-Please submit pull requests for further TypeScript Definition updates or help integrate with auto generation (when mature).
+### Install
 
-Install
--------
-
-To install generator-aurelia-ts from npm, run:
+To install *generator-aurelia-ts* via *npm*, run:
 
 ```bash
 npm install -g generator-aurelia-ts
 ```
 
-Run
----
+### Run
 
 Create a folder for your app:
 
@@ -65,15 +90,17 @@ Initiate the app generator (default):
 yo aurelia-ts
 ```
 
-Alternatively pass application name as first argument
+Note: If for some reason it tries to install in a parent folder, check out [Issue #4](https://github.com/kristianmandrup/generator-aurelia-ts/issues/4#issuecomment-130134599)
+
+Answer the prompts in order to generate your Aurelia project to suit your preferences.
+
+### Generator arguments & options
+
+You can pass the application name as the first argument
 
 ```bash
 yo aurelia-ts my-app
 ```
-
-Answer the prompts in order for the generator to generate your Aurelia project to suit your preferences.
-
-### Generator options
 
 Run with TypeScript `--ts` and Plugins `--plugins` generators auto enabled.
 
@@ -95,7 +122,10 @@ yo aurelia-ts --stylus
 -	[Axis](http://axis.netlify.com/)
 -	[Rupture](http://jenius.github.io/rupture/)
 -	[Fluidity](www.fluiditycss.com)
+-	[Typographic](http://corysimmons.github.io/typographic/)
 -	[Jeet](http://jeet.gs/)
+
+We highly recommend watching these [Stylus tutorial videos](https://www.youtube.com/playlist?list=PLLnpHn493BHFWQGA1PcyQZWAfR96a4CkH) to get a feel and understanding of the power of using Stylus with plugins and get over the temptation to use Bootstrap or kin for all your styling needs. Break your bad habits ;)
 
 ### UI framework option
 
@@ -109,28 +139,46 @@ The ui can take any of these shorthands: - `bs` Bootstrap - `zurb` Zurb Foundati
 
 ### Prompts
 
-You will be prompted for the following: - application name? - application title? - github account? - email? - name? - Install Aurelia CLI? - Install TypeScript? - Visual Studio?
+You will be prompted for the following:
+
+-	application name?
+-	application title?
+-	github account?
+-	Author email?
+-	Author name?
+-	Install Aurelia CLI?
+-	Install TypeScript?
+-	Visual Studio?
 
 TypeScript
 ----------
 
-After setting up the basic project structure, the main generator will ask you to call the `aurelia-ts:typescript` generator.
-
-If you skip TypeScript, know that you can always add TypeScript later using the `typescript` sub-generator.
+After setting up the basic project structure, the main generator will ask if you want TypeScript. You can always add TypeScript to your project at any time by calling the `typescript` sub-generator.
 
 ```bash
 yo aurelia-ts:typescript
 ```
 
+Note: The `typescript` generator will clear your javascript files and rewrite the skeleton files as `.ts` files. Be sure you have committed your code before running any generator!
+
 ### Plugins
 
-Experimental support for installing various Aurelia plguins:
+Experimental support for installing around a dozen Aurelia plugins:
 
 `yo aurelia-ts:plugins`
 
-Plugins list: - [Flux](https://github.com/tfrydrychewicz/aurelia-flux) - [Authentication](https://github.com/paulvanbladel/aureliauth) - [Validation](https://github.com/aurelia/validation) - [i18next](https://github.com/zewa666/aurelia-i18next) - [Computed properties](https://github.com/jdanyow/aurelia-computed/) - [Bootstrap Modal])https://github.com/PWKad/aurelia-bs-modal) (if Bootstrap) - [Rethink DB bindings](https://github.com/kristianmandrup/aurelia-rethink-bindtable) - [Breeze bindings](https://github.com/jdanyow/aurelia-breeze) - ... - (TODO: Add YOUR favorite plugins...)
+-	[Flux](https://github.com/tfrydrychewicz/aurelia-flux)
+-	[Authentication](https://github.com/paulvanbladel/aureliauth)
+-	[Validation](https://github.com/aurelia/validation)
+-	[i18next](https://github.com/zewa666/aurelia-i18next)
+-	[Computed properties](https://github.com/jdanyow/aurelia-computed/)
+-	[Bootstrap Modal](https://github.com/PWKad/aurelia-bs-modal)
+-	[Rethink DB bindings](https://github.com/kristianmandrup/aurelia-rethink-bindtable)
+-	[Breeze bindings](https://github.com/jdanyow/aurelia-breeze)
+-	...
+-	(TODO: Add YOUR favorite plugins...)
 
-See [jspm registry](https://github.com/jspm/registry/blob/master/registry.json) for predefined entries setup to be installed by name,such as: `jspm install semantic-ui`
+See [jspm registry](https://github.com/jspm/registry/blob/master/registry.json) for predefined entries setup to be installed by name, such as: `jspm install semantic-ui`
 
 Frameworks
 ----------
@@ -188,7 +236,7 @@ We can see, it has a `main` entry pointing to `dist/js/framework7.js` so we can 
 
 The `css` imports needs to reference the `dist` folder structure directly.
 
-We add the following to `src/app.js`
+We add the following to `src/_ui.js` template. The same template will be used for TS.
 
 ```js
 <% if (framework7) { %>
@@ -197,8 +245,6 @@ import 'framework7/css/framework7.ios.css!';
 import 'framework7/css/framework7.ios.colors.css!';
 <% } %>
 ```
-
-Insert the same imports in `src/app.ts`.
 
 Finally test that it all works by adding a unit test, such as:
 
@@ -225,8 +271,8 @@ TODO
 
 Ideas for improvement are welcome :)
 
--	[bootstrap3-stylus](https://github.com/MContagious/bootstrap3-stylus)
--	More UI frameworks such as [Gumby](http://www.gumbyframework.com/)
+-	Support for Aurelia's built in `.d.ts` files [Issue #7](https://github.com/kristianmandrup/generator-aurelia-ts/issues/7)
+-	More UI frameworks ...??
 -	Support for more editors/IDEs: Visual Studio, WebStorm etc.
 
 License
