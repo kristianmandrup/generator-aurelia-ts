@@ -15,6 +15,7 @@ describe('aurelia-ts generator', function() {
   });
 });
 
+
 describe('aurelia-ts:app', function () {
   this.spy = sinon.spy();
   var dummyGen = generator.Base.extend({

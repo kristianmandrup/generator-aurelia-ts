@@ -9,6 +9,9 @@ var sinon = require('sinon');
 var fs = require('fs');
 var app;
 
+var mockPrompts = require('prompts').styles;
+var mockOptions = require('options').styles;
+
 // Need test for no styles => just raw CSS
 var styles = ['SASS', 'Stylus'];
 var useJade = true;
@@ -100,7 +103,7 @@ describe('aurelia-ts:styles', function () {
     let aux = true;
     stylusPlugins.forEach(function(plugin, index, plugins) {
       // npmCallsArgs.forEach(function(call, indexC, calls) {
-      // check there is the plugin name(s) at least in one npm call 
+      // check there is the plugin name(s) at least in one npm call
       let res = npmCallsArgs.some(function(call, indexC, calls){
         return call.toLowerCase().indexOf(plugin.toLowerCase()) > -1;
       });
