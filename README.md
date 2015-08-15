@@ -271,6 +271,8 @@ TODO
 
 Ideas for improvement are welcome :)
 
+-	Use defaults similar to Slush generators (why repeat all your personal info each time!?)
+-	SASS support
 -	Support for Aurelia's built in `.d.ts` files [Issue #7](https://github.com/kristianmandrup/generator-aurelia-ts/issues/7)
 -	More UI frameworks ...??
 -	Support for more editors/IDEs: Visual Studio, WebStorm etc.

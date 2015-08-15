@@ -4,6 +4,7 @@ module.exports = function(gen) {
   var props = gen.props;
   var app = props.app;
   var pkg = props.pkg;
+  var defaults = require('./defaults');
 
   return {
     prompts: {
@@ -11,13 +12,13 @@ module.exports = function(gen) {
         type: 'input',
         name: 'appName',
         message: 'application (package) name',
-        default: app.moduleName // Name
+        default: app.moduleName || defaults.appName
       },
       title: {
         type: 'input',
         name: 'title',
         message: 'title',
-        default: app.title
+        default: app.title || defaults.appName
       },
       desc: {
         type: 'input',
@@ -29,19 +30,19 @@ module.exports = function(gen) {
         type: 'input',
         name: 'githubAccount',
         message: 'github account',
-        default: pkg.githubAccount
+        default: pkg.githubAccount || defaults.userName
       },
       authorEmail: {
         type: 'input',
         name: 'authorEmail',
         message: 'Your email',
-        default: pkg.authorEmail
+        default: pkg.authorEmail || defaults.authorEmail
       },
       authorName: {
         type: 'input',
         name: 'authorName',
         message: 'Your name',
-        default: pkg.authorName
+        default: pkg.authorName || defaults.authorName
       },
       ie9: {
         type: 'confirm',
