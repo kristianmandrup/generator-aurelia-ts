@@ -22,7 +22,9 @@ module.exports = function(gen) {
         gen.copy.bulkDir(path);
       }
       // stylus
-      gen.copy.stylesTemplate('stylus/_styles.styl', 'stylus/styles.styl', gen.stylus.plugins.obj);
+      if (gen.styles.pre.stylus) {
+        gen.copy.stylesTemplate('stylus/_styles.styl', 'stylus/styles.styl', gen.stylus.plugins.obj);
+      }
     },
     tasks: function() {
       var pre = gen.styles.pre;

@@ -10,14 +10,13 @@ var prompts = require('./prompts');
 var writeConf = require('./write');
 
 var lib = require('../../lib');
-var install = lib.install;
+var install = require('./install');
+
 var copy = lib.copy;
 var log = lib.log;
 var util = lib.util;
 var options = lib.options;
 var writer = lib.writer;
-
-var defaults = require('./defaults');
 
 module.exports = yeoman.generators.Base.extend({
   // note: arguments and options should be defined in the constructor.
@@ -61,14 +60,13 @@ module.exports = yeoman.generators.Base.extend({
     this.copy = copy(this);
     this.writer = writer(writeConf(this));
     this.myPrompts = prompts(this);
-    this.install = install(this);
+    this.install = lib.install(this);
   },
 
   // TODO: Add prompt for style lang unless passed as argument
   // TODO: Add editor selection prompt
   prompting: function() {
     var done = this.async();
-
     // info('Create Aurelia Application:');
     this.prompt(this.myPrompts.createFor(this), function(answers) {
       var app = this.props.app;
@@ -98,6 +96,7 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   install: function() {
+    install(this).all(this.props);
     if (this.props.ie9) {
       this.install.jspm.packages(['github:polymer/mutationobservers']);
     }
