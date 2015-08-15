@@ -41,7 +41,7 @@ module.exports = {
   mapToList: function(mapObj) {
     var list = [];
     for (var key in mapObj) {
-      list.push(key);
+      if (mapObj[key] == true) list.push(key);
     }
     return list;
   },

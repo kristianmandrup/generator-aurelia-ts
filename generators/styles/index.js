@@ -68,7 +68,6 @@ module.exports = yeoman.generators.Base.extend({
         this.chosenStyles = this.chosenStyles.filter(function(elem, i, arr) {
           return arr.indexOf(elem) == i;
         });
-
         this.styles = util.styles(this.chosenStyles);
         this.removeOld = answers.removeOld;
         this.useJade = answers.useJade;
