@@ -8,9 +8,7 @@ var os = require('os');
 var sinon = require('sinon');
 var fs = require('fs');
 var app;
-
-var mockPrompts = require('prompts').styles;
-var mockOptions = require('options').styles;
+var testHelpers = require('./lib/helper');
 
 // Need test for no styles => just raw CSS
 var styles = ['SASS', 'Stylus'];
@@ -25,28 +23,20 @@ describe('aurelia-ts:styles', function () {
     exec: this.spy
   });
 
-  this.npmInstallCalls = [];
-  this.spawnCommandCalls = [];
-  let npmCallsArgs = [] ;
+  // this.npmInstallCalls = [];
+  // this.spawnCommandCalls = [];
+  // this.npmCallsArgs = [] ;
+  let mockOptions = {};
+  let mockPrompts = {
+    styles: styles,
+    useJade: useJade,
+    removeOld: false,
+    stylusPlugins: stylusPlugins
+  };
+  let npmCallsArgs = [];
   before(function(done) {
-    app = helpers.run(path.join(__dirname, '../generators/styles'))
-      .withOptions({
-        // ui: 'Bootstrap',
-      })
-      .withPrompts({
-        styles: styles,
-        useJade: useJade,
-        removeOld: false,
-        stylusPlugins: stylusPlugins
-      })
-      .on('ready', function(generator) {
-        generator.npmInstall = function() {
-          this.npmInstallCalls.push(arguments);
-        }.bind(this);
-        generator.spawnCommand = function() {
-          this.spawnCommandCalls.push(arguments);
-        }.bind(this);
-      }.bind(this))
+    app = testHelpers.runGenerator('styles', mockOptions, mockPrompts)
+      .on('ready', testHelpers.onready.bind(this))
       .on('end', function() {
         for (let mods of this.npmInstallCalls) {
           // console.log(mods[0]);
@@ -109,7 +99,60 @@ describe('aurelia-ts:styles', function () {
       });
       assert(res == true);
     });
+  });
+});
 
+describe('aurelia-ts:styles --stylus', function () {
+  this.spy = sinon.spy();
+  var dummyGen = generator.Base.extend({
+    exec: this.spy
   });
 
+  // this.npmInstallCalls = [];
+  // this.spawnCommandCalls = [];
+  // this.npmCallsArgs = [] ;
+  let mockOptions = {
+    stylus: true
+  };
+  let mockPrompts = {
+    styles: [],
+    useJade: false,
+    removeOld: false,
+    stylusPlugins: []
+  };
+  let npmCallsArgs = [];
+  before(function(done) {
+    app = testHelpers.runGenerator('styles', mockOptions, mockPrompts)
+      .on('ready', testHelpers.onready.bind(this))
+      .on('end', function() {
+        for (let mods of this.npmInstallCalls) {
+          // console.log(mods[0]);
+          npmCallsArgs.push(mods[0]);
+        }
+        done();
+      }.bind(this));
+  }.bind(this));
+
+  it('can be run', function() {
+    assert(app !== undefined);
+  });
+
+  it('install stylus support', function() {
+    let aux = npmCallsArgs.filter(function(elem) {
+      return elem.match(/gulp-stylus/);
+    });
+    assert(aux.length == 1);
+    assert.file(['build/tasks/stylus.js']);
+    assert.file(['styles/stylus/styles.styl']);
+  });
+
+  it('does not install stylus plugins', function() {
+    let aux = true;
+    stylusPlugins.forEach(function(plugin, index, plugins) {
+      let res = npmCallsArgs.some(function(call, indexC, calls){
+        return call.toLowerCase().indexOf(plugin.toLowerCase()) == -1;
+      });
+      assert(res == true);
+    });
+  });
 });
