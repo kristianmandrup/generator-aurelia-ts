@@ -17,6 +17,7 @@ describe('aurelia-ts:amd for Ampersand modules', function () {
     exec: this.spy
   });
 
+
   let ampModules = ['app', 'registry', 'state', 'collection', 'rest-collection', 'model'];
   let mockPrompts = {
     modules: ampModules,

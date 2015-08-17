@@ -25,25 +25,11 @@ describe('aurelia-ts:decorate', function () {
     exec: this.stateSpy
   });
 
-  this.npmInstallCalls = [];
-  this.spawnCommandCalls = [];
-
   this.runGenerator = function(generators, options, prompts) {
     return helpers.run(path.join(__dirname, '../generators/decorate'))
       .withOptions(options)
       .withGenerators(generators)
-      .withPrompts(prompts)
-      /*
-      .on('ready', function(generator) {
-        generator.npmInstall = function() {
-          this.npmInstallCalls.push(arguments);
-        }.bind(this);
-
-        generator.spawnCommand = function() {
-          this.spawnCommandCalls.push(arguments);
-        }.bind(this);
-      }.bind(this));
-      */
+      .withPrompts(prompts);
   }
 
 
@@ -54,6 +40,7 @@ describe('aurelia-ts:decorate', function () {
         [jsDummyGen, 'aurelia-ts:javascript'],
         [stateDummyGen, 'aurelia-ts:state']
       ];
+
       let mockOptions = {};
       let mockPrompt = {
         installStyles: true,
@@ -64,6 +51,7 @@ describe('aurelia-ts:decorate', function () {
         visualStudio: false
       };
       // console.log(this);
+
       let jspmArgs;
       app = this.runGenerator(dummyGens, mockOptions, mockPrompt);
       app.on('ready', testHelpers.onready.bind(this))
@@ -115,9 +103,10 @@ describe('aurelia-ts:decorate', function () {
       let mockOptions = {};
       // console.log(this);
       app = this.runGenerator(dummyGens, mockOptions, mockPrompt);
-      app.on('end', function() {
-        done();
-      });
+      app.on('ready', testHelpers.onready.bind(this))
+        .on('end', function() {
+          done();
+        });
     }.bind(this));
 
     after(function() {
@@ -160,13 +149,14 @@ describe('aurelia-ts:decorate', function () {
         installLayout: true,
         visualStudio: false
       };
+
       let mockOptions = {};
       // console.log(this);
       app = this.runGenerator(dummyGens, mockOptions, mockPrompt);
-      app.on('ready', testHelpers.onready.bind(this));
-      app.on('end', function() {
-        done();
-      });
+      app.on('ready', testHelpers.onready.bind(this))
+        .on('end', function() {
+          done();
+        });
     }.bind(this));
 
     after(function() {
@@ -214,13 +204,14 @@ describe('aurelia-ts:decorate', function () {
         installLayout: false,
         visualStudio: false
       };
+
       let mockOptions = {};
       // console.log(this);
       app = this.runGenerator(dummyGens, mockOptions, mockPrompt);
-      app.on('ready', testHelpers.onready.bind(this));
-      app.on('end', function() {
-        done();
-      });
+      app.on('ready', testHelpers.onready.bind(this))
+        .on('end', function() {
+          done();
+        });
     }.bind(this));
 
     after(function() {

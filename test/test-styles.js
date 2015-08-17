@@ -7,6 +7,7 @@ var helpers = require('yeoman-generator').test;
 var os = require('os');
 var sinon = require('sinon');
 var fs = require('fs');
+
 var app;
 var testHelpers = require('./lib/helper');
 
@@ -284,4 +285,4 @@ describe('aurelia-ts:styles --stylus & no plugins', function() {
     });
   });
 
-})
+});

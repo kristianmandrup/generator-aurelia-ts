@@ -80,7 +80,6 @@ describe('aurelia-ts:plugins', function () {
     // check all arguments of jspm call are registered plugins
     for (let i=1; i<Object.keys(jspmArgs).length; i++) {
       let res = pluginVals.indexOf(jspmArgs[i]);
-      // console.log(`${pluginVals}.indexOf(${jspmArgs[i]}) = ${pluginVals.indexOf(jspmArgs[i])}`);
       assert(res != -1);
     }
     /*
@@ -217,4 +216,5 @@ describe('aurelia-ts:plugins install binding plugins', function() {
   it('installs Async plugin', function() {
     assert(jspmArgs.indexOf('aurelia-async') != -1);
   });
+
 });

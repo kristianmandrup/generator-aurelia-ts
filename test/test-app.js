@@ -28,18 +28,7 @@ describe('aurelia-ts:app', function () {
     return helpers.run(path.join(__dirname, '../generators/app'))
       .withGenerators(generators)
       .withOptions(options)
-      .withPrompts(prompts)
-      /*
-      .on('ready', function(generator) {
-        generator.npmInstall = function() {
-          this.npmInstallCalls.push(arguments);
-        }.bind(this);
-
-        generator.spawnCommand = function() {
-          this.spawnCommandCalls.push(arguments);
-        }.bind(this);
-      }.bind(this))
-      */
+      .withPrompts(prompts);
   }
 
   describe('ie9 & decorate', function() {
