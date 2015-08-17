@@ -3,7 +3,13 @@ Aurelia Turbo Start generator
 
 [![Build Status](https://secure.travis-ci.org/kristianmandrup/generator-aurelia-ts.png?branch=master)](https://travis-ci.org/kristianmandrup/generator-aurelia-ts)
 
-Generate an [Aurelia](aurelia.io) Quick Start project with: - [Aurelia CLI](http://www.programwitherik.com/what-is-aurelia-cli-how-does-it-work/) - [SASS](http://sass-lang.com/) or [Stylus](https://learnboost.github.io/stylus/) CSS extenstion language - TypeScript definitions - A popular UI framework of your choice - Plugins of your choice installed - Aurelia CLI for rapid development...
+Generate an [Aurelia](aurelia.io) Quick Start project with:
+
+-	[Aurelia CLI](http://www.programwitherik.com/what-is-aurelia-cli-how-does-it-work/)
+-	TypeScript definitions
+-	[SASS](http://sass-lang.com/) or [Stylus](https://learnboost.github.io/stylus/)
+-	UI frameworks of your choice (Bootstrap, Foundation, F7, Semantic IO)
+-	Aurelia Plugins installed and ready for use
 
 ### Generators
 
@@ -61,7 +67,7 @@ Make a pull request to make the generator support your favorite alternative UI/L
 
 ### TypeScript
 
-We currently use [Aurelia Typings](https://github.com/cmichaelgraham/aurelia-typescript-atom/tree/master/skel-nav-ts/typings/aurelia) as of *July 24th, 2015*.
+We currently use [Aurelia Typings](https://github.com/cmichaelgraham/aurelia-typescript-atom/tree/master/skel-nav-ts/typings/aurelia) as of *August 17th, 2015*.
 
 We would like to soon integrate use of the [aurelia-amd-bundler](https://github.com/cmichaelgraham/aurelia-amd-bundler)
 
