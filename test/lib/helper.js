@@ -21,5 +21,14 @@ module.exports = {
     return helpers.run(path.join(__dirname, '../../generators/'+generatorName))
       .withOptions(theOpts)
       .withPrompts(thePrompts)
+  },
+
+  printObj: function(name, obj) {
+    console.log(`printObject ${name}`);
+    let keys = Object.keys(obj);
+    console.log(`got ${keys.length} properties:`);
+    keys.forEach(function(k, i, arr) {
+      console.log(`${k}->${obj[k]}`);
+    });
   }
 }

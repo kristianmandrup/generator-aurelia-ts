@@ -20,6 +20,10 @@ module.exports = yeoman.generators.Base.extend({
     this.option('fa'); // font awesome
     this.option('cli'); // aurelia CLI
     this.option('plugins');
+
+    this.option('sass');
+    this.option('stylus');
+    this.option('fa');
   },
 
   initializing: function() {

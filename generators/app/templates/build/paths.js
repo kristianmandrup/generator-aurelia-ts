@@ -12,7 +12,7 @@ module.exports = {
   html: appRoot + '**/*.html',
   style: 'styles/css/**/*.css',
   sass: 'styles/sass/**/*.scss',
-  stylus: 'styles/stylus/**/*.scss',
+  stylus: 'styles/stylus/**/*.styl',
   styleDest: './styles/css',
 
   output: outputRoot,

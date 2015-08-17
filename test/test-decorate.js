@@ -9,6 +9,7 @@ var sinon = require('sinon');
 var fs = require('fs');
 var app;
 
+var testHelpers = require('./lib/helper');
 // Need tests for all combinations??
 describe('aurelia-ts:decorate', function () {
   this.spy = sinon.spy();
@@ -27,13 +28,12 @@ describe('aurelia-ts:decorate', function () {
   this.npmInstallCalls = [];
   this.spawnCommandCalls = [];
 
-  this.runGenerator = function(generators, prompts) {
+  this.runGenerator = function(generators, options, prompts) {
     return helpers.run(path.join(__dirname, '../generators/decorate'))
-      .withOptions({
-        // ui: 'Bootstrap',
-      })
+      .withOptions(options)
       .withGenerators(generators)
       .withPrompts(prompts)
+      /*
       .on('ready', function(generator) {
         generator.npmInstall = function() {
           this.npmInstallCalls.push(arguments);
@@ -43,6 +43,7 @@ describe('aurelia-ts:decorate', function () {
           this.spawnCommandCalls.push(arguments);
         }.bind(this);
       }.bind(this));
+      */
   }
 
 
@@ -53,6 +54,7 @@ describe('aurelia-ts:decorate', function () {
         [jsDummyGen, 'aurelia-ts:javascript'],
         [stateDummyGen, 'aurelia-ts:state']
       ];
+      let mockOptions = {};
       let mockPrompt = {
         installStyles: true,
         installCLI: false,
@@ -62,10 +64,13 @@ describe('aurelia-ts:decorate', function () {
         visualStudio: false
       };
       // console.log(this);
-      app = this.runGenerator(dummyGens, mockPrompt);
-      app.on('end', function() {
-        done();
-      });
+      let jspmArgs;
+      app = this.runGenerator(dummyGens, mockOptions, mockPrompt);
+      app.on('ready', testHelpers.onready.bind(this))
+        .on('end', function() {
+          // jspmArgs = this.spawnCommandCalls[0][1];
+          done();
+        }.bind(this));
     }.bind(this));
 
     after(function() {
@@ -107,8 +112,9 @@ describe('aurelia-ts:decorate', function () {
         installLayout: false,
         visualStudio: false
       };
+      let mockOptions = {};
       // console.log(this);
-      app = this.runGenerator(dummyGens, mockPrompt);
+      app = this.runGenerator(dummyGens, mockOptions, mockPrompt);
       app.on('end', function() {
         done();
       });
@@ -154,8 +160,10 @@ describe('aurelia-ts:decorate', function () {
         installLayout: true,
         visualStudio: false
       };
+      let mockOptions = {};
       // console.log(this);
-      app = this.runGenerator(dummyGens, mockPrompt);
+      app = this.runGenerator(dummyGens, mockOptions, mockPrompt);
+      app.on('ready', testHelpers.onready.bind(this));
       app.on('end', function() {
         done();
       });
@@ -206,8 +214,10 @@ describe('aurelia-ts:decorate', function () {
         installLayout: false,
         visualStudio: false
       };
+      let mockOptions = {};
       // console.log(this);
-      app = this.runGenerator(dummyGens, mockPrompt);
+      app = this.runGenerator(dummyGens, mockOptions, mockPrompt);
+      app.on('ready', testHelpers.onready.bind(this));
       app.on('end', function() {
         done();
       });

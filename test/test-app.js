@@ -6,7 +6,9 @@ var assert = require('yeoman-generator').assert;
 var helpers = require('yeoman-generator').test;
 var os = require('os');
 var sinon = require('sinon');
+
 var app;
+var testHelpers = require('./lib/helper');
 
 describe('aurelia-ts generator', function() {
   it('can be imported', function() {
@@ -22,14 +24,12 @@ describe('aurelia-ts:app', function () {
     exec: this.spy
   });
 
-  this.spawnCommandCalls = [];
-  this.npmInstallCalls = [];
-  this.runGenerator = function(prompts) {
+  this.runGenerator = function(generators, options, prompts) {
     return helpers.run(path.join(__dirname, '../generators/app'))
-      .withGenerators([
-        [dummyGen, 'aurelia-ts:decorate']
-      ])
+      .withGenerators(generators)
+      .withOptions(options)
       .withPrompts(prompts)
+      /*
       .on('ready', function(generator) {
         generator.npmInstall = function() {
           this.npmInstallCalls.push(arguments);
@@ -39,6 +39,7 @@ describe('aurelia-ts:app', function () {
           this.spawnCommandCalls.push(arguments);
         }.bind(this);
       }.bind(this))
+      */
   }
 
   describe('ie9 & decorate', function() {
@@ -53,12 +54,16 @@ describe('aurelia-ts:app', function () {
         ie9: true,
         decorate: true
       };
-
-      app = this.runGenerator(mockPrompt);
-      app.on('end', function() {
-        // console.log('it finishes!!');
-        done();
-      });
+      let mockOptions = {};
+      let mockGenerators = [
+        [dummyGen, 'aurelia-ts:decorate']
+      ];
+      app = this.runGenerator(mockGenerators, mockOptions, mockPrompt);
+      app.on('ready', testHelpers.onready.bind(this))
+        .on('end', function() {
+          // console.log('it finishes!!');
+          done();
+        });
     }.bind(this));
 
     after(function() {
@@ -94,7 +99,7 @@ describe('aurelia-ts:app', function () {
     });
 
     it('subgenerator decorate is called', function() {
-      assert(this.spawnCommandCalls.length == 1);
+      assert(this.spawnCommandCalls.length == 2);
       assert(this.npmInstallCalls.length == 0);
       assert(this.spy.calledOnce);
     }.bind(this));
@@ -113,12 +118,16 @@ describe('aurelia-ts:app', function () {
         ie9: false,
         decorate: false
       };
-
-      app = this.runGenerator(mockPrompt);
-      app.on('end', function() {
-        // console.log('it finishes!!');
-        done();
-      });
+      let mockOptions = {};
+      let mockGenerators = [
+        [dummyGen, 'aurelia-ts:decorate']
+      ];
+      app = this.runGenerator(mockGenerators, mockOptions, mockPrompt);
+      app.on('ready', testHelpers.onready.bind(this))
+        .on('end', function() {
+          // console.log('it finishes!!');
+          done();
+        });
     }.bind(this));
 
     after(function() {
@@ -136,7 +145,7 @@ describe('aurelia-ts:app', function () {
     }.bind(this));
 
     it('no installed ie9 polyfill', function() {
-      assert(this.spawnCommandCalls.length == 0);
+      assert(this.spawnCommandCalls.length == 1);
       assert(this.npmInstallCalls.length == 0);
     }.bind(this));
   }.bind(this));

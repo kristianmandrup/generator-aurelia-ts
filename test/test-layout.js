@@ -11,15 +11,6 @@ var fs = require('fs');
 var testHelpers = require('./lib/helper');
 var app;
 
-var printObj = function(name, obj) {
-  console.log(`printObject ${name}`);
-  let keys = Object.keys(obj);
-  console.log(`got ${keys.length} properties:`);
-  keys.forEach(function(k, i, arr) {
-    console.log(`${k}->${obj[k]}`);
-  });
-}
-
 describe('aurelia-ts:layout for Bootstrap/Semantic-UI', function () {
   var pkgFile = 'package.json';
   function pkgKeyExpr(name) {
