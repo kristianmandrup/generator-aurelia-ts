@@ -8,6 +8,7 @@ var fs = require('node-fs-extra');
 var utl = require('util');
 var lib = require('../../lib');
 var log = lib.log;
+
 var selected, ext;
 const maps = require('./maps');
 var util = require('./util');
