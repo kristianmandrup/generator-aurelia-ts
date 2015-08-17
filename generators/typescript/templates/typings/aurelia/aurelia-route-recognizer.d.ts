@@ -21,60 +21,20 @@ declare module 'aurelia-route-recognizer' {
     validChars?: string;
     repeat?: boolean;
   }
-  
-  //  A Segment represents a segment in the original route description.
-  //  Each Segment type provides an `eachChar` and `regex` method.
-  // 
-  //  The `eachChar` method invokes the callback with one or more character
-  //  specifications. A character specification consumes one or more input
-  //  characters.
-  // 
-  //  The `regex` method returns a regex fragment for the segment. If the
-  //  segment is a dynamic or star segment, the regex fragment also includes
-  //  a capture.
-  // 
-  //  A character specification contains:
-  // 
-  //  * `validChars`: a String with a list of all valid characters, or
-  //  * `invalidChars`: a String with a list of all invalid characters
-  //  * `repeat`: true if the character specification can repeat
-  export class StaticSegment {
-    constructor(string: string);
-    eachChar(callback: (spec: CharSpec) => void): any;
-    regex(): string;
-    generate(params: Object, consumed: Object): string;
-  }
-  export class DynamicSegment {
-    constructor(name: string);
-    eachChar(callback: (spec: CharSpec) => void): any;
-    regex(): string;
-    generate(params: Object, consumed: Object): string;
-  }
-  export class StarSegment {
-    constructor(name: string);
-    eachChar(callback: (spec: CharSpec) => void): any;
-    regex(): string;
-    generate(params: Object, consumed: Object): string;
-  }
-  export class EpsilonSegment {
-    eachChar(callback: (spec: CharSpec) => void): any;
-    regex(): string;
-    generate(params: Object, consumed: Object): string;
-  }
-  
+
   //  A State has a character specification and (`charSpec`) and a list of possible
   //  subsequent states (`nextStates`).
-  // 
+  //
   //  If a State is an accepting state, it will also have several additional
   //  properties:
-  // 
+  //
   //  * `regex`: A regular expression that is used to extract parameters from paths
   //    that reached this accepting state.
   //  * `handlers`: Information on how to convert the list of captures into calls
   //    to registered handlers with the specified parameters.
   //  * `types`: How many static, dynamic, or star segments in this route. Used to
   //    decide which route to use if multiple registered routes match a path.
-  // 
+  //
   //  Currently, State is implemented naively by looping over `nextStates` and
   //  comparing a character specification against a character. A more efficient
   //  implementation would use a hash of keys pointing at one or more next states.
@@ -82,11 +42,51 @@ declare module 'aurelia-route-recognizer' {
     constructor(charSpec: CharSpec);
     get(charSpec: CharSpec): State;
     put(charSpec: CharSpec): State;
-    
+
     //  Find a list of child states matching the next character
     match(ch: string): State[];
   }
-  
+
+  //  A Segment represents a segment in the original route description.
+  //  Each Segment type provides an `eachChar` and `regex` method.
+  //
+  //  The `eachChar` method invokes the callback with one or more character
+  //  specifications. A character specification consumes one or more input
+  //  characters.
+  //
+  //  The `regex` method returns a regex fragment for the segment. If the
+  //  segment is a dynamic or star segment, the regex fragment also includes
+  //  a capture.
+  //
+  //  A character specification contains:
+  //
+  //  * `validChars`: a String with a list of all valid characters, or
+  //  * `invalidChars`: a String with a list of all invalid characters
+  //  * `repeat`: true if the character specification can repeat
+  export class StaticSegment {
+    constructor(string: string);
+    eachChar(callback: ((spec: CharSpec) => void)): any;
+    regex(): string;
+    generate(params: Object, consumed: Object): string;
+  }
+  export class DynamicSegment {
+    constructor(name: string);
+    eachChar(callback: ((spec: CharSpec) => void)): any;
+    regex(): string;
+    generate(params: Object, consumed: Object): string;
+  }
+  export class StarSegment {
+    constructor(name: string);
+    eachChar(callback: ((spec: CharSpec) => void)): any;
+    regex(): string;
+    generate(params: Object, consumed: Object): string;
+  }
+  export class EpsilonSegment {
+    eachChar(callback: ((spec: CharSpec) => void)): any;
+    regex(): string;
+    generate(params: Object, consumed: Object): string;
+  }
+
   /**
    * Class that parses route patterns and matches path strings.
    *
@@ -95,7 +95,7 @@ declare module 'aurelia-route-recognizer' {
    */
   export class RouteRecognizer {
     constructor();
-    
+
     /**
        * Parse a route pattern and add it to the collection of recognized routes.
        *
@@ -103,7 +103,7 @@ declare module 'aurelia-route-recognizer' {
        * @param {Object} route The route to add.
        */
     add(route: ConfigurableRoute | ConfigurableRoute[]): State;
-    
+
     /**
        * Retrieve the handlers registered for the named route.
        *
@@ -112,7 +112,7 @@ declare module 'aurelia-route-recognizer' {
        * @return {Array} The handlers.
        */
     handlersFor(name: string): HandlerEntry[];
-    
+
     /**
        * Check if this RouteRecognizer recognizes a named route.
        *
@@ -121,7 +121,7 @@ declare module 'aurelia-route-recognizer' {
        * @return {Boolean} True if the named route is recognized.
        */
     hasRoute(name: string): boolean;
-    
+
     /**
        * Generate a path and query string from a route name and params object.
        *
@@ -132,7 +132,7 @@ declare module 'aurelia-route-recognizer' {
        * @return {String} The generated absolute path and query string.
        */
     generate(name: string, params: Object): string;
-    
+
     /**
        * Generate a query string from an object.
        *
@@ -141,7 +141,7 @@ declare module 'aurelia-route-recognizer' {
        * @return {String} The generated query string, including leading '?'.
        */
     generateQueryString(params: Object): string;
-    
+
     /**
        * Parse a query string.
        *
@@ -150,7 +150,7 @@ declare module 'aurelia-route-recognizer' {
        * @return {Object} Object with keys and values mapped from the query string.
        */
     parseQueryString(queryString: string): Object;
-    
+
     /**
        * Match a path string against registered route patterns.
        *
