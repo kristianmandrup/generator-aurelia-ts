@@ -7,7 +7,9 @@ var helpers = require('yeoman-generator').test;
 var os = require('os');
 var sinon = require('sinon');
 var fs = require('fs');
+
 var app;
+var testHelpers = require('./lib/helper');
 
 // Need tests for all combinations??
 describe('aurelia-ts:state', function () {
@@ -16,30 +18,18 @@ describe('aurelia-ts:state', function () {
     exec: this.spy
   });
 
-  this.npmInstallCalls = [];
-  this.spawnCommandCalls = [];
-  let jspmArgs;
-
   describe('install ampersand', function() {
+    let jspmArgs;
+    let mockOptions = {};
+    let mockPrompts = {
+      ampersand: true
+    };
     before(function(done) {
-      app = helpers.run(path.join(__dirname, '../generators/state'))
-        .withOptions({
-          // ui: 'Bootstrap',
-        })
+      app = testHelpers.runGenerator('state', mockOptions, mockPrompts)
         .withGenerators([
           [dummyGen, 'aurelia-ts:amp']
         ])
-        .withPrompts({
-          ampersand: true
-        })
-        .on('ready', function(generator) {
-          generator.npmInstall = function() {
-            this.npmInstallCalls.push(arguments);
-          }.bind(this);
-          generator.spawnCommand = function() {
-            this.spawnCommandCalls.push(arguments);
-          }.bind(this);
-        }.bind(this))
+        .on('ready', testHelpers.onready.bind(this))
         .on('end', function() {
           done();
         });
@@ -61,25 +51,16 @@ describe('aurelia-ts:state', function () {
   }.bind(this));
 
   describe('does not install ampersand', function() {
+    let mockOptions = {};
+    let mockPrompts = {
+      ampersand: false
+    };
     before(function(done) {
-      app = helpers.run(path.join(__dirname, '../generators/state'))
-        .withOptions({
-          // ui: 'Bootstrap',
-        })
+      app = testHelpers.runGenerator('amp', mockOptions, mockPrompts)
         .withGenerators([
           [dummyGen, 'aurelia-ts:amp']
         ])
-        .withPrompts({
-          ampersand: false
-        })
-        .on('ready', function(generator) {
-          generator.npmInstall = function() {
-            this.npmInstallCalls.push(arguments);
-          }.bind(this);
-          generator.spawnCommand = function() {
-            this.spawnCommandCalls.push(arguments);
-          }.bind(this);
-        }.bind(this))
+        .on('ready', testHelpers.onready.bind(this))
         .on('end', function() {
           done();
         });

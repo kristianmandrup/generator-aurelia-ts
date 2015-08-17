@@ -14,7 +14,7 @@ module.exports = {
       name    : 'editor',
       message : 'Choose Editor',
       choices: editors,
-      default : ['Atom']
+      default : 'Atom'
     }];
   }
 }

@@ -9,6 +9,8 @@ module.exports = {
   leaflet: 'aurelia-leaflet',
   breeze: 'aurelia-breeze',
   bsModal: 'aurelia-bs-modal',
-  rethinkDb: 'aurelia-rethink-bindtable'
+  rethinkDb: 'aurelia-rethink-bindtable',
+  materialize: 'aurelia-materialize',
+  dialog: 'aurelia-dialogs'
   // more...
 };

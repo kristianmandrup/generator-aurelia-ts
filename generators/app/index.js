@@ -96,6 +96,7 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   install: function() {
+    // this own generator installs dependencies and ie9 polyfill
     install(this).all(this.props);
     if (this.props.ie9) {
       this.install.jspm.packages(['github:polymer/mutationobservers']);

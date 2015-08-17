@@ -24,7 +24,7 @@ module.exports = function(answers) {
       for (var key of this.listPrompts) {
         prompts.mapListAnswers(selectionObj, answers[key]);
       }
-      console.log(`selectionObj.keys: ${Object.keys(selectionObj)}`);
+      // console.log(`selectionObj.keys: ${Object.keys(selectionObj)}`);
       return selectionObj;
     },
 

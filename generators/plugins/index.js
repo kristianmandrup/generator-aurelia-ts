@@ -8,7 +8,7 @@ var fs = require('node-fs-extra');
 var utl = require('util');
 var lib = require('../../lib');
 var log = lib.log;
-var generator;
+
 var selected, ext;
 const maps = require('./maps');
 var util = require('./util');
@@ -20,7 +20,7 @@ module.exports = yeoman.generators.Base.extend({
   // note: arguments and options should be defined in the constructor.
   constructor: function() {
     yeoman.generators.Base.apply(this, arguments);
-    generator = this;
+    this.option('bootstrap');
     // options
   },
   initializing: function() {
@@ -36,7 +36,7 @@ module.exports = yeoman.generators.Base.extend({
   },
   prompting: function() {
     var done = this.async();
-    this.prompt(this.prompts.createFor(this), function(answers) {
+    this.prompt(this.prompts.createFor(this.options), function(answers) {
       // returns:
       // obj: {...}
       // selected: [...]

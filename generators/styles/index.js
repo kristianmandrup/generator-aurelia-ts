@@ -15,6 +15,15 @@ var log = lib.log;
 var info = log.info;
 var generator, linux, macOSX;
 
+var printObj = function(name, obj) {
+  console.log(`printObject ${name}`);
+  let keys = Object.keys(obj);
+  console.log(`got ${keys.length} properties:`);
+  keys.forEach(function(k, i, arr) {
+    console.log(`${k}->${obj[k]}`);
+  });
+}
+console.log('*** Before generator');
 module.exports = yeoman.generators.Base.extend({
 
   // note: arguments and options should be defined in the constructor.
@@ -39,7 +48,7 @@ module.exports = yeoman.generators.Base.extend({
     this.writer = lib.writer(write(this));
     this.prompts = prompts.createFor(this);
     this.util = lib.util;
-    install = install(this);
+    this.install = install(this);
   },
 
   prompting: {
@@ -47,8 +56,18 @@ module.exports = yeoman.generators.Base.extend({
       var done = this.async();
 
       this.prompt(this.prompts.phase1, function(answers) {
-        this.chosenStyles = this.util.isEmpty(answers.styles) ? ['None'] : answers.styles;
+        // this.chosenStyles = this.util.isEmpty(answers.styles) ? ['None'] : answers.styles;
+        this.chosenStyles = [];
+        if (this.options.sass) this.chosenStyles.push('SASS');
+        if (this.options.stylus) this.chosenStyles.push('Stylus');
+        if (this.util.isEmpty(answers.styles))
+          this.chosenStyles = this.chosenStyles.length == 0? ['None']: this.chosenStyles;
+        else
+          this.chosenStyles = this.chosenStyles.concat(answers.styles);
 
+        this.chosenStyles = this.chosenStyles.filter(function(elem, i, arr) {
+          return arr.indexOf(elem) == i;
+        });
         this.styles = util.styles(this.chosenStyles);
         this.removeOld = answers.removeOld;
         this.useJade = answers.useJade;
@@ -83,9 +102,9 @@ module.exports = yeoman.generators.Base.extend({
     this.writer.writeAll();
   },
   install: function() {
-    if (this.styles.pre.sass) install.sass();
-    if (this.styles.pre.stylus) install.stylus();
-    if (this.useJade) install.jade();
+    if (this.styles.pre.sass) this.install.sass();
+    if (this.styles.pre.stylus) this.install.stylus();
+    if (this.useJade) this.install.jade();
   },
   end: function() {
     info("Installed:" + this.preProcessors.join(' '));

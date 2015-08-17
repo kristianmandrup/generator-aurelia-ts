@@ -6,8 +6,9 @@ var assert = require('yeoman-generator').assert;
 var helpers = require('yeoman-generator').test;
 var os = require('os');
 var sinon = require('sinon');
-var app;
 
+var app;
+var testHelpers = require('./lib/helper');
 
 describe('aurelia-ts:typescript', function () {
   this.spy = sinon.spy();
@@ -15,36 +16,23 @@ describe('aurelia-ts:typescript', function () {
     exec: this.spy
   });
 
-  this.bowerInstallCalls = [];
-  this.npmInstallCalls = [];
-  this.spawnCommandCalls = [];
-
+  let oldOpts = {
+    cssFramework: 'Bootstrap',
+    githubAccount: 'telekosmos',
+    authorName: 'me',
+    authorEmail: 'telekosmos@ymail.com',
+    appDesc: 'The App description',
+    appName: 'The App name'
+  };
+  let mockOptions = {};
+  let mockPrompts = {
+    editor: 'Atom',
+    amd: true
+    // installDeps: false
+  }
   before(function(done) {
-    app = helpers.run(path.join(__dirname, '../generators/typescript'))
-      .withOptions({
-        cssFramework: 'Bootstrap',
-        githubAccount: 'telekosmos',
-        authorName: 'me',
-        authorEmail: 'telekosmos@ymail.com',
-        appDesc: 'The App description',
-        appName: 'The App name'
-      })
-      .withPrompts({
-        editor: 'Atom',
-        amd: true,
-        installDeps: false
-      })
-      .on('ready', function(generator) {
-        generator.bowerInstall = function() {
-          this.bowerInstallCalls.push(arguments);
-        }.bind(this);
-        generator.npmInstall = function() {
-          this.npmInstallCalls.push(arguments);
-        }.bind(this);
-        generator.spawnCommand = function() {
-          this.spawnCommandCalls.push(arguments);
-        }.bind(this);
-      }.bind(this))
+    app = testHelpers.runGenerator('typescript', mockOptions, mockPrompts)
+      .on('ready', testHelpers.onready.bind(this))
       .on('end', function() {
         done();
       });
@@ -60,15 +48,6 @@ describe('aurelia-ts:typescript', function () {
       'src/app.ts', 'src/welcome.ts', 'src/nav-bar.ts'
     ]);
   });
-
-  /*
-  it('adds typescript jspm dependencies', function() {
-    assert.fileContent([
-      ['package.json', /"gulp\-typescript":/],
-      ['package.json', /"typescript":/]
-    ]);
-  });
-  */
 
   it('writes the content to files', function() {
     assert.fileContent([
@@ -113,6 +92,85 @@ describe('aurelia-ts:typescript', function () {
     assert(this.spawnCommandCalls[0][1].indexOf('typescript') != -1);
   }.bind(this))
 });
+
+describe('aurelia-ts:typescript no amd', function() {
+  let mockOptions = {};
+  let mockPrompts = {
+    amd: false,
+    editor: 'Atom'
+  };
+
+  before(function(done) {
+    app = testHelpers.runGenerator('typescript', mockOptions, mockPrompts)
+      .on('ready', testHelpers.onready.bind(this))
+      .on('end', function() {
+        done();
+      })
+  }.bind(this));
+
+  it('can be run', function() {
+    assert(app !== undefined);
+  });
+
+  it('supports commonjs module system', function() {
+    assert.fileContent([
+      ['build/tasks/build.js', /require\s*\(["']gulp\-typescript["']\);/],
+      ['build/tasks/build.js', /module:\s+"commonjs"/],
+      ['build/tasks/build.js', /target:\s+"es5"/],
+      ['tsconfig.json', /"module":\s+"commonjs"/]
+    ]);
+  });
+});
+
+describe('aurelia-ts:typescript editors', function() {
+  let mockOptions = {};
+  let mockPrompts = {
+    editor: ['WebStorm'],
+    amd: true
+  };
+
+  before(function(done) {
+    app = testHelpers.runGenerator('typescript', mockOptions, mockPrompts)
+      .on('ready', testHelpers.onready.bind(this))
+      .on('end', function() {
+        done();
+      })
+  }.bind(this));
+
+  it('can be run', function() {
+    assert(app !== undefined);
+  });
+
+  it('install docs for WebStorm', function() {
+    assert.file(['docs/typescript/editors/Aurelia-TypeScript-IDE-WebStorm.md'])
+  });
+});
+
+describe('aurelia-ts:typescript default editor', function() {
+  let mockOptions = {};
+  let mockPrompts = {
+    editor: 'Atom',
+    amd: true
+  };
+
+  before(function(done) {
+    app = testHelpers.runGenerator('typescript', mockOptions, mockPrompts)
+      .on('ready', testHelpers.onready.bind(this))
+      .on('end', function() {
+        done();
+      })
+  }.bind(this));
+
+  it('can be run', function() {
+    assert(app !== undefined);
+  });
+
+  it('install docs for Atom by default', function() {
+    assert.file(['docs/typescript/editors/Aurelia-TypeScript-IDE-Atom.md'])
+  });
+});
+
+
 
 /*
 describe('aurelia-ts:typescript -no TS support-', function () {

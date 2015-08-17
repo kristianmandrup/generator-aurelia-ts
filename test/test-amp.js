@@ -7,8 +7,9 @@ var helpers = require('yeoman-generator').test;
 var os = require('os');
 var sinon = require('sinon');
 var fs = require('fs');
-var app;
 
+var app;
+var testHelpers = require('./lib/helper');
 
 describe('aurelia-ts:amd for Ampersand modules', function () {
   this.spy = sinon.spy();
@@ -16,30 +17,21 @@ describe('aurelia-ts:amd for Ampersand modules', function () {
     exec: this.spy
   });
 
-  this.npmInstallCalls = [];
-  this.spawnCommandCalls = [];
+
   let ampModules = ['app', 'registry', 'state', 'collection', 'rest-collection', 'model'];
+  let mockPrompts = {
+    modules: ampModules,
+    humanModel: true
+  };
+  let mockOptions = {};
   let jspmArgs;
   before(function(done) {
-    app = helpers.run(path.join(__dirname, '../generators/amp'))
-      .withOptions({
-        // ui: 'Bootstrap',
-      })
-      .withPrompts({
-        modules: ampModules,
-        humanModel: true
-      })
-      .on('ready', function(generator) {
-        generator.npmInstall = function() {
-          this.npmInstallCalls.push(arguments);
-        }.bind(this);
-        generator.spawnCommand = function() {
-          this.spawnCommandCalls.push(arguments);
-        }.bind(this);
-      }.bind(this))
+    app = testHelpers.runGenerator('amp', mockOptions, mockPrompts)
+      .on('ready', testHelpers.onready.bind(this))
       .on('end', function() {
+        jspmArgs = this.spawnCommandCalls[0][1];
         done();
-      });
+      }.bind(this));
   }.bind(this));
 
   it('generator can be run', function() {
