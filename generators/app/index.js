@@ -3,174 +3,110 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 require('sugar');
-
 var generator;
+var extend = require('extend');
+
+var prompts = require('./prompts');
+var writeConf = require('./write');
+
+var lib = require('../../lib');
+var install = require('./install');
+
+var copy = lib.copy;
+var log = lib.log;
+var util = lib.util;
+var options = lib.options;
+var writer = lib.writer;
 
 module.exports = yeoman.generators.Base.extend({
-
   // note: arguments and options should be defined in the constructor.
   constructor: function() {
     yeoman.generators.Base.apply(this, arguments);
 
     generator = this;
-    this.props = {};
-    // This makes `appname` a required argument.
     this.argument('appname', {
       type: String,
       required: false
     });
-    // And you can then access it later on this way; e.g. CamelCased
-    this.props.appname = this.appname ? this.appname.camelize() : null;
-
-    // This method adds support for a `--coffee` flag
+    // TODO: send options to app decorator
+    this.option('ts'); // typescript
+    this.option('vs'); // visual studio
+    this.option('fa'); // font awesome
+    this.option('cli'); // aurelia CLI
+    this.option('plugins');
     this.option('sass');
     this.option('stylus');
+    // ui framework options
+    this.option('ui', {type: 'string'});
+  },
 
-    // TODO: use to configure css/scss or stylus
-    this.props.styleLang = 'css';
-    this.props.styleLang = this.options.scss || this.styleLang;
-    this.props.styleLang = this.options.stylus || this.styleLang;
+  initializing: function() {
+    this.util = util;
+    this.props = {app: {}, pkg: {}};
+    this.props.app.name = this.appname ? this.appname.camelize() : null;
+    this.props.app.moduleName = this.util.normalizeName(this.props.app.name);
+    this.props.app.title = this.util.humanize(this.props.app.name);
 
-    this.props.githubAccount = this.config.get('githubAccount');
+    this.props.uiFramework = options.mapUi(this.options.ui)
+
+    this.props.styleLang = this.options.stylus || this.options.sass || 'css';
+    this.props.vs = this.options.vs;
+    this.props.ts = this.options.ts;
+    this.props.fa = this.options.fa;
+    this.props.plugins = this.options.plugins;
+
+    this.props.pkg.githubAccount = this.config.get('githubAccount');
+
+    this.copy = copy(this);
+    this.writer = writer(writeConf(this));
+    this.myPrompts = prompts(this);
+    this.install = lib.install(this);
   },
 
   // TODO: Add prompt for style lang unless passed as argument
   // TODO: Add editor selection prompt
   prompting: function() {
     var done = this.async();
+    // info('Create Aurelia Application:');
+    this.prompt(this.myPrompts.createFor(this), function(answers) {
+      var app = this.props.app;
+      this.props.app = {
+        name: util.normalizeName(answers.appName || app.name),
+        title: answers.title || app.title,
+        desc: answers.desc || app.desc
+      };
 
-    // TODO: dynamically build prompt object
-    var prompts = [{
-      type: 'input',
-      name: 'appName',
-      message: 'Your application name',
-      default: this.appName // Name
-    }, {
-      type: 'input',
-      name: 'title',
-      message: 'Your application title',
-      default: this.appTitle
-    }, {
-      type: 'input',
-      name: 'githubAccount',
-      message: 'Your github account',
-      default: this.props.githubAccount
-    }, {
-      type: 'input',
-      name: 'authorEmail',
-      message: 'Your email',
-      default: this.props.authorEmail
-    }, {
-      type: 'input',
-      name: 'authorName',
-      message: 'Your name',
-      default: this.props.authorName
-    }, {
-      type: 'list',
-      name: 'style',
-      choices: ['Bootstrap', 'Foundation'],
-      default: 'Bootstrap',
-      message: 'Your CSS Framework'
-    }];
+      this.props.pkg = {};
+      for (var name of ['authorName', 'authorEmail', 'githubAccount'])
+        this.props.pkg[name] = answers[name];
 
-    this.prompt(prompts, function(answers) {
-      this.title = answers.title;
-      this.appName = answers.appName || this.appName;
-      this.appDesc = answers.title;
-      this.cssFramework = answers.style;
-      this.authorName = answers.authorName;
-      this.authorEmail = answers.authorEmail;
-      this.githubAccount = answers.githubAccount;
-
+      this.props.decorate = answers.decorate;
+      this.props.ie9 = answers.ie9;
+      this.props.appExt = extend({ie9: this.props.ie9}, this.props.app);
       this.config.save();
 
       done();
     }.bind(this));
   },
 
-  writing: {
-    app: function() {
-      var self = this;
-      this.fs.copyTpl(
-        this.templatePath('_package.json'),
-        this.destinationPath('package.json'), {
-          githubAccount: self.githubAccount,
-          authorName: self.authorName,
-          authorEmail: self.authorEmail,
-          appDesc: self.appDesc,
-          appName: self.appName,
-          cssFramework: self.cssFramework
-        }
-      );
-      this.fs.copyTpl(
-        this.templatePath('_index.html'),
-        this.destinationPath('index.html'), {
-          title: self.appDesc,
-          appName: self.appName
-        }
-      );
-      this.fs.copyTpl(
-        this.templatePath('src/app.js'),
-        this.destinationPath('src/app.js'), {
-          cssFramework: self.cssFramework
-        }
-      );
-    },
+  writing: function() {
+    log.info('Writing app files...')
+    // generator.conflicter.force = true;
+    this.writer.writeAll();
+  },
 
-    projectFiles: function() {
-      this.copy('root/editorconfig', '.editorconfig');
-      this.copy('root/jshintrc', '.jshintrc');
-      this.copy('root/aurelia.protractor.js', 'aurelia.protractor.js');
-      this.copy('root/gulpfile.js', 'gulpfile.js');
-      this.copy('root/favicon.ico', 'favicon.ico');
-      this.copy('root/config.js', 'config.js');
-      this.copy('root/karma.conf.js', 'karma.conf.js');
-      this.copy('root/protractor.conf.js', 'protractor.conf.js');
-      this.copy('root/LICENSE', 'LICENSE');
-      // this.bulkDirectory('root', '.');
-    },
-
-    testFiles: function() {
-      this.bulkDirectory('test', 'test');
-    },
-
-    styleFiles: function() {
-      this.bulkDirectory('styles', 'styles');
-    },
-
-    docFiles: function() {
-      this.bulkDirectory('doc', 'doc');
-    },
-
-    srcFiles: function() {
-      this.conflicter.force = true;
-      this.bulkDirectory('src', 'src');
-    },
-
-    viewFiles: function() {
-      if (this.cssFramework == 'Bootstrap')
-        this.bulkDirectory('views/bootstrap', 'src');
-      if (this.cssFramework == 'Foundation')
-        this.bulkDirectory('views/foundation', 'src');
-    },
-
-    buildFiles: function() {
-      this.bulkDirectory('build', 'build');
+  install: function() {
+    // this own generator installs dependencies and ie9 polyfill
+    install(this).all(this.props);
+    if (this.props.ie9) {
+      this.install.jspm.packages(['github:polymer/mutationobservers']);
     }
   },
 
   end: function() {
-    // console.info('ComposingWith aurelia-ts:typescript for: ' + this.cssFramework);
-    this.composeWith('aurelia-ts:typescript', {
-      options: {
-        cssFramework: this.cssFramework,
-        githubAccount: this.githubAccount,
-        authorName: this.authorName,
-        authorEmail: this.authorEmail,
-        appDesc: this.appDesc,
-        appName: this.appName
-      }
+    if (!this.props.decorate) return;
+    this.composeWith('aurelia-ts:decorate', {
+      options: {}
     });
   }
-
 });

@@ -1,8 +1,8 @@
 {
-  "version": "1.5.0-beta",
+  "version": "1.6.0",
   "compilerOptions": {
     "target": "es5",
-    "module": "<%= amd? 'amd': 'commonjs' %>",
+    "module": "<%= (amd)? 'amd': 'commonjs' %>",
     "declaration": false,
     "noImplicitAny": false,
     "removeComments": false,
@@ -44,6 +44,7 @@
     "./typings/reflect-metadata.d.ts",
     "./src/animation-main.ts",
     "./src/app.ts",
+    "./src/main.ts",
     "./src/nav-bar.ts",
     "./src/welcome.ts"
   ]

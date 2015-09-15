@@ -1,16 +1,28 @@
 /// <reference path="../typings/tsd.d.ts" />
 
-export class Welcome {
-    public heading: string;
-    public firstName: string;
-    public lastName: string;
+import {computedFrom} from 'aurelia-framework';
+import {Validation} from 'aurelia-validation';
 
-    constructor() {
-        this.heading = "Welcome to the Aurelia Typescript skeleton app!";
-        this.firstName = "John";
-        this.lastName = "Doe";
-    }
+export class Welcome{
+  static inject() { return [Validation]; }
 
+  constructor(validation){
+    this.heading = 'Welcome to the Aurelia Navigation App!';
+    this.firstName = 'John';
+    this.lastName = 'Doe';
+
+    // TODO: add validation to form
+    // <form role="form" submit.delegate="welcome()" validate.bind="validation" >
+    this.validation = validation.on(this)
+        .ensure('firstName')
+              .isNotEmpty()
+              .hasMinLength(3)
+              .hasMaxLength(10)
+        .ensure('lastName')
+              .isNotEmpty()
+              .hasMinLength(3)
+              .hasMaxLength(10) ;
+  }
     get fullName() {
         return `${this.firstName} ${this.lastName}`;
     }
