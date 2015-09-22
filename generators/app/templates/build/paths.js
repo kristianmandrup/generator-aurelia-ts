@@ -11,9 +11,10 @@ module.exports = {
   typings: appRoot + '../typings/tsd.d.ts',
   html: appRoot + '**/*.html',
   style: 'styles/css/**/*.css',
-  sass: 'styles/sass/**/*.scss',
+  sass: 'styles/sass/**/*.s?ss',
+  scss: 'styles/scss/**/*.s?ss',
   stylus: 'styles/stylus/**/*.styl',
-  styleDest: './styles/css',
+  styleDest: 'styles/css',
 
   output: outputRoot,
   sourceMapRelativePath: '../' + appRoot,

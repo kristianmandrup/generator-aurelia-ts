@@ -12,13 +12,13 @@ var app;
 var testHelpers = require('./lib/helper');
 
 // Need test for no styles => just raw CSS
-var styles = ['SASS', 'Stylus'];
+var styles = ['SASS', 'SCSS', 'Stylus'];
 var useJade = true;
 var stylusPlugins = ['Autoprefixer', 'Nib', 'Axis', // extends nib
   'Rupture', 'Fluidity', 'Jeet' // extends nib
 ];
 
-describe('aurelia-ts:styles', function () {
+describe('aurelia-ts:styles w/ prompts', function () {
   this.spy = sinon.spy();
   var dummyGen = generator.Base.extend({
     exec: this.spy
@@ -64,8 +64,12 @@ describe('aurelia-ts:styles', function () {
     assert.file(['build/tasks/sass.js']);
   });
 
-  it('copy SASS style files', function() {
+  it('copy SCSS style files', function() {
     assert.file(['styles/sass/styles.scss']);
+  });
+
+  it('copy SASS style files', function() {
+    assert.file(['styles/sass/styles.sass']);
   });
 
   it('install stylus support', function() {
@@ -185,7 +189,7 @@ describe('aurelia-ts:styles --sass', function() {
     assert(app !== undefined);
   });
 
-  it('install SASS (.scss) support', function() {
+  it('install SASS (.s?ss) support', function() {
     let aux = npmCallsArgs.filter(function(elem) {
       return elem.match(/gulp-sass/);
     });
@@ -194,9 +198,98 @@ describe('aurelia-ts:styles --sass', function() {
   });
 
   it('copy SASS style files', function() {
+    assert.file(['styles/sass/styles.sass']);
+  });
+});
+
+
+describe('aurelia-ts:styles --scss', function() {
+  let mockOptions = {
+    scss: true
+  };
+  let mockPrompts = {
+    styles: [],
+    useJade: false,
+    removeOld: false,
+    stylusPlugins: []
+  };
+  let npmCallsArgs = [];
+  before(function(done) {
+    app = testHelpers.runGenerator('styles', mockOptions, mockPrompts)
+      .on('ready', testHelpers.onready.bind(this))
+      .on('end', function() {
+        for (let mods of this.npmInstallCalls) {
+          npmCallsArgs.push(mods[0]);
+        }
+        done();
+      }.bind(this))
+
+  }.bind(this));
+
+  it('can be run', function() {
+    assert(app !== undefined);
+  });
+
+  it('install SCSS (.s?ss) support', function() {
+    let aux = npmCallsArgs.filter(function(elem) {
+      return elem.match(/gulp-sass/);
+    });
+    assert(aux.length == 1);
+    assert.file(['build/tasks/sass.js']);
+  });
+
+  it('copy SCSS style files', function() {
     assert.file(['styles/sass/styles.scss']);
   });
 });
+
+
+describe('aurelia-ts:styles --scss --sass', function() {
+  let mockOptions = {
+    scss: true,
+    sass: true
+  };
+  let mockPrompts = {
+    styles: [],
+    useJade: false,
+    removeOld: false,
+    stylusPlugins: []
+  };
+  let npmCallsArgs = [];
+  before(function(done) {
+    app = testHelpers.runGenerator('styles', mockOptions, mockPrompts)
+      .on('ready', testHelpers.onready.bind(this))
+      .on('end', function() {
+        for (let mods of this.npmInstallCalls) {
+          npmCallsArgs.push(mods[0]);
+        }
+        done();
+      }.bind(this))
+
+  }.bind(this));
+
+  it('can be run', function() {
+    assert(app !== undefined);
+  });
+
+  it('install SCSS (.s?ss) support', function() {
+    let aux = npmCallsArgs.filter(function(elem) {
+      return elem.match(/gulp-sass/);
+    });
+    assert(aux.length == 1);
+    assert.file(['build/tasks/sass.js']);
+  });
+
+  it('copy SCSS style files', function() {
+    assert.file(['styles/sass/styles.scss']);
+  });
+
+  it('and copy SASS styles files', function() {
+    assert.file(['styles/sass/styles.sass']);
+  });
+});
+
+
 
 describe('aurelia-ts:styles (no preProcessors)', function() {
   let mockOptions = {};
@@ -236,7 +329,8 @@ describe('aurelia-ts:styles (no preProcessors)', function() {
   });
 
   it('does not copy style lang files', function() {
-    assert.noFile(['styles/sass/styles.scss']);
+    assert.noFile(['styles/sass/styles.sass']);
+    assert.noFile(['styles/sass/styles.scss'])
     assert.noFile(['styles/stylus/styles.styl']);
     assert.file(['styles/css/styles.css']);
   });
