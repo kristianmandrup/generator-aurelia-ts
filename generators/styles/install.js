@@ -11,7 +11,7 @@ function installCairo(opts) {
 
 function npmMap(name) {
   if (name.match(/prefixer/)) return 'autoprefixer-stylus'
-  return name;
+  return name.toLowerCase();
 }
 
 module.exports = function (gen) {
@@ -21,13 +21,17 @@ module.exports = function (gen) {
       install.npmDev('gulp-jade');
     },
     sass: function() {
+      install.npmDev('gulp-concat');
       install.npmDev('gulp-sass');
     },
     stylus: function() {
       install.npmDev('gulp-stylus');
       var list = gen.stylus.plugins.list;
       for (var addon of list) {
-        install.npmDev(npmMap(addon));
+        var npmAddon = npmMap(addon);
+        install.npmDev(npmAddon);
+        if (npmAddon.match(/fluidity/) != null)
+          install.npmDev('stylus');
       }
     },
     installCairo: installCairo,

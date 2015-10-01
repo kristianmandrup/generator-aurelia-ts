@@ -17,7 +17,7 @@ Generate an [Aurelia](aurelia.io) Quick Start project with:
 -	`aurelia-ts:decorate` (decorate app)
 -	`aurelia-ts:plugins` (add plugins)
 -	`aurelia-ts:cli` (add CLI)
--	`aurelia-ts:styles` (add CSS preprocessors: SASS/Stylus )
+-	`aurelia-ts:styles` (add CSS preprocessors: SCSS/SASS/Stylus )
 -	`aurelia-ts:layout` (add ui/layout framework:)
 -	`aurelia-ts:javascript` (javascript app)
 -	`aurelia-ts:typescript` (typescript app)
@@ -116,11 +116,12 @@ yo aurelia-ts --ts --plugins
 
 ### CSS language extension options
 
-The generator also supports *SCSS* and *Stylus* via `--scss` and `--stylus` options
+The generator also supports *SCSS*, *SASS* (indented syntax) and *Stylus* via `--scss`, `--sass` and `--stylus` options
 
 ```bash
 yo aurelia-ts --stylus
 ```
+All of them could be passed in to the generator, then it is up to the user deal with the various preprocessors in one project.
 
 ### Stylus plugins
 

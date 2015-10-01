@@ -4,7 +4,7 @@ var util = lib.util;
 
 module.exports = {
   g: util,
-  styleFolders: ['css', 'stylus', 'sass'],
+  styleFolders: ['css', 'styl', 'scss', 'sass'],
   bulkStyles: function(styleLangs) {
     var stylusIdx = styleLangs.indexOf('Stylus');
     var bulkStyles = styleLangs.slice(0);
@@ -16,9 +16,10 @@ module.exports = {
 
   watchTasks: function(pre) {
     var watchTasks = [];
-    if (pre.sass) {
+    if (pre.sass || pre.scss) {
       watchTasks.push('sass:watch');
     }
+
     if (pre.stylus) {
       watchTasks.push('stylus:watch');
     }
@@ -36,7 +37,8 @@ module.exports = {
     }).join(', ');
   },
   stylesPath: function(folder) {
-    return ['styles', util.normalizeFolder(folder)].join('/');
+    var normalizeFolder = util.normalizeFolder(folder);normalizeFolder
+    return ['styles', normalizeFolder].join('/');
   },
   mapToList: function(mapObj) {
     var list = [];
@@ -50,6 +52,7 @@ module.exports = {
     return {
       css: contains('None'),
       pre: {
+        scss: contains('SCSS'),
         sass: contains('SASS'),
         stylus: contains('Stylus')
       }

@@ -12,20 +12,36 @@ module.exports = function(gen) {
       }
       gen.fs.delete('styles/styles.css');
     },
+
     root: function() {
       gen.copy.rootTpl('_Styles.md', 'Styles.md', {stylus: gen.styles.pre.stylus});
     },
+
     styles: function() {
-      // since styles for Stylus is a template, we want to remove it from bulk directory copy
+      // All files are copied as templates as they can be chosen one by one and sass folder contains 2 files
       for (var lang of util.bulkStyles(gen.styleLangs)) {
         var path = util.stylesPath(lang);
-        gen.copy.bulkDir(path);
+        var lcLang = lang.toLowerCase();
+        if (lcLang == 'sass' || lcLang == 'scss')
+          gen.copy.stylesTemplate('sass/styles.'+lcLang, 'sass/styles.'+lcLang, {});        
+
+        if (lang.toLowerCase() == 'css')
+          gen.copy.bulkDir(path);
+        
+        /*
+        if (lang.toLowerCase() == 'scss')
+          gen.copy.stylesTemplate('sass/styles.scss', 'sass/styles.scss', {});
+
+        if (lang.toLowerCase() != 'stylus')
+          gen.copy.bulkDir(path);
+        */
       }
       // stylus
       if (gen.styles.pre.stylus) {
         gen.copy.stylesTemplate('stylus/_styles.styl', 'stylus/styles.styl', gen.stylus.plugins.obj);
       }
     },
+
     tasks: function() {
       var pre = gen.styles.pre;
       gen.copy.buildTpl('_styles.js', 'styles.js', {
@@ -34,7 +50,7 @@ module.exports = function(gen) {
         styles: gen.styleLangs.join(' and '),
       });
       // sass
-      if (pre.sass) {
+      if (pre.sass || pre.scss) {
         gen.copy.buildFile('sass.js');
       }
       // stylus

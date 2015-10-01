@@ -8,10 +8,17 @@ module.exports = {
         name: 'styles',
         choices: [
           'Stylus',
+          'SCSS',
           'SASS'
         ],
         default: opts.defaultStyles,
-        message: 'CSS Preprocessors'
+        message: 'CSS Preprocessors',
+        when: function(answers) {
+          var ask = (typeof opts.options.sass === 'undefined') && (typeof opts.options.scss === 'undefined')
+            && (typeof opts.options.stylus === 'undefined')
+        
+          return ask;
+        }
       }, {
         type: 'confirm',
         name: 'removeOld',
@@ -23,6 +30,7 @@ module.exports = {
         default: false,
         message: 'Use Jade Templates?'
       }],
+
       phase2: [{
         type: 'checkbox',
         name: 'stylusPlugins',

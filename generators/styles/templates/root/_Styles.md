@@ -4,8 +4,8 @@ Styles
 CSS Preprocessing tasks
 -----------------------
 
--	`gulp css:build` build css from CSS lang extension files (Stylus, Sass)
--	`gulp css:watch` watch CSS lang extension files and build on change
+-	`gulp styles:build` build CSS from CSS lang extension files (Stylus, SCSS, SASS)
+-	`gulp styles:watch` watch CSS lang extension files and build on change
 
 These builds will result in css files which will be dumped in `styles/css` which is being watched by `gulp watch`. Hence they will result in a new distribution build and browser sync reload.
 

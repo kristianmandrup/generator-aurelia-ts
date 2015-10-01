@@ -15,15 +15,7 @@ var log = lib.log;
 var info = log.info;
 var generator, linux, macOSX;
 
-var printObj = function(name, obj) {
-  console.log(`printObject ${name}`);
-  let keys = Object.keys(obj);
-  console.log(`got ${keys.length} properties:`);
-  keys.forEach(function(k, i, arr) {
-    console.log(`${k}->${obj[k]}`);
-  });
-}
-console.log('*** Before generator');
+/* TODO Remove prompts when options are provided **/
 module.exports = yeoman.generators.Base.extend({
 
   // note: arguments and options should be defined in the constructor.
@@ -31,6 +23,7 @@ module.exports = yeoman.generators.Base.extend({
     yeoman.generators.Base.apply(this, arguments);
     generator = this;
     // define options that the generator accepts
+    this.option('scss');
     this.option('sass');
     this.option('stylus');
   },
@@ -58,6 +51,7 @@ module.exports = yeoman.generators.Base.extend({
       this.prompt(this.prompts.phase1, function(answers) {
         // this.chosenStyles = this.util.isEmpty(answers.styles) ? ['None'] : answers.styles;
         this.chosenStyles = [];
+        if (this.options.scss) this.chosenStyles.push('SCSS');
         if (this.options.sass) this.chosenStyles.push('SASS');
         if (this.options.stylus) this.chosenStyles.push('Stylus');
         if (this.util.isEmpty(answers.styles))
@@ -71,6 +65,7 @@ module.exports = yeoman.generators.Base.extend({
         this.styles = util.styles(this.chosenStyles);
         this.removeOld = answers.removeOld;
         this.useJade = answers.useJade;
+
         this.preProcessors = util.mapToList(this.styles.pre);
         this.styleLangs = this.preProcessors.slice(0);
         if (this.styles.css) this.styleLangs.push('css');
@@ -102,7 +97,7 @@ module.exports = yeoman.generators.Base.extend({
     this.writer.writeAll();
   },
   install: function() {
-    if (this.styles.pre.sass) this.install.sass();
+    if (this.styles.pre.sass || this.styles.pre.scss) this.install.sass();
     if (this.styles.pre.stylus) this.install.stylus();
     if (this.useJade) this.install.jade();
   },
