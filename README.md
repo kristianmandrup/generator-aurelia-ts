@@ -60,7 +60,7 @@ The layout generator currently supports:
 -	[Bootstrap](http://getbootstrap.com)
 -	[Bootstrap Material](https://fezvrasta.github.io/bootstrap-material-design/)
 -	[Zurb Foundation](http://foundation.zurb.com/)
--	[Semantic UI](semantic-ui.com)
+-	[Semantic UI](http://semantic-ui.com)
 -	[Framework7](http://www.idangero.us/framework7)
 
 Make a pull request to make the generator support your favorite alternative UI/Layout framework (see *Contributing* below).
