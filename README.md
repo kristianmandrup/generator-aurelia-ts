@@ -1,6 +1,8 @@
 Aurelia Turbo Start generator
 =============================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/kristianmandrup/generator-aurelia-ts.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://secure.travis-ci.org/kristianmandrup/generator-aurelia-ts.png?branch=master)](https://travis-ci.org/kristianmandrup/generator-aurelia-ts)
 
 Generate an [Aurelia](aurelia.io) Quick Start project with:
