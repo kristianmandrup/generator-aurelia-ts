@@ -58,7 +58,7 @@ The layout generator currently supports:
 #### CSS frameworks
 
 -	[Bootstrap](http://getbootstrap.com)
--	[Bootstrap Material](https://fezvrasta.github.io/bootstrap-material-design/)
+-	[Bootstrap Material](https://mdbootstrap.com/)
 -	[Zurb Foundation](http://foundation.zurb.com/)
 -	[Semantic UI](http://semantic-ui.com)
 -	[Framework7](http://www.idangero.us/framework7)
